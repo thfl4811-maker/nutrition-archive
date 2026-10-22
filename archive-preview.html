@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>자료실 개편 시안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 상단 고정 메뉴 → 보기(업무 / 점검표 / 급식달력) 전환. 크림색 종이 바탕 하나로 고정한 시안 */
+:root{--bg:#f6f2ea;--paper:#fffdf8;--paper2:#fffaf2;--ink:#1d232b;--muted:#6b7280;--line:#e7e0d3;--line2:#efe9dd;
+--rice:#e48a2c;--rice-s:#fdf0e1;--rice-d:#9a5a17;--egg:#3d6fd8;--egg-s:#e8efff;--egg-d:#2f58b5;--soup:#3b9a5b;--soup-s:#e5f4ea;--soup-d:#2c7a47;
+--red:#d9473b;--red-s:#fdebe9;--gold:#b5651d;--gold-s:#fff1de;
+--f:"Noto Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;color-scheme:light}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--ink);font-family:var(--f);-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--egg);outline-offset:2px;border-radius:8px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bg)}
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(48px,env(safe-area-inset-left,0px));padding-right:max(48px,env(safe-area-inset-right,0px))}
+
+/* 상단 */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(246,242,234,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:24px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;margin-right:auto}.logo b{font-weight:900;letter-spacing:.05em;font-size:15px;white-space:nowrap}
+.menu{display:flex;gap:4px;background:var(--line2);padding:5px;border-radius:999px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.menu::-webkit-scrollbar{display:none}
+.menu button{padding:8px 16px;border-radius:999px;font-weight:700;font-size:14.5px;color:#4b5563;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.menu button:hover{color:var(--ink)}.menu button.on{background:var(--ink);color:#fff}
+.soon{font-size:10.5px;font-weight:700;color:var(--gold);background:var(--gold-s);border:1px solid #f1cf9f;border-radius:999px;padding:0 6px;white-space:nowrap}
+.menu button.on .soon{background:#fff3df}
+.home{font-size:13.5px;font-weight:700;color:var(--muted);border:1px solid var(--line);padding:8px 14px;border-radius:999px;background:var(--paper);white-space:nowrap}
+.view{display:none}.view.on{display:block}
+
+/* ─ 업무 보기 ─ */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:end;padding-block:40px 26px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;color:#8a7a5c}
+h1{font-size:clamp(28px,3vw,40px);line-height:1.25;margin:10px 0 22px;letter-spacing:-.03em;font-weight:900;text-wrap:balance}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--rice),var(--egg) 55%,var(--soup));-webkit-background-clip:text;background-clip:text;color:transparent}
+.search{display:flex;align-items:center;gap:12px;background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:14px 20px;box-shadow:0 10px 0 -4px #e3dccd;cursor:text}
+.search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:17px;color:var(--ink)}
+.search input::placeholder{color:#9aa0a8}
+.search:focus-within{box-shadow:0 10px 0 -4px #e3dccd,0 0 0 4px rgba(61,111,216,.18)}
+.search kbd{font:600 12px/1 ui-monospace,monospace;border:1px solid var(--line);border-radius:6px;padding:4px 7px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.chips b{font-size:13px;color:var(--muted);margin-right:4px}
+.chips button{font-size:14px;font-weight:700;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+.chips button:hover{border-color:var(--ink)}
+.trio{width:100%;filter:drop-shadow(0 18px 24px rgba(80,60,20,.18))}
+.cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding-block:6px 34px}
+.cat{position:relative;border-radius:24px;padding:22px 26px;min-height:164px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;border:2px solid transparent;text-align:left;transition:transform .2s,box-shadow .2s,opacity .2s}
+.cat:hover{transform:translateY(-3px)}
+.cat.op{background:var(--rice-s)}.cat.hy{background:var(--egg-s)}.cat.ed{background:var(--soup-s)}
+.cat:not(.sel){opacity:.8}
+.cat.op.sel{border-color:var(--rice);box-shadow:0 12px 26px -12px rgba(228,138,44,.6)}
+.cat.hy.sel{border-color:var(--egg);box-shadow:0 12px 26px -12px rgba(61,111,216,.6)}
+.cat.ed.sel{border-color:var(--soup);box-shadow:0 12px 26px -12px rgba(59,154,91,.6)}
+.cat img{position:absolute;right:14px;top:10px;height:130px}
+.cat .n{align-self:flex-start;margin-bottom:auto;font-size:13px;font-weight:800;background:#fff;border-radius:999px;padding:3px 11px}
+.cat .k{font-size:13px;font-weight:800;letter-spacing:.06em}
+.cat.op .k{color:var(--rice)}.cat.hy .k{color:var(--egg)}.cat.ed .k{color:var(--soup)}
+.cat h3{margin:4px 0 2px;font-size:26px;letter-spacing:-.02em}
+.cat p{margin:0;color:#4b5563;font-size:14.5px}
+.sec{padding-bottom:44px}
+.sechead{display:flex;align-items:center;gap:14px;margin:0 0 16px;flex-wrap:wrap}
+.sechead .dot{width:12px;height:12px;border-radius:50%}
+.sechead h2{margin:0;font-size:24px}.sechead small{color:var(--muted);font-size:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.box h4{display:flex;align-items:center;gap:10px;margin:0;padding:16px 18px;font-size:17px;border-bottom:1px solid var(--line);background:var(--paper2)}
+.box h4 i{font-style:normal;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:16px}
+.box h4 small{margin-left:auto;font-size:12px;color:var(--muted);font-weight:700;background:#f3eee4;border-radius:999px;padding:2px 9px}
+.box .sub{font-size:12px;font-weight:800;color:#9a8d74;letter-spacing:.02em;padding:12px 18px 2px}
+.box ul{list-style:none;margin:0;padding:2px 8px 8px}
+.box li a{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;font-size:15.5px;font-weight:600}
+.box li a::after{content:"›";color:#c4b9a5;font-size:18px}
+.box li .cy{margin-left:auto;font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+[data-c="운영"] .dot{background:var(--rice)}[data-c="위생"] .dot{background:var(--egg)}[data-c="교육"] .dot{background:var(--soup)}
+[data-c="운영"] .box h4 i,[data-c="운영"] .cy{background:var(--rice-s);color:var(--rice-d)}
+[data-c="위생"] .box h4 i,[data-c="위생"] .cy{background:var(--egg-s);color:var(--egg-d)}
+[data-c="교육"] .box h4 i,[data-c="교육"] .cy{background:var(--soup-s);color:var(--soup-d)}
+[data-c="운영"] .box li a:hover{background:#fbf3e7}[data-c="위생"] .box li a:hover{background:#f1f5ff}[data-c="교육"] .box li a:hover{background:#eef8f1}
+mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
+.empty{padding:40px;text-align:center;color:var(--muted);background:var(--paper);border:1px dashed var(--line);border-radius:18px}
+
+/* ─ 점검표 보기 ─ */
+.phead{display:flex;align-items:flex-end;gap:24px;padding-block:40px 22px;flex-wrap:wrap}
+.phead h1{margin:6px 0 0}
+.phead p{margin:8px 0 0;color:var(--muted);max-width:44em;line-height:1.7}
+.phead .side{margin-left:auto;display:flex;align-items:center;gap:10px}
+.ctabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:26px}
+.ctab{position:relative;text-align:left;border-radius:22px;padding:20px 22px;min-height:132px;border:2px solid transparent;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;transition:transform .2s}
+.ctab:hover{transform:translateY(-2px)}
+.ctab img{position:absolute;right:10px;top:8px;height:104px}
+.ctab b{font-size:21px;letter-spacing:-.02em}.ctab small{color:#4b5563;font-size:13.5px;margin-top:2px}
+.ctab .cnt{position:absolute;left:22px;top:18px;font-weight:900;font-size:28px;letter-spacing:-.02em}
+.ctab.hy{background:var(--egg-s)}.ctab.op{background:var(--rice-s)}.ctab.rec{background:var(--soup-s)}
+.ctab.hy .cnt{color:var(--egg)}.ctab.op .cnt{color:var(--rice)}.ctab.rec .cnt{color:var(--soup)}
+.ctab:not(.on){opacity:.75}.ctab.on.hy{border-color:var(--egg)}.ctab.on.op{border-color:var(--rice)}.ctab.on.rec{border-color:var(--soup)}
+.prog{display:flex;align-items:center;gap:14px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px}
+.prog b{font-size:14px;white-space:nowrap}.prog .bar{flex:1;height:10px;background:var(--line2);border-radius:999px;overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--egg),var(--soup));border-radius:999px;transition:width .4s}
+.prog span{font-size:13px;color:var(--muted);white-space:nowrap}
+.cgroup{margin:26px 0 12px;font-size:15px;font-weight:900;display:flex;align-items:center;gap:10px}
+.cgroup::after{content:"";flex:1;height:1px;background:var(--line)}
+.citem{background:var(--paper);border:1px solid var(--line);border-radius:18px;margin-bottom:10px;overflow:hidden}
+.citem>summary{list-style:none;display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px 18px;cursor:pointer}
+.citem>summary::-webkit-details-marker{display:none}
+.citem .no{min-width:58px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:900;font-size:13px;line-height:1.1;text-align:center;padding:0 6px}
+.v-hy .citem .no{background:var(--egg-s);color:var(--egg-d)}.v-op .citem .no{background:var(--rice-s);color:var(--rice-d)}.v-rec .citem .no{background:var(--soup-s);color:var(--soup-d)}
+.citem .tt{font-weight:700;font-size:15.5px;line-height:1.5}
+.citem .pts{font-size:12px;font-weight:700;color:var(--muted);background:#f3eee4;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.citem .ok{width:24px;height:24px;accent-color:var(--soup);cursor:pointer}
+.citem>summary .chev{width:10px;height:10px;border-right:2px solid #b6ab96;border-bottom:2px solid #b6ab96;transform:rotate(45deg);transition:transform .2s;margin-right:4px}
+.citem[open]>summary .chev{transform:rotate(-135deg)}
+.citem.done{background:#f7fbf8;border-color:#cfe8d7}.citem.done .tt{color:#5b6b60}
+.cbody{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;padding:0 18px 18px 90px}
+.cbox{border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.7;white-space:pre-line}
+.cbox h5{margin:0 0 6px;font-size:12.5px;letter-spacing:.02em}
+.cbox.crit{background:#f7f3ea}.cbox.crit h5{color:#7a6a4c}
+.cbox.fq{background:var(--red-s)}.cbox.fq h5{color:var(--red)}
+.cbox.fq ul{margin:0;padding-left:1.1em}
+.docs{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.docs .k{font-size:12px;font-weight:800;color:var(--muted);margin-right:2px}
+.docs a,.docs span.d{font-size:13px;font-weight:700;border-radius:999px;padding:5px 12px;border:1px solid #c9d7fb;background:#f3f6ff;color:var(--egg-d)}
+.docs a:hover{background:var(--egg);color:#fff;border-color:var(--egg)}
+.docs span.d{border-color:var(--line);background:#f6f2ea;color:#7a6f5c}
+
+/* ─ 급식달력 보기 ─ */
+.calhero{margin-top:28px;border-radius:28px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);background:var(--paper);border:1px solid var(--line)}
+.calhero .in{padding:30px 34px;display:flex;flex-direction:column;justify-content:space-between;gap:20px;background:linear-gradient(135deg,var(--paper2),var(--bg))}
+.calhero .season{font-size:13px;font-weight:800;letter-spacing:.1em;color:#8a7a5c}
+.calhero h1{margin:6px 0 0;font-size:clamp(34px,4vw,54px)}
+.calhero .soon{font-size:12px;padding:2px 9px;margin-left:10px;vertical-align:10px}
+.calhero .lead{margin:10px 0 0;color:var(--muted);font-size:14.5px;line-height:1.7}
+.calhero .nav2{display:flex;gap:8px;flex-wrap:wrap}
+.calhero .nav2 button{background:var(--paper);border:1px solid var(--line);font-weight:800;font-size:14px;padding:9px 16px;border-radius:999px}
+.calhero .nav2 button:hover{border-color:var(--ink)}
+.calhero .pic{aspect-ratio:3/2;max-width:100%}
+.calhero .pic img{width:100%;height:100%;object-fit:cover;display:block}
+.dcell.out .dn{opacity:.3}
+.months{display:flex;gap:6px;margin:16px 0 22px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.months::-webkit-scrollbar{display:none}
+.months button{flex:none;font-size:13.5px;font-weight:800;padding:7px 14px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:#4b5563}
+.months button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.months button .c{font-size:11px;font-weight:700;opacity:.65;margin-left:3px}
+.callay{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:20px;align-items:start;padding-bottom:40px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:#4b5563;margin-bottom:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.mgrid{background:var(--paper);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.mgrid .dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:var(--paper2);border-bottom:1px solid var(--line)}
+.mgrid .dow span{padding:10px 12px;font-size:12.5px;font-weight:800;color:#7a6f5c}
+.mgrid .dow span:first-child{color:var(--red)}.mgrid .dow span:last-child{color:var(--egg)}
+.mgrid .days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.dcell{min-height:104px;border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:8px 8px 6px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.dcell:nth-child(7n){border-right:0}
+.dcell.out{background:#faf7f1}.dcell .dn{font-weight:800;font-size:14px}
+.dcell.sun .dn,.dcell.hol .dn{color:var(--red)}.dcell.sat .dn{color:var(--egg)}
+.dcell.today .dn{background:var(--ink);color:#fff;border-radius:999px;width:26px;height:26px;display:grid;place-items:center}
+.ev{font-size:11px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev.hol{color:var(--red)}.ev.term{color:#8a7a5c;font-weight:600}.ev.meal{color:var(--gold)}.ev.day{color:#6b7280;font-weight:600}
+.tk{display:block;font-size:11.5px;font-weight:700;line-height:1.3;padding:2px 6px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk.운영{background:var(--rice-s);color:var(--rice-d)}.tk.위생{background:var(--egg-s);color:var(--egg-d)}.tk.교육{background:var(--soup-s);color:var(--soup-d)}
+.tk:hover{filter:brightness(.95)}
+.mlist{background:var(--paper);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.mlist h3{margin:0;padding:16px 18px;font-size:17px;border-bottom:1px solid var(--line);background:var(--paper2);display:flex;align-items:center;gap:8px}
+.mlist h3 small{margin-left:auto;font-size:12.5px;color:var(--muted);font-weight:700}
+.mrow{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line2)}
+.mrow:last-child{border-bottom:0}
+.mrow .dd{text-align:center;border-radius:12px;padding:5px 0;font-weight:900;font-size:17px;line-height:1.1}
+.mrow .dd small{display:block;font-size:10.5px;font-weight:700;opacity:.75}
+.mrow.운영 .dd{background:var(--rice-s);color:var(--rice-d)}.mrow.위생 .dd{background:var(--egg-s);color:var(--egg-d)}.mrow.교육 .dd{background:var(--soup-s);color:var(--soup-d)}
+.mrow b{display:block;font-size:14.5px}.mrow span{display:block;font-size:12.5px;color:var(--muted);line-height:1.45}
+.mrow .tag{font-size:11.5px;font-weight:800;border-radius:999px;padding:3px 9px;white-space:nowrap;background:#f3eee4;color:#7a6f5c}
+.mrow .tag.hot{background:var(--red);color:#fff}.mrow .tag.past{background:transparent;color:#b6ab96;border:1px dashed #d8cfbf}
+.mrow:hover{background:#fbf8f2}
+.calnote{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.6}
+.foot{padding-block:10px 40px;color:var(--muted);font-size:12.5px}
+
+@media (max-width:1060px){
+  .hero{grid-template-columns:minmax(0,1fr)}.hero .trio{display:none}
+  .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .callay{grid-template-columns:minmax(0,1fr)}
+  .top .wrap{flex-wrap:wrap;gap:10px}.menu{order:3;width:100%}
+}
+@media (max-width:680px){
+  .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .cats,.ctabs,.grid3{grid-template-columns:minmax(0,1fr)}
+  .cat{min-height:126px}.cat img{height:100px}.ctab img{height:84px}
+  .cbody{grid-template-columns:minmax(0,1fr);padding-left:18px}
+  .citem>summary{grid-template-columns:auto minmax(0,1fr) auto;}
+  .citem .pts{display:none}
+  .dcell{min-height:64px;padding:5px 3px}.dcell .ev,.dcell .tk{display:none}
+  .dcell.has::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--rice);margin:2px auto 0}
+  .calhero{grid-template-columns:minmax(0,1fr)}.calhero .pic{order:-1}.calhero .in{padding:20px}
+  .phead .side{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="https://thfl4811-maker.github.io/nutrition-archive/" target="_blank" rel="noopener"><svg width="40" height="29" viewBox="0 0 44 32"><defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f5f7"/><stop offset="1" stop-color="#a3abb3"/></linearGradient><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa2aa"/><stop offset="1" stop-color="#d9dde1"/></linearGradient></defs><rect x="1" y="1" width="42" height="30" rx="7" fill="url(#a)" stroke="#8a929a"/><g fill="url(#b)" stroke="#8a929a" stroke-width=".8"><rect x="5" y="4.5" width="10" height="8" rx="2.5"/><rect x="17" y="4.5" width="10" height="8" rx="2.5"/><rect x="29" y="4.5" width="10" height="8" rx="2.5"/><rect x="5" y="15" width="16" height="12.5" rx="3"/><rect x="23" y="15" width="16" height="12.5" rx="3"/></g><circle cx="10" cy="8.5" r="2.2" fill="#f2a24a"/><circle cx="22" cy="8.5" r="2.2" fill="#4d7fe8"/><circle cx="34" cy="8.5" r="2.2" fill="#4fae6a"/></svg><b>NUTRITION ARCHIVE</b></a>
+  <nav class="menu" aria-label="자료실 메뉴">
+    <button data-v="work" class="on">업무 자료</button>
+    <button data-v="chk">점검표</button>
+    <button data-v="cal">급식달력 <span class="soon">2027 공개 예정</span></button>
+  </nav>
+  <a class="home" href="https://thfl4811-maker.github.io/nutrition-archive/" target="_blank" rel="noopener">첫 화면 ↗</a>
+</div></header>
+
+<!-- ───── 업무 자료 ───── -->
+<main id="v-work" class="view on">
+  <section class="wrap hero">
+    <div>
+      <div class="eyebrow">영양교사 업무 아카이브 · 46건</div>
+      <h1>필요한 업무를 검색하고, <em>근거와 서식까지</em> 한 번에.</h1>
+      <label class="search" for="q"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1d232b" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="업무 이름이나 분류를 입력하세요 (예: 알레르기, 학운위)" autocomplete="off"><kbd>/</kbd></label>
+      <div class="chips"><b>자주 찾는 업무</b><button>알레르기</button><button>HACCP</button><button>학교운영위원회</button><button>설문조사</button><button>영양상담</button><button>식중독</button></div>
+    </div>
+    <img class="trio" src="assets/trio-cut.png" alt="">
+  </section>
+  <section class="wrap cats">
+    <button class="cat op sel" data-c="운영"><span class="n">20개 업무</span><img src="assets/ssal.png" alt=""><span class="k">OPERATIONS</span><h3>운영</h3><p>계획·소통 · 예산·계약 · 식단·정보공개</p></button>
+    <button class="cat hy" data-c="위생"><span class="n">11개 업무</span><img src="assets/chan.png" alt=""><span class="k">FOOD SAFETY</span><h3>위생</h3><p>위생 기본계획 · HACCP 서류관리 · 증명서</p></button>
+    <button class="cat ed" data-c="교육"><span class="n">15개 업무</span><img src="assets/kkuk.png" alt=""><span class="k">EDUCATION</span><h3>교육</h3><p>학생 교육 · 교육과정·학생자치 · 상담·학부모</p></button>
+  </section>
+  <div class="wrap" id="list"></div>
+</main>
+
+<!-- ───── 점검표 ───── -->
+<main id="v-chk" class="view">
+  <section class="wrap phead">
+    <div>
+      <div class="eyebrow">2026 경기도교육청 학교급식</div>
+      <h1>위생점검표 및 운영평가표</h1>
+      <p>항목을 누르면 평가 기준과 자주 지적되는 내용, 관련 서류가 펼쳐집니다. 준비된 항목은 오른쪽 상자에 체크해 두세요.</p>
+    </div>
+  </section>
+  <section class="wrap">
+    <div class="ctabs">
+      <button class="ctab hy on" data-k="hy"><span class="cnt">38</span><img src="assets/chan.png" alt=""><b>위생점검표</b><small>준수사항 33 · 지도·권장 1 · 감점 4</small></button>
+      <button class="ctab op" data-k="op"><span class="cnt">12</span><img src="assets/ssal.png" alt=""><b>운영평가표</b><small>법령 준수 5 · 학교 자체점검 7</small></button>
+      <button class="ctab rec" data-k="rec"><span class="cnt">4</span><img src="assets/kkuk.png" alt=""><b>권장사항</b><small>번호에서 빠지고 권장으로 남은 항목</small></button>
+    </div>
+    <div class="prog"><b id="pgTitle">위생점검표 준비</b><div class="bar"><i id="pgBar"></i></div><span id="pgTxt">0 / 38</span></div>
+    <div id="chkList" class="v-hy"></div>
+  </section>
+</main>
+
+<!-- ───── 급식달력 ───── -->
+<main id="v-cal" class="view">
+  <section class="wrap">
+    <div class="calhero">
+      <div class="in"><div><div class="season" id="calSeason">AUTUMN</div><h1 id="calTitle">2026년 10월<span class="soon">미리보기 · 2027 공개 예정</span></h1>
+        <p class="lead" id="calLead"></p></div>
+        <div class="nav2"><button id="prevM">‹ 이전 달</button><button id="todayM">이번 달</button><button id="nextM">다음 달 ›</button></div></div>
+      <div class="pic"><img id="calImg" src="assets/s-autumn.jpg" alt=""></div>
+    </div>
+    <div class="months" id="months"></div>
+    <div class="callay">
+      <div>
+        <div class="legend"><span><i style="background:var(--rice)"></i>운영</span><span><i style="background:var(--egg)"></i>위생</span><span><i style="background:var(--soup)"></i>교육</span><span><i style="background:var(--red)"></i>공휴일</span><span><i style="background:var(--gold)"></i>급식 연계일</span><span><i style="background:#c9bda6"></i>24절기</span></div>
+        <div class="mgrid"><div class="dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="days" id="days"></div></div>
+        <p class="calnote">업무 날짜는 아카이브의 업무 주기를 학교급식 연간 흐름에 맞춰 배치한 예시 일정입니다. 정식 공개는 2027년 예정이며 화면과 일정은 바뀔 수 있습니다.</p>
+      </div>
+      <aside class="mlist"><h3 id="mlTitle">10월의 업무</h3><div id="mlRows"></div></aside>
+    </div>
+  </section>
+</main>
+
+<p class="wrap foot">자료실 개편 시안입니다. 업무·서류 이름을 누르면 GitHub에 올린 실제 자료실의 해당 화면이 새 탭으로 열립니다.</p>
+
+<script>
+var ITEMS=[{"id": "school-committee-review", "n": "학교운영위원회 심의자료", "c": "운영", "s": "연간계획서", "y": "연 1회", "g": "계획·소통"}, {"id": "nutrition-education-plan", "n": "영양 식생활 교육 계획서", "c": "운영", "s": "연간계획서", "y": "연 1회", "g": "계획·소통"}, {"id": "operation-plan", "n": "학교급식 운영계획서", "c": "운영", "s": "연간계획서", "y": "연 1회", "g": "계획·소통"}, {"id": "lunch-subcommittee", "n": "급식소위원회", "c": "운영", "s": "수요자 참여 및 소통", "y": "연 2회", "g": "계획·소통"}, {"id": "food-survey", "n": "학교급식 설문조사", "c": "운영", "s": "수요자 참여 및 소통", "y": "연 1회", "g": "계획·소통"}, {"id": "meal-monitoring", "n": "급식모니터링", "c": "운영", "s": "수요자 참여 및 소통", "y": "주 1회", "g": "계획·소통"}, {"id": "supply-quotes", "n": "소모품/비품 견적서", "c": "운영", "s": "예산 및 재정", "y": "수시", "g": "예산·계약"}, {"id": "meal-cost-settlement", "n": "급식비 정산 내역", "c": "운영", "s": "예산 및 재정", "y": "연 4회", "g": "예산·계약"}, {"id": "facility-improvement", "n": "시설개선비", "c": "운영", "s": "예산 및 재정", "y": "수시", "g": "예산·계약"}, {"id": "supplementary-budget", "n": "추가경정예산서", "c": "운영", "s": "예산 및 재정", "y": "연 4회", "g": "예산·계약"}, {"id": "milk-program", "n": "우유", "c": "운영", "s": "입찰 및 계약", "y": "연 2회", "g": "예산·계약"}, {"id": "market-research", "n": "시장조사/현품설명서", "c": "운영", "s": "입찰 및 계약", "y": "매월", "g": "예산·계약"}, {"id": "monthly-menu-table", "n": "월별식단표", "c": "운영", "s": "식단 및 조리", "y": "매월", "g": "식단·정보공개"}, {"id": "standard-recipe", "n": "표준레시피", "c": "운영", "s": "식단 및 조리", "y": "매일", "g": "식단·정보공개"}, {"id": "food-cost-ratio-disclosure", "n": "식품비 사용비율 공개", "c": "운영", "s": "홈페이지 관리", "y": "연 2회", "g": "식단·정보공개"}, {"id": "allergy-labeling", "n": "알레르기 유발식품 표시제", "c": "운영", "s": "홈페이지 관리", "y": "매월", "g": "식단·정보공개"}, {"id": "livestock-grading", "n": "축산물등급표시제", "c": "운영", "s": "홈페이지 관리", "y": "수시", "g": "식단·정보공개"}, {"id": "two-way-board", "n": "학교 누리집 게시판 운영", "c": "운영", "s": "홈페이지 관리", "y": "수시", "g": "식단·정보공개"}, {"id": "food-photo", "n": "식단사진", "c": "운영", "s": "홈페이지 관리", "y": "매일", "g": "식단·정보공개"}, {"id": "origin-nutrition-labeling", "n": "원산지 및 영양량 표시제", "c": "운영", "s": "홈페이지 관리", "y": "매월", "g": "식단·정보공개"}, {"id": "hygiene-guidelines", "n": "위생관리지침 및 자료", "c": "위생", "s": "위생기본계획", "y": "", "g": "위생 기본계획"}, {"id": "food-poisoning-team", "n": "식중독 대책반", "c": "위생", "s": "위생기본계획", "y": "연 1회", "g": "위생 기본계획"}, {"id": "hygiene-inspection", "n": "위생점검표 및 운영평가표", "c": "위생", "s": "위생기본계획", "y": "학기 1회", "g": "위생 기본계획"}, {"id": "daily-hygiene-check", "n": "일일위생점검", "c": "위생", "s": "위생 HACCP 서류관리", "y": "매일", "g": "HACCP 서류관리"}, {"id": "menu-inspection", "n": "식단검토 및 검수", "c": "위생", "s": "위생 HACCP 서류관리", "y": "매일", "g": "HACCP 서류관리"}, {"id": "ccp-cp-record", "n": "CCP/CP 기록지", "c": "위생", "s": "위생 HACCP 서류관리", "y": "매일", "g": "HACCP 서류관리"}, {"id": "ccp-cp-check", "n": "CCP 및 CP 점검", "c": "위생", "s": "위생 HACCP 서류관리", "y": "학기당 1회", "g": "HACCP 서류관리"}, {"id": "hygiene-haccp-education", "n": "위생·HACCP 교육", "c": "위생", "s": "위생 HACCP 서류관리", "y": "매월/연간", "g": "HACCP 서류관리"}, {"id": "hygiene-education-cert", "n": "위생교육 수료증", "c": "위생", "s": "위생관련증명서", "y": "연 1회", "g": "위생 관련 증명서"}, {"id": "health-checkup-report", "n": "건강진단결과서(구 보건증)", "c": "위생", "s": "위생관련증명서", "y": "분기당 1회", "g": "위생 관련 증명서"}, {"id": "health-consent-form", "n": "건강문진 동의서(보건증X)", "c": "위생", "s": "위생관련증명서", "y": "채용 시", "g": "위생 관련 증명서"}, {"id": "edu-foodwaste", "n": "음식물쓰레기 감량화 교육", "c": "교육", "s": "학생대상교육", "y": "연 1회", "g": "학생 교육"}, {"id": "edu-sodium", "n": "당·나트륨 저감화 교육", "c": "교육", "s": "학생대상교육", "y": "연 1회", "g": "학생 교육"}, {"id": "edu-food-nutrition", "n": "식품과 영양", "c": "교육", "s": "학생대상교육", "y": "월 2회 이상", "g": "학생 교육"}, {"id": "edu-diet", "n": "식생활", "c": "교육", "s": "학생대상교육", "y": "월 2회 이상", "g": "학생 교육"}, {"id": "edu-food-safety", "n": "식품위생 및 식품안전", "c": "교육", "s": "학생대상교육", "y": "월 2회 이상", "g": "학생 교육"}, {"id": "edu-eco", "n": "생태·환경교육", "c": "교육", "s": "학생대상교육", "y": "월 2회 이상", "g": "학생 교육"}, {"id": "edu-food-culture", "n": "음식문화", "c": "교육", "s": "학생대상교육", "y": "월 2회 이상", "g": "학생 교육"}, {"id": "edu-cases", "n": "영양교육 사례와 교수학습", "c": "교육", "s": "학생대상교육", "y": "월 2회 이상", "g": "학생 교육"}, {"id": "parent-staff-education", "n": "학부모·교직원 교육", "c": "교육", "s": "학부모·교직원 대상 교육", "y": "분기별 1회", "g": "상담·학부모 교육"}, {"id": "student-autonomy", "n": "학생자치 연계 활동", "c": "교육", "s": "학생자치", "y": "", "g": "교육과정·학생자치"}, {"id": "nutrition-counseling", "n": "영양상담", "c": "교육", "s": "영양상담", "y": "학기당 5회 이상", "g": "상담·학부모 교육"}, {"id": "nc-moe", "n": "교육부 매뉴얼", "c": "교육", "s": "영양상담", "y": "", "g": "상담·학부모 교육"}, {"id": "nc-mfds", "n": "식약처 매뉴얼", "c": "교육", "s": "영양상담", "y": "", "g": "상담·학부모 교육"}, {"id": "regular-curriculum", "n": "정규 교육과정", "c": "교육", "s": "정규 교육과정", "y": "연 2차시", "g": "교육과정·학생자치"}, {"id": "regular-curriculum-manual", "n": "정규 교육과정 매뉴얼", "c": "교육", "s": "정규 교육과정", "y": "", "g": "교육과정·학생자치"}], CHK={"hy": [{"grp": "위생 (1) 준수사항", "num": "위생 01", "t": "급식시설･설비, 기구 등에 대한 청소 및 소독 계획을 수립･ 시행하여 항상 청결하게 관리하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "청소･소독계획 미 수립 및 청결상태 불량", "fq": ["청소계획 보완 요망", "조리실 내 기기ㆍ기구별 청결관리 철저(list기재)"], "docs": [{"k": "업무포털", "items": [{"t": "주기별 청소계획", "id": "operation-plan"}]}, {"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 02", "t": "냉장･냉동고의 온도, 식기세척기의 최종 헹굼수 온도 또는 식기소독보관고의 온도를 기록･관리 하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "CP1과 CP2의 온도를 지속적으로 기록관리 하지 않는 경우", "fq": ["CP 1 온도관리 철저", "CP1 온도기록 시간 조정", "CP2 기준수립 및 농도확인 철저", "CP2 소독액 농도 준수"], "docs": [{"k": "CCP·CP 기록지", "items": [{"t": "CP1", "id": "ccp-cp-record"}, {"t": "CP2", "id": "ccp-cp-record"}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 03", "t": "조리용수로 수돗물이 아닌 지하수를 사용하는 경우 소독 또는 살균하여 사용하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "지하수 소독･살균 미실시, 상수도가 있음에도 지하수 사용\n* 상수도 사용은 적합", "fq": [], "docs": [{"k": "현장점검", "items": [{"t": "분기별 수질검사 결과(지하수 사용 학교)", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 04", "t": "식품취급 및 학교급식종사자는 6개월에 1회 건강진단을 실시하고, 그 기록을 2년간 보관하는지 여부(다만, 폐결핵 검사는 연 1회 검사 가능)", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "식품을 직접 취급하는 자가 기한 내 건강진단 미실시, 2년간 기록 미보관", "fq": ["6개월 1회 건강진단 기간 준수 요망"], "docs": [{"k": "종이문서", "items": [{"t": "보건증", "id": "health-checkup-report"}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 05", "t": "학교급식종사자들의 올바른 손씻기, 소독을 실시하여 손에 의한 오염이 일어나지 않도록 하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "손을 씻지 않거나 소독을 아니한 상태에서 조리작업을 하는 경우", "fq": ["작업 중 적정 시점 손세척 철저", "손톱솔 비치 및 사용 등 올바른 손씻기 철저", "올바른 손씻기교육 요망", "올바른 손씻기매뉴얼 부착 요망"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 06", "t": "식재료 검수 시 ｢학교급식 식재료의 품질 관리기준｣에 적합한 품질 및 신선도와 수량, 위생상태 등을 확인하여 기록하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "식재료 품질관리 기준에 부적합한 품질 및 수량, 원산지, 제조일 또는 소비기한, 납품온도 등 검수서 기록관리가 미흡한 경우", "fq": ["식재료 품질관리기준 준수 요망", "식재료 품질관리기준 표기 요망(검수서적요)", "검수온도 기재 철저", "소비기한 경과 식재료 보관", "대면검수 미실시", "복수검수 미실시"], "docs": [{"k": "종이문서", "items": [{"t": "수입신고필증", "id": "livestock-grading"}, {"t": "검수서", "id": "menu-inspection"}]}, {"k": "홈페이지", "items": [{"t": "축산물등급표시제", "id": "livestock-grading"}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 07", "t": "식재료나 조리과정에서 교차오염을 방지하기 위하여 칼과 도마, 고무장갑 등 조리기구 및 용기를 용도별 및 조리 전･후로 구분하여 사용하고, 적절히 세척･소독하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "CCP1 용도별 및 조리 전･후로 구분하여 사용하지 않고, 세척･소독 미실시", "fq": ["용기,칼,도마,고무장갑 용도별 및 조리전ㆍ후 구분 사용 철저", "앞치마 조리전ㆍ후ㆍ청소용 구분사용 철저", "앞치마, 고무장갑, 용기 세척ㆍ소독 철저", "사용한 고무장갑은 별도로 모아두었다가 완전하게 세척, 소독 요망", "조리완료식품 플라스틱 소쿠리 사용 금지"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 08", "t": "식품취급 등의 작업은 바닥으로부터 60cm 이상의 높이에서 실시하여 식품의 오염이 방지되는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "60cm 이하에서 식품 취급(운반 및 오염방지 시설이 설치된 경우는 제외)", "fq": ["60cm 하단 식품취급 지양", "워크인냉장고 60cm 하단보관 지양", "양념운반카 60cm 하단보관 지양", "오븐기 트레이 상단부터 적재"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 09", "t": "조리가 완료된 식품과 세척･소독된 배식기구･용기 등은 교차오염 우려가 있는 기구･용기 또는 식재료 등과 접촉에 의해 오염되지 않도록 관리하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "조리완료된 식품 및 배식기구 등의 위생적 보관관리 상태가 미흡한 경우", "fq": ["국보온카 등 배식기구 조리시 이용 지양", "조리완료식품과 원재료 동일 공간 작업 지양", "소독된 배식기구 오염되지 않도록 관리 요망", "밑간 해놓은 식재료 상온에 뚜껑 없이 방치", "조리과정 중 기구 세척으로 인한 교차오염 발생", "식재료 보관시 덮개 미사용"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 10", "t": "해동방법이 적절하고, 재냉동하여 사용하지 않는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "냉동식품을 부적절한 방법(실온방치 등)으로 해동하는 경우", "fq": ["냉동식품 실온방치", "냉동식품 적정 해동 요망", "\"해동중\" 표시 미부착"], "docs": [{"k": "현장점검", "items": [{"t": "\"해동 중\" 표시", "id": ""}, {"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 11", "t": "생으로 먹는 채소류, 과일류를 충분히 세척･소독하고 농도를 확인하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "CCP1 충분한 세척 및 소독 미실시", "fq": ["CCP1 소독액 농도 준수", "CCP1 5분 침지 타이머 사용 권장", "CCP1 충분히 침지하도록 관리 요망", "소독 전,후 세척 관리 미흡"], "docs": [{"k": "CCP·CP 기록지", "items": [{"t": "CCP1", "id": "ccp-cp-record"}]}, {"k": "현장점검", "items": [{"t": "소독액 제조방법", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 12", "t": "가열조리 식품의 중심부가 75℃ (패류는 85℃) 이상에서 1분 이상 가열되고 있는지 온도계로 확인하고, 그 온도 적정여부를 기록･유지하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "CCP1 중심온도 미측정 및 지속적 기록 미실시", "fq": ["CCP 1 현장기록 및 온도확인 철저", "batch 당 온도 확인 철저"], "docs": [{"k": "CCP·CP 기록지", "items": [{"t": "CCP1", "id": "ccp-cp-record"}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 13", "t": "조리가 완료된 식품의 온도와 시간관리를 통하여 미생물 증식을 억제하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "CCP2 조리가 완료된 음식에 대해 온도 또는 시간관리 미흡", "fq": [], "docs": [{"k": "CCP·CP 기록지", "items": [{"t": "CCP2", "id": "ccp-cp-record"}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 14", "t": "조리된 음식의 안전한 급식을 위하여 운반 및 배식기구 등을 청결히 관리하여야 하며, 배식 중에 운반 및 배식기구 등으로 인하여 오염이 일어나지 않도록 조치하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "운반 및 배식기구 등이 청결하지 않으며 배식 중 교차오염의 우려가 있으나 조치하지 않는 경우", "fq": ["배식차, 엘리베이터 세척, 소독 관리 미흡", "복도배식 지양"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 15", "t": "조리된 식품에 대하여 조리완료 시 음식의 맛, 온도, 조화(영양적인 균형, 재료의 균형), 이물, 불쾌한 냄새, 조리상태 등을 확인하기 위한 검식을 실시하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "검식을 지속적으로 실시하지 않거나 기록하지 않은 경우", "fq": ["검식기록 급식후 1주일 이내 작성 요망", "구체적인 검식기록 작성 요망"], "docs": [{"k": "나이스", "items": [{"t": "급식일지", "id": ""}]}]}, {"grp": "위생 (1) 준수사항", "num": "위생 16", "t": "식기구를 세척･ 소독 후 배식 전까지 위생적으로 보관･ 관리하는지 여부", "im": "적합 3점 · 부적합 0점", "critLbl": "부적합 기준", "crit": "식기구의 세척, 소독 및 위생적인 보관관리 미흡", "fq": ["건조관리 철저", "60cm 이하 식기구 보관 지양", "식기구 덮개 보관 미흡", "식기구 청결상태 미흡"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 17", "t": "일반작업구역과 청결작업구역으로 구분되어 식품취급 작업의 흐름이 교차되지 않는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수전처리실, 차단벽 설치(천장부 개방 공간) 등으로 일반작업과 청결작업구역 구분(3점)\n보통작업구역은 미 구분되나 작업대･ 세정대 등 분리 사용 (1.5점)\n미흡작업구역 미구분 및 작업대･ 세정대 등 분리사용 안 함(0점)", "fq": ["작업구역 미구분", "작업구역 미구분(세척실)", "작업구역 미구분(전처리실)", "작업구역 미구분, 작업대, 세정대 등 구분사용 철저 요망", "작업구역은 구분되나, 공간부족으로 작업대, 세정대 등 구분사용 철저 요망"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 18", "t": "조리장의 시설(바닥 ･벽･천장 등)의 파손 및 고장난 설비･ 기구의 관리 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수시설 파손 및 고장난 설비･기구 없음(3점)\n보통시설 파손(경미) 또는 고장난 설비･기구 있음(수리의뢰)(1.5점)\n미흡시설 파손(여러곳) 또는 고장난 설비･기구 방치(0점)", "fq": ["벽타일, 천정, 바닥타일 파손 보수 요망", "트렌치 및 주변타일 파손 보수 요망", "후드 뒷편 천정 마감 보수 요망", "천장텍스 떨어짐", "조리장 누수", "수리의뢰중(list기재)"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 19", "t": "검수장소및조리 작업장소(작업대･가스대･국솥 등)의 조도 기준 준수 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수검수장소 540 lx,조리장(작업대 ･가스대･국솥등) 220 lx 이상(2점)\n보통일부 작업 공간의 조도가 기준 미달 (1점)\n미흡모든 작업공간의 조도가 기준 미달(0점)", "fq": ["조도개선요망(list기재)", "검수조도 개선 요망(저울 및 이동식 작업대 등 위치변경권고)"], "docs": [{"k": "현장점검", "items": [{"t": "조도 측정", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 20", "t": "조리장의 후드는 열 및 증기 발생 시 즉시 배출되고, 응축수가 식품에 직접 떨어지지 않는 구조인지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수열, 증기 발생 시 즉시 배출되며, 응축수가 식품에 직접 떨어지지 않는 구조(3점)\n보통열, 증기배출이 다소 지연되나, 응축 수가 식품에 직접 떨어지지 않는 구조(1.5점)\n미흡배기휀 고장 또는 환기불량(0점)", "fq": ["배기후드 응축수맺힘(응축수가식품에직접떨어지는절개구조)", "배기후드 유지거름망 미설치", "후드 응축수 밸브 미설치 또는 미사용"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 21", "t": "조리장 내 온도 및 습도를 적정하게 관리하는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수냉･난방기 또는 공기조화시설 등을 갖추어 조리장 온도 및 습도를 적정하게 관리함(3점)\n보통조리장의 온･습도관리 보통(1.5점)\n미흡조리장의 온･습도관리 미흡(0점)", "fq": ["냉난방기 용량 부족"], "docs": [{"k": "현장점검", "items": [{"t": "조리장 내 온·습도계", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 22", "t": "식품보관실은 적정하게 설치되어 있으며, 소모품 보관실과 분리되어 있는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수식품보관실은 환풍기 또는 환기창이 설치되어 환기상태 적정, 소모품보관실 별도 설치 또는 공간구획 구분(3점)\n보통일부 기준 미흡 (1.5점)\n미흡모든 기준 미달 (0점)", "fq": ["소모품 분리 보관 미흡", "환기관리 미흡", "식품보관실 환기시설 없음", "온습도계 미비치", "식재료 보관방법 미흡(바닥에서 15cm이상)"], "docs": [{"k": "현장점검", "items": [{"t": "식품보관실·소모품 보관실 분리 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 23", "t": "학교급식종사자 전용 화장실이 있으며, 청소와 관리상태가 양호하고, 출입문이 조리실에 바로 면하지 않고, 화장실 내 환풍기 또는 환기창이 설치되어 있는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수학교급식종사자 전용 화장실이 있을 경우 청소와 관리 상태가 양호하며, 출입문이 조리실에 바로 면하지 않고, 환풍기 또는 환기창이 설치됨(2점)\n보통일부 기준 미흡(1점)\n미흡모든 기준 미달 (0점)", "fq": ["화장실이 조리실과 직접 면하고 있음", "출입문관리 철저(화장실이 조리실과 실제로 면하게 사용)", "조리원 전용 화장실 미설치", "화장실 전반적 위생관리 미흡"], "docs": [{"k": "현장점검", "items": [{"t": "조리종사자 전용 화장실 위생상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 24", "t": "조리장 내 수세시설과 신발소독 시설은 적정하게 설치되어 있고 올바르게 사용하는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수조리장 내 수세시설 적정 설치 (수량, 위치, 온수, 손잡이는 페달식 또는 원터치식), 신발소독시설 적정 설치 및 이용(3점)\n보통일부 기준 미흡(1.5점)\n미흡모든 기준 미달 (0점)", "fq": ["신발소독시설 적정설치 및 농도준수 요망", "신발소독시설 적정 사용 요망", "손세정대 추가 설치 요망", "손세정대 온수 연결 요망", "손세정대 물비누, 손톱솔, 알코올, 핸드타올 및 쓰레기통 비치 요망"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 25", "t": "조리장 내 싱크대 등은 배수관이 배수로와 직접 연결되어 바닥을 오염시키지 않도록 조치하고 있는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수모든 싱크대의 배수관이 배수로와 연결 및 관리상태 양호(3점)\n보통일부 배수관이 배수로와 연결되지 않았거나 관리상태 미흡(1.5점)\n미흡모든 기준 미달 (0점)", "fq": ["소쿠리운반카 배수관 벨브 사용 철저", "소쿠리운반카 배수관 연결 요망", "세정대 (물넘침구) 배수관 연결 요망", "소쿠리운반카 배수관 길이 조정", "배수관 연결 미흡"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 26", "t": "조리장, 식품보관실, 식생활교육관(식당) 등의 방충･방서 설비 및 관리상태가 적정한지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수출입문･창문에 모두 설치 및 관리상태 우수(3점)\n보통출입문･창문에 일부 미설치 또는 관리상태 미흡(1.5점)\n미흡모든 기준 미달 (0점)", "fq": ["방충문 보수 요망", "최종문 에어커튼, 방충문 모두 설치 요망", "방충망없는 환풍기 교체 요망", "식당 방충시설 설치 요망", "에어커튼 사용 철저", "방충문 실질적 사용 철저", "조리실 바닥, 외부에 구멍 있음"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 27", "t": "급수설비의 적정성 및 이를 위생적으로 관리(수도전 위치, 수량 등) 하는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수수도전 충분하여 호스 미사용, 호스가 바닥에 닿지 않게 짧게 설치하여 적정 사용 (3점)\n보통일부 기준 미흡 (1.5점)\n미흡모든 기준 미달 (0점)", "fq": ["호스 바닥에 닫지 않도록 사용 요망", "워터릴 사용 철저", "호스가 식재료에 닿거나 물에 잠기게 사용"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 28", "t": "냉동･냉장시설의 적정용량 확보 및 온도유지, 급식품 외 보관하는 것은 없는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수적정용량 확보, 온도유지, 온도계 설치, 급식품외 보관하는 것 없음(3점)\n보통일부 기준 미흡 (1.5점)\n미흡모든 기준 미달 (0점)", "fq": ["냉장고 적정용량 확보 요망", "급식품외 보관 금지", "외부 온도계 미설치", "냉장고 선반 부식", "보존식 보관 미흡"], "docs": [{"k": "현장점검", "items": [{"t": "냉장·냉동고 외부 온도계", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 29", "t": "학교급식종사자의 개인위생 준수여부 및 건강상태 확인 후 적절히 조치하는지 여부", "im": "우수·미흡", "critLbl": "점검척도", "crit": "우수작업 전 개인위생 관리 및 건강확인(소화기질환 및 손 상처자) (3점)\n미흡모든 기준 미달 (0점)", "fq": ["작업전 건강확인 후 적정관리 철저", "필요약품 구비 요망", "위생복장 착용 철저"], "docs": [{"k": "종이문서", "items": [{"t": "일일위생청소점검표", "id": "daily-hygiene-check"}]}, {"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 30", "t": "학교급식종사자를 대상으로 위생 교육을 정기적 으로 실시하는지 여부", "im": "우수·미흡", "critLbl": "점검척도", "crit": "우수학교급식종사자에 대한 정기적 교육 실시(3점)\n미흡일부 교육 누락 및 미실시(0점)", "fq": ["종사자 월별 위생교육 실시 철저", "식품위생법령에 따른 위생교육 미이수"], "docs": [{"k": "종이문서", "items": [{"t": "위생·HACCP 교육", "id": "hygiene-haccp-education"}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 31", "t": "배식 시 위생복장을 적정하게 착용하는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수모든 배식자가 위생복장(앞치마, 위생모, 마스크 등) 착용(3점)\n보통일부 미착용(1.5점)\n미흡모두 미착용 (0점)", "fq": ["배식시 위생복장(마스크 등) 적정 착용 요망", "위생복장 청결 관리 철저 요망", "일회용 비닐장갑으로 조리완료음식 직접 배식 금지"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 32", "t": "조리실 내･외부의 쓰레기는 적정 처리하고 주변을 청결하게 관리하고 있는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수조리실 내･외부의 쓰레기통은 덮개 사용 등 주변 청결관리(3점)\n보통덮개 미사용 등 주변 청결관리 일부 미흡(1.5점)\n미흡관리실태 불량 (0점)", "fq": ["내ㆍ외부 덮개 있는 쓰레기통 사용 요망", "내부쓰레기 즉시처리 및 덮개사용 철저", "쓰레기통 내외부 및 주변 청결관리 미흡"], "docs": [{"k": "현장점검", "items": [{"t": "조리실 시설·작업 상태", "id": ""}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 33", "t": "HACCP 적용에 대한 자체분석 후 협의를 거쳐서 적절한 개선조치를 취하고 있는지 여부", "im": "우수·보통·미흡", "critLbl": "점검척도", "crit": "우수HACCP 적용에 대한 자체분석 후 적절한 조치(3점)\n보통자체분석은 실시, 적절한 조치 미흡(1.5점)\n미흡자체분석 및 개선조치 미이행(0점)", "fq": ["CCP별 점검결과 및 조치사항 이행 요망(학기1회)"], "docs": [{"k": "CCP·CP 기록지", "items": [{"t": "CCP 및 CP 점검결과 및 조치", "id": "ccp-cp-check"}]}]}, {"grp": "위생 (2) 지도·권장", "num": "위생 34", "t": "학교자체에서 일일 위생 점검을 실시하고 있는지 여부", "im": "우수·미흡", "critLbl": "점검척도", "crit": "우수점검실시 및 기록유지(3점)\n미흡점검미실시 또는 기록 미유지(0점)", "fq": ["1일 위생점검 실시 요망"], "docs": [{"k": "종이문서", "items": [{"t": "일일위생청소점검표", "id": "daily-hygiene-check"}]}]}, {"grp": "위생 (3) 감점 항목", "num": "감점 1", "t": "직전 점검 시 학교급식 법령 준수사항 항목 중 지적된 사항을 개선하였는지 여부(1개 항목당 감점 10점)", "im": "감점", "critLbl": "", "crit": "", "fq": [], "docs": []}, {"grp": "위생 (3) 감점 항목", "num": "감점 2", "t": "직전 점검 시 지도･권장 사항 항목 중 지적된 사항을 개선하였는지 여(1개 항목 당 감점 5점)", "im": "감점", "critLbl": "", "crit": "", "fq": [], "docs": []}, {"grp": "위생 (3) 감점 항목", "num": "감점 3", "t": "식품위생관계법령 위반으로 과태료 등 행정처분을 받았는지 여부(감점 10점)", "im": "감점", "critLbl": "", "crit": "", "fq": [], "docs": []}, {"grp": "위생 (3) 감점 항목", "num": "감점 4", "t": "학교급식 식중독이 발생하였는지 여부 (감점 10점)", "im": "감점", "critLbl": "", "crit": "", "fq": [], "docs": []}], "op": [{"grp": "가. 법령 준수", "num": "운영 법령 1", "t": "학교급식 식재료의 품질관리기준을 준수하고 있는가?", "im": "식재료 품질 관리 · 법 제10조 시행규칙 제4조 (별표2)", "critLbl": "중점 확인사항", "crit": "§ 식재료 품질관리 기준 준수여부\n- 검수일지, 거래 명세표, 축산물 등급판정확인서, 수입신고필증(축산물, 수산물) 등 확인\n※(참고) 등급판정서 확인 후 축산물품질평가원 (축산물원패스)에 등록 확인(소, 돼지, 닭, 오리, 계란)", "fq": [], "docs": [{"k": "종이문서", "items": [{"t": "수입신고필증", "id": "livestock-grading"}, {"t": "거래명세표", "id": "operation-plan"}]}, {"k": "업무포털", "items": [{"t": "학운위 심의자료", "id": "school-committee-review"}]}, {"k": "홈페이지", "items": [{"t": "축산물등급표시제", "id": "livestock-grading"}]}]}, {"grp": "가. 법령 준수", "num": "운영 법령 2", "t": "학교급식의 영양관리 기준을 준수하고 있는가?", "im": "영양 관리 · 법 제11조 시행령 제2조, 시행규칙 제5조 (별표3)", "critLbl": "중점 확인사항", "crit": "§ 학교급식 영양관리 기준 준수 여부\n‐ 학교운영위원회의 심의를 거쳐 결정된 단위 학교별 자체 영양기준량에 대해 아래의 기준 준수 여부 확인\n‣학년별･성별 에너지 공급기준 ±10% 이내\n‣탄수화물(55∼65%), 단백질(7∼20%), 지방(15∼30%)의 공급비율\n‣단백질 상한비율 (20%)\n‣비타민, 무기질의 평균 필요량\n‐ 계절별로 1주일씩 발췌하여 평균으로 확인(봄:3~5월, 여름:6~8월, 가을: 9~11월, 겨울: 12~2월)\n※ 1일 2식 이상 급식제공 학교는 중식을 기준으로 확인\n※(참고) 2027.3월 부터는 개정 「학교급식의 영양관리기준」 적용 예정", "fq": [], "docs": [{"k": "나이스", "items": [{"t": "영양기준량 조회(계절별 일주일씩 평균)", "id": "standard-recipe"}]}]}, {"grp": "가. 법령 준수", "num": "운영 법령 3", "t": "학교급식 관련 중요사항은 학교운영위원회 심의(자문)를 거쳐서 결정 하였는가?", "im": "학교운영 위원회 심의 · 시행령 제2조", "critLbl": "중점 확인사항", "crit": "§ 학교운영위원회 심의(자문) 여부\n‐「학교급식법 시행령」 제2조제2항의 심의 사항에 대한 심의(자문) 여부 확인\n‣급식운영방식, 급식횟수, 급식시간 및 구체적 영양기준, 학교급식 운영계획, 식재료의 원산지 및 품질등급, 완제품 사용 승인, 보호자 부담경비, 급식활동에 관한 보호자의 참여 등 중요사항", "fq": [], "docs": [{"k": "업무포털", "items": [{"t": "학교급식 운영계획서", "id": "operation-plan"}, {"t": "학운위 심의자료", "id": "school-committee-review"}]}]}, {"grp": "가. 법령 준수", "num": "운영 법령 4", "t": "학교급식 운영 계획의 수립 및 이행 상황을 학교운영위원회에 보고하고 있는가?", "im": "학교급식 운영계획 수립 · 시행령 4조", "critLbl": "중점 확인사항", "crit": "§ 학교급식 운영 계획 수립 여부\n‐ 학교급식 운영계획에 아래의 사항 포함되었는지와 학교운영위원회 이행상황 보고 확인\n‣급식운영계획, 영양·위생·식재료·작업·예산관리 및 식생활 지도 등의 포함 여부\n‣학교운영위원회에 연1회 이상 이행 상황 보고 여부", "fq": [], "docs": [{"k": "업무포털", "items": [{"t": "학교급식 운영계획서", "id": "operation-plan"}, {"t": "학운위 심의자료", "id": "school-committee-review"}]}]}, {"grp": "가. 법령 준수", "num": "운영 법령 5", "t": "품질 및 안전을 위하여 필요한 준수사항을 지키고 있는가?", "im": "품질 및 안전을 위한 준수 사항 · 시행규칙 제7조", "critLbl": "중점 확인사항", "crit": "§ 품질 및 안전을 위한 준수사항 이행 여부\n-학기별 보호자부담 급식비 중 식품비 사용 비율 공개\n※학교운영위원회 또는 누리집 등을 통해 공개\n-학교급식일지, 검수일지 및 거래 명세표 작성･비치･ 보관 여부\n※동 서류는 3년 이상 보관\n※급식일지와 검수일지의 경우는 반드시 결재를 득하여야 함(학교별 전결 규정 준수)\n§ 알레르기 유발 식품*을 사용하는 경우 공지 및 표시 이행 여부\n‐ 알레르기를 유발할 수 있는 식재료가 표시된 월간식단표를 가정통신문으로 안내하고 학교 누리집에 게재\n‐ 동 내용이 표시된 주간식단표를 식사 장소(식생활교육관, 교실)에 게시\n* 식품표시광고법 시행규칙 제5조제1항 및 별표2에 규정\n※학교의 식사장소(식생활교육관, 교실)에는 주간식단표를 게시하는 것이 바람직하나,\n- 입법 취지 및 학교의 다양한 여건 등을 고려할 때 학생 및 교직원이 월간식단표를 통해서 알레르기 정보를 쉽게 확인할 수 있는 경우에는 갈음 가능", "fq": [], "docs": [{"k": "종이문서", "items": [{"t": "거래명세표", "id": "operation-plan"}, {"t": "검수서", "id": "menu-inspection"}]}, {"k": "나이스", "items": [{"t": "급식일지", "id": ""}]}, {"k": "홈페이지", "items": [{"t": "식품비 사용 비율 공개", "id": "food-cost-ratio-disclosure"}]}, {"k": "현장점검", "items": [{"t": "월별식단표", "id": "monthly-menu-table"}]}]}, {"grp": "나. 학교 자체점검", "num": "운영 자체 1", "t": "식단 작성 시 다음 사항을 고려하고 있는가?", "im": "식단관리", "critLbl": "주요 점검기준", "crit": "‐ 전통 식문화(食文化)의 계승･발전\n‐ 다양한 종류의 식품을 사용할 것\n‐ 염분･유지류･단순당류 또는 식품첨가물 등의 과다 사용 제한\n‐ 자연식품과 계절식품을 사용\n점검기준\n• 나트륨 및 당류 저감화 계획수립 및 이행, 튀김류(가공식품 등) 주 2회 이하 사용\n‐ 나트륨 및 당류 등 저감화 계획을 학교급식 운영계획 등에 반영\n‐ 특히, 나트륨 저감화를 위한 염도계 비치, 국 염도 관리, 싱겁게 먹기 교육 여부 확인\n‐ 트랜스지방 함유 식품 및 고열량･저영양 식품의 사용 제한", "fq": [], "docs": [{"k": "업무포털", "items": [{"t": "학교급식 운영계획서", "id": "operation-plan"}]}, {"k": "현장점검", "items": [{"t": "월별식단표", "id": "monthly-menu-table"}]}]}, {"grp": "나. 학교 자체점검", "num": "운영 자체 2", "t": "식단에 표시 대상 식재료의 원산지 및 영양량 표시제도 시행, 실제 급식 메뉴 사진을 학교 누리집 등에 게시하고 있는가?", "im": "학교급식 식재료 원산지･영양량 표시제 시행 및 급식 메뉴 사진 공개", "critLbl": "주요 점검기준", "crit": "‐ 주요 식재료의 원산지 및 1식당 에너지, 단백질, 비타민, 칼슘 등 주요 영양소에 대한 영양량을 표시하여 공지하는지와 학생들에게 제공되는 실제 급식 사진을 학교 누리집 등에 게시하는지 여부\n점검기준\n• 식재료 원산지 표시제 운영 및 학교급식 영양량 표시제 시행\n‐ 가정통신문 및 학교 누리집, 식사 장소 (식생활교육관, 교실) 등에 게시\n※원산지표시법 제5조제3항 및 시행령 제3조 내지 제5조, 시행규칙 제3조 등 참조, 위반 시 과태료 부과 대상임\n• 급식 사진 공개\n‐ 학생에 제공되는 실제 급식 사진을 학교 누리집 등에 게시\n※ 중식을 기준으로 확인(조･석식은 권장)", "fq": [], "docs": [{"k": "홈페이지", "items": [{"t": "식단사진", "id": "food-photo"}, {"t": "원산지 및 영양량 표시제", "id": "origin-nutrition-labeling"}]}, {"k": "현장점검", "items": [{"t": "월별식단표", "id": "monthly-menu-table"}]}]}, {"grp": "나. 학교 자체점검", "num": "운영 자체 3", "t": "급식 및 식생활 지도를 실시하고 있는가?", "im": "식생활지도 및영양상담", "critLbl": "주요 점검기준", "crit": "‐ 지도계획 수립 및 이행 여부\n점검기준\n• 식품안전 및 영양･식생활 교육계획을 학교 교육운영계획에 반영 및 이행\n‐ (내용) 고열량･저영양 식품의 안전과 영양, 식품위생, 식중독 예방, 불량식품 식별요령 및 안 사먹기, 나트륨 줄이기, 전통 식문화, 편식 교정, 식사 예절, 잔반 안 남기기 등\n‐ (방법) 영양교사는 관련 교과 및 창의적 체험활동 시간 등을 활용하여 월 2회 이상 실시하고 급식일지 등에 기록(입력) 3년간 보관\n※ 영양사가 배치된 학교의 경우 급식 시간 등을 활용하여 영양･식생활 지도\n※ 누리집, 가정통신문, 급식 게시판, 영양상담 등을 통하여 학생 지도 및 가정(학부모) 연계 교육도 권장\n※ 식품 안전, 영양･식생활 교육 및 지도를 위한 예산을 학교 운영비에 편성 권장", "fq": [], "docs": [{"k": "업무포털", "items": [{"t": "학교급식 운영계획서", "id": "operation-plan"}]}, {"k": "나이스", "items": [{"t": "급식일지", "id": ""}]}, {"k": "현장점검", "items": [{"t": "급식실 게시자료", "id": "nutrition-education-materials"}]}]}, {"grp": "나. 학교 자체점검", "num": "운영 자체 4", "t": "영양상담을 실시하고 있는가?", "im": "식생활지도 및영양상담", "critLbl": "주요 점검기준", "crit": "‐ 영양상담 계획수립, 상담대상자 관리, 영양상담 창구 운영 등\n점검기준\n• 영양상담 계획서 수립 및 상담 실시(상담 일지 비치 등)한 경우 적정\n‐ (내용/대상) 식생활에서 기인하는 영양불균형을 시정하고 질병을 사전에 예방하기 위하여 저체중 및 성장부진, 빈혈, 과체중 및 비만학생 등 영양상담이 필요한 학생\n‐ (상담방법) 집단상담, 특별상담, 사이버 상담 등\n※ 필요시 학부모, 교직원도 권장\n※ 상담계획 및 실시 안내를 하였으나 수요자가 없는 경우는 ‘적정’으로 체크 가능", "fq": [], "docs": [{"k": "업무포털", "items": [{"t": "영양상담계획서", "id": "nutrition-counseling"}]}, {"k": "나이스", "items": [{"t": "급식일지", "id": ""}]}]}, {"grp": "나. 학교 자체점검", "num": "운영 자체 5", "t": "학생, 교직원, 학부모에게 식생활 관련 정보를 제공하는가?", "im": "식생활지도 및영양상담", "critLbl": "주요 점검기준", "crit": "‐ 간행물 및 학교 누리집 게시판 등을 이용한 정보제공 여부\n점검기준\n• 식생활 관련 정보제공 방법\n‐ 가정통신문 등을 통한 안내자료 또는 학교 누리집 활용 등 포함 (대상별로 교육 정보 제공)", "fq": [], "docs": [{"k": "홈페이지", "items": [{"t": "학부모·학생·교직원 영양·식생활 교육", "id": "parent-staff-education"}, {"t": "학교 누리집 게시판 운영", "id": "two-way-board"}]}]}, {"grp": "나. 학교 자체점검", "num": "운영 자체 6", "t": "학교급식 관련 설문 조사를 실시하고 그 결과를 공개하는가?", "im": "수요자의견 반영", "critLbl": "주요 점검기준", "crit": "‐ 설문조사(인식도 등) 계획수립, 설문 실시, 결과 분석 후 조치 및 공개\n점검기준\n• 상반기에 설문조사(인식도 등) 실시하고, 결과 분석 및 조치계획을 포함하여 공개 하면 적정\n‐ 단순한 통계가 아닌 총괄 또는 미흡한 부분에 대한 개선조치 내용 포함\n‐ 설문조사는 전체 학생수의 30% 이상 (또는 36학급 이상 학교는 특정학년(반) 지정) 권장\n※ 다만, 특수학교 중 수요자 조사가 어려운 경우에 한하여 평가항목에서 제외", "fq": [], "docs": [{"k": "업무포털", "items": [{"t": "학교급식 설문조사", "id": "food-survey"}]}, {"k": "홈페이지", "items": [{"t": "학교급식 설문조사 결과표 게시", "id": "food-survey"}]}]}, {"grp": "나. 학교 자체점검", "num": "운영 자체 7", "t": "학교 공통운영비에 학교 급식 시설･설비의 유지 및 개선비 등 예산이 확보되어 있는가?", "im": "급식경비 관리", "critLbl": "주요 점검기준", "crit": "‐ 학교설립･경영자가 부담할 예산의 적정한 확보 및 집행 여부\n점검기준\n• 학교예산서 및 지출서 확인, 예산편성 (또는 지출) 근거가 있으면 적정\n‐ 학교급식법 제8조 및 동법 시행령 제9조에 의거 급식운영비 중 보일러 및 급식기구 등 시설･설비 유지비는 학교기본경비에서 지출(수익자부담 급식비에서 지출금지)\n※ 인건비와 연료비, 소모품비 등의 경비는 학교운영위원회 심의를 거쳐 일부를 보호자에게 부담할 수 있으나, 최소화하도록 노력\n※ 교직원 급식비는 학생 급식비 이상으로 부담(교직원과 학생 식단은 동일하게 운영)", "fq": [], "docs": [{"k": "업무포털", "items": [{"t": "에듀파인-학교자체예산", "id": "facility-improvement"}]}]}], "rec": [{"grp": "번호 항목에서 빠지고 권장사항으로 남은 항목", "num": "권장", "t": "음식물쓰레기 줄이기 계획수립 및 시행", "im": "", "critLbl": "", "crit": "", "fq": [], "docs": [{"k": "업무포털", "items": [{"t": "학교급식 운영계획서", "id": "operation-plan"}]}]}, {"grp": "번호 항목에서 빠지고 권장사항으로 남은 항목", "num": "권장", "t": "학부모 학교급식 모니터링 운영", "im": "", "critLbl": "", "crit": "", "fq": [], "docs": []}, {"grp": "번호 항목에서 빠지고 권장사항으로 남은 항목", "num": "권장", "t": "학교 누리집 급식 게시판 운영", "im": "", "critLbl": "", "crit": "", "fq": [], "docs": [{"k": "홈페이지", "items": [{"t": "학교 누리집 게시판 운영", "id": "two-way-board"}]}]}, {"grp": "번호 항목에서 빠지고 권장사항으로 남은 항목", "num": "권장", "t": "학교급식소위원회 구성 및 운영", "im": "", "critLbl": "", "crit": "", "fq": [], "docs": [{"k": "업무포털", "items": [{"t": "급식소위원회", "id": "lunch-subcommittee"}]}]}]}, CAL=[{"y": 2026, "m": 3, "ev": [{"d": "2026-03-01", "n": "삼일절", "k": "hol"}, {"d": "2026-03-02", "n": "대체공휴일", "k": "hol"}, {"d": "2026-03-03", "n": "정월대보름 (오곡밥·부럼)", "k": "meal"}, {"d": "2026-03-05", "n": "경칩", "k": "term"}, {"d": "2026-03-20", "n": "춘분", "k": "term"}, {"d": "2026-03-22", "n": "세계 물의 날", "k": "day"}], "tk": [{"d": "2026-03-25", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-03-25", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-03-27", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-03-10", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-03-05", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-03-20", "id": "nutrition-counseling", "c": "교육", "n": "영양상담", "t": "영양상담 실시·기록 (학기당 5회 이상)", "y": "학기당 5회 이상"}, {"d": "2026-03-10", "id": "food-poisoning-team", "c": "위생", "n": "식중독 대책반", "t": "새 학기 식중독 대책반 구성·비상연락망 정비", "y": "연 1회(매년 새학기 초 수립)"}, {"d": "2026-03-20", "id": "hygiene-education-cert", "c": "위생", "n": "위생교육 수료증", "t": "영양교사·조리사 위생교육 수료증 확인·비치", "y": "연 1회"}, {"d": "2026-03-13", "id": "health-checkup-report", "c": "위생", "n": "건강진단결과서(구 보건증)", "t": "종사자 건강진단결과서 유효기간 확인 (6개월마다)", "y": "분기당 1회(6개월에 1회)"}, {"d": "2026-03-16", "id": "food-cost-ratio-disclosure", "c": "운영", "n": "식품비 사용비율 공개", "t": "직전 학기 식품비 사용비율 홈페이지 공개", "y": "연 2회"}, {"d": "2026-03-25", "id": "lunch-subcommittee", "c": "운영", "n": "급식소위원회", "t": "급식소위원회 개최", "y": "연 2회"}, {"d": "2026-03-18", "id": "parent-staff-education", "c": "교육", "n": "학부모·교직원 교육", "t": "분기 학부모·교직원 교육 (연수·가정통신)", "y": "분기별 1회"}, {"d": "2026-03-12", "id": "supplementary-budget", "c": "운영", "n": "추가경정예산서", "t": "급식 예산 추가경정 검토·요구", "y": "연 4회"}]}, {"y": 2026, "m": 4, "ev": [{"d": "2026-04-05", "n": "청명", "k": "term"}, {"d": "2026-04-05", "n": "식목일", "k": "day"}, {"d": "2026-04-07", "n": "보건의 날", "k": "day"}, {"d": "2026-04-20", "n": "곡우", "k": "term"}, {"d": "2026-04-22", "n": "지구의 날", "k": "day"}], "tk": [{"d": "2026-04-24", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-04-24", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-04-28", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-04-10", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-04-03", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-04-20", "id": "nutrition-counseling", "c": "교육", "n": "영양상담", "t": "영양상담 실시·기록 (학기당 5회 이상)", "y": "학기당 5회 이상"}, {"d": "2026-04-10", "id": "meal-cost-settlement", "c": "운영", "n": "급식비 정산 내역", "t": "분기 급식비 정산 내역 작성·공개", "y": "연 4회"}]}, {"y": 2026, "m": 5, "ev": [{"d": "2026-05-05", "n": "어린이날", "k": "hol"}, {"d": "2026-05-05", "n": "입하", "k": "term"}, {"d": "2026-05-21", "n": "소만", "k": "term"}, {"d": "2026-05-24", "n": "부처님오신날", "k": "hol"}, {"d": "2026-05-25", "n": "대체공휴일", "k": "hol"}], "tk": [{"d": "2026-05-22", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-05-22", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-05-28", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-05-08", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-05-04", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-05-20", "id": "nutrition-counseling", "c": "교육", "n": "영양상담", "t": "영양상담 실시·기록 (학기당 5회 이상)", "y": "학기당 5회 이상"}, {"d": "2026-05-14", "id": "regular-curriculum", "c": "교육", "n": "정규 교육과정", "t": "정규 교육과정 영양수업 (연 2차시)", "y": "연 2차시"}]}, {"y": 2026, "m": 6, "ev": [{"d": "2026-06-03", "n": "지방선거일", "k": "hol"}, {"d": "2026-06-05", "n": "망종", "k": "term"}, {"d": "2026-06-05", "n": "환경의 날", "k": "day"}, {"d": "2026-06-06", "n": "현충일", "k": "hol"}, {"d": "2026-06-07", "n": "세계 식품안전의 날", "k": "day"}, {"d": "2026-06-19", "n": "단오 (수리취떡)", "k": "meal"}, {"d": "2026-06-21", "n": "하지", "k": "term"}], "tk": [{"d": "2026-06-25", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-06-25", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-06-26", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-06-10", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-06-05", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-06-19", "id": "nutrition-counseling", "c": "교육", "n": "영양상담", "t": "영양상담 실시·기록 (학기당 5회 이상)", "y": "학기당 5회 이상"}, {"d": "2026-06-18", "id": "parent-staff-education", "c": "교육", "n": "학부모·교직원 교육", "t": "분기 학부모·교직원 교육 (연수·가정통신)", "y": "분기별 1회"}, {"d": "2026-06-12", "id": "supplementary-budget", "c": "운영", "n": "추가경정예산서", "t": "급식 예산 추가경정 검토·요구", "y": "연 4회"}]}, {"y": 2026, "m": 7, "ev": [{"d": "2026-07-07", "n": "소서", "k": "term"}, {"d": "2026-07-15", "n": "초복 (보양식)", "k": "meal"}, {"d": "2026-07-23", "n": "대서", "k": "term"}, {"d": "2026-07-25", "n": "중복 (보양식)", "k": "meal"}], "tk": [{"d": "2026-07-24", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-07-24", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-07-28", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-07-10", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-07-03", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-07-20", "id": "nutrition-counseling", "c": "교육", "n": "영양상담", "t": "영양상담 실시·기록 (학기당 5회 이상)", "y": "학기당 5회 이상"}, {"d": "2026-07-10", "id": "meal-cost-settlement", "c": "운영", "n": "급식비 정산 내역", "t": "분기 급식비 정산 내역 작성·공개", "y": "연 4회"}, {"d": "2026-07-17", "id": "ccp-cp-check", "c": "위생", "n": "CCP 및 CP 점검", "t": "학기말 CCP·CP 점검결과 및 조치 기록 (HACCP 팀 회의)", "y": "학기당 1회"}]}, {"y": 2026, "m": 8, "ev": [{"d": "2026-08-07", "n": "입추", "k": "term"}, {"d": "2026-08-14", "n": "말복 (보양식)", "k": "meal"}, {"d": "2026-08-15", "n": "광복절", "k": "hol"}, {"d": "2026-08-17", "n": "대체공휴일", "k": "hol"}, {"d": "2026-08-18", "n": "쌀의 날", "k": "meal"}, {"d": "2026-08-23", "n": "처서", "k": "term"}], "tk": [{"d": "2026-08-25", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-08-25", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-08-28", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-08-10", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-08-05", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-08-20", "id": "milk-program", "c": "운영", "n": "우유", "t": "학기 우유급식 신청·계약 확인", "y": "연 2회"}]}, {"y": 2026, "m": 9, "ev": [{"d": "2026-09-07", "n": "백로", "k": "term"}, {"d": "2026-09-23", "n": "추석맞이 급식 (송편)", "k": "meal"}, {"d": "2026-09-23", "n": "추분", "k": "term"}, {"d": "2026-09-24", "n": "추석 연휴", "k": "hol"}, {"d": "2026-09-25", "n": "추석", "k": "hol"}, {"d": "2026-09-26", "n": "추석 연휴", "k": "hol"}, {"d": "2026-09-29", "n": "음식물 손실·폐기 인식의 날", "k": "day"}], "tk": [{"d": "2026-09-23", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-09-23", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-09-28", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-09-10", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-09-04", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-09-18", "id": "nutrition-counseling", "c": "교육", "n": "영양상담", "t": "영양상담 실시·기록 (학기당 5회 이상)", "y": "학기당 5회 이상"}, {"d": "2026-09-11", "id": "health-checkup-report", "c": "위생", "n": "건강진단결과서(구 보건증)", "t": "종사자 건강진단결과서 유효기간 확인 (6개월마다)", "y": "분기당 1회(6개월에 1회)"}, {"d": "2026-09-16", "id": "food-cost-ratio-disclosure", "c": "운영", "n": "식품비 사용비율 공개", "t": "직전 학기 식품비 사용비율 홈페이지 공개", "y": "연 2회"}, {"d": "2026-09-23", "id": "lunch-subcommittee", "c": "운영", "n": "급식소위원회", "t": "급식소위원회 개최", "y": "연 2회"}, {"d": "2026-09-18", "id": "parent-staff-education", "c": "교육", "n": "학부모·교직원 교육", "t": "분기 학부모·교직원 교육 (연수·가정통신)", "y": "분기별 1회"}, {"d": "2026-09-11", "id": "supplementary-budget", "c": "운영", "n": "추가경정예산서", "t": "급식 예산 추가경정 검토·요구", "y": "연 4회"}]}, {"y": 2026, "m": 10, "ev": [{"d": "2026-10-03", "n": "개천절", "k": "hol"}, {"d": "2026-10-05", "n": "대체공휴일", "k": "hol"}, {"d": "2026-10-08", "n": "한로", "k": "term"}, {"d": "2026-10-09", "n": "한글날", "k": "hol"}, {"d": "2026-10-16", "n": "세계 식량의 날", "k": "meal"}, {"d": "2026-10-23", "n": "상강", "k": "term"}], "tk": [{"d": "2026-10-23", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-10-23", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-10-28", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-10-08", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-10-02", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-10-20", "id": "nutrition-counseling", "c": "교육", "n": "영양상담", "t": "영양상담 실시·기록 (학기당 5회 이상)", "y": "학기당 5회 이상"}, {"d": "2026-10-08", "id": "meal-cost-settlement", "c": "운영", "n": "급식비 정산 내역", "t": "분기 급식비 정산 내역 작성·공개", "y": "연 4회"}, {"d": "2026-10-14", "id": "regular-curriculum", "c": "교육", "n": "정규 교육과정", "t": "정규 교육과정 영양수업 (연 2차시)", "y": "연 2차시"}]}, {"y": 2026, "m": 11, "ev": [{"d": "2026-11-07", "n": "입동", "k": "term"}, {"d": "2026-11-11", "n": "농업인의 날·가래떡데이", "k": "meal"}, {"d": "2026-11-22", "n": "김치의 날", "k": "meal"}, {"d": "2026-11-22", "n": "소설", "k": "term"}], "tk": [{"d": "2026-11-25", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-11-25", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-11-27", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-11-10", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-11-05", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-11-20", "id": "nutrition-counseling", "c": "교육", "n": "영양상담", "t": "영양상담 실시·기록 (학기당 5회 이상)", "y": "학기당 5회 이상"}, {"d": "2026-11-12", "id": "supplementary-budget", "c": "운영", "n": "추가경정예산서", "t": "급식 예산 추가경정 검토·요구", "y": "연 4회"}, {"d": "2026-11-20", "id": "food-survey", "c": "운영", "n": "학교급식 설문조사", "t": "학교급식 만족도 설문조사", "y": "연 1회"}]}, {"y": 2026, "m": 12, "ev": [{"d": "2026-12-07", "n": "대설", "k": "term"}, {"d": "2026-12-22", "n": "동지 (팥죽)", "k": "meal"}, {"d": "2026-12-22", "n": "동지", "k": "term"}, {"d": "2026-12-25", "n": "성탄절", "k": "hol"}], "tk": [{"d": "2026-12-24", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2026-12-24", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2026-12-28", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2026-12-10", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2026-12-04", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2026-12-18", "id": "nutrition-counseling", "c": "교육", "n": "영양상담", "t": "영양상담 실시·기록 (학기당 5회 이상)", "y": "학기당 5회 이상"}, {"d": "2026-12-18", "id": "parent-staff-education", "c": "교육", "n": "학부모·교직원 교육", "t": "분기 학부모·교직원 교육 (연수·가정통신)", "y": "분기별 1회"}, {"d": "2026-12-17", "id": "ccp-cp-check", "c": "위생", "n": "CCP 및 CP 점검", "t": "학기말 CCP·CP 점검결과 및 조치 기록 (HACCP 팀 회의)", "y": "학기당 1회"}]}, {"y": 2027, "m": 1, "ev": [{"d": "2027-01-01", "n": "신정", "k": "hol"}, {"d": "2027-01-05", "n": "소한", "k": "term"}, {"d": "2027-01-20", "n": "대한", "k": "term"}], "tk": [{"d": "2027-01-25", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2027-01-25", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2027-01-28", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2027-01-08", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2027-01-05", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2027-01-08", "id": "meal-cost-settlement", "c": "운영", "n": "급식비 정산 내역", "t": "분기 급식비 정산 내역 작성·공개", "y": "연 4회"}]}, {"y": 2027, "m": 2, "ev": [{"d": "2027-02-04", "n": "입춘", "k": "term"}, {"d": "2027-02-05", "n": "설맞이 급식 (떡국)", "k": "meal"}, {"d": "2027-02-06", "n": "설 연휴", "k": "hol"}, {"d": "2027-02-07", "n": "설날", "k": "hol"}, {"d": "2027-02-08", "n": "설 연휴", "k": "hol"}, {"d": "2027-02-09", "n": "대체공휴일", "k": "hol"}, {"d": "2027-02-19", "n": "우수", "k": "term"}, {"d": "2027-02-21", "n": "정월대보름 (오곡밥·부럼)", "k": "meal"}], "tk": [{"d": "2027-02-25", "id": "monthly-menu-table", "c": "운영", "n": "월별식단표", "t": "다음 달 식단표 확정·가정통신문 공지", "y": "매월"}, {"d": "2027-02-25", "id": "allergy-labeling", "c": "운영", "n": "알레르기 유발식품 표시제", "t": "다음 달 식단표에 알레르기 유발식품 번호 표시", "y": "매월"}, {"d": "2027-02-26", "id": "origin-nutrition-labeling", "c": "운영", "n": "원산지 및 영양량 표시제", "t": "다음 달 원산지·영양량 표시 게시 준비", "y": "매월"}, {"d": "2027-02-10", "id": "market-research", "c": "운영", "n": "시장조사 /현품설명서", "t": "다음 달 식재료 시장조사·현품설명서 작성", "y": "매월"}, {"d": "2027-02-05", "id": "hygiene-haccp-education", "c": "위생", "n": "위생·HACCP 교육", "t": "이달 종사자 위생·HACCP 교육 실시·기록", "y": "매월/연간"}, {"d": "2027-02-19", "id": "operation-plan", "c": "운영", "n": "학교급식 운영계획서", "t": "새 학년도 학교급식 운영계획 수립", "y": "연 1회"}, {"d": "2027-02-24", "id": "nutrition-education-plan", "c": "운영", "n": "영양 식생활 교육 계획서", "t": "영양·식생활 교육 계획 수립", "y": "연 1회"}, {"d": "2027-02-26", "id": "school-committee-review", "c": "운영", "n": "학교운영위원회 심의자료", "t": "학교운영위원회 급식 심의 안건 상정", "y": "연 1회"}, {"d": "2027-02-19", "id": "milk-program", "c": "운영", "n": "우유", "t": "학기 우유급식 신청·계약 확인", "y": "연 2회"}]}];
+var LIVE="https://thfl4811-maker.github.io/nutrition-archive/archive.html#";
+var GICON={"계획·소통":"🗂️","예산·계약":"🧾","식단·정보공개":"🍽️","위생 기본계획":"🧼","HACCP 서류관리":"🌡️","위생 관련 증명서":"🪪","학생 교육":"🧒","교육과정·학생자치":"📚","상담·학부모 교육":"💬"};
+var ORDER={"운영":["계획·소통","예산·계약","식단·정보공개"],"위생":["위생 기본계획","HACCP 서류관리","위생 관련 증명서"],"교육":["학생 교육","교육과정·학생자치","상담·학부모 교육"]};
+function $(s){return document.querySelector(s)} function $$(s){return Array.prototype.slice.call(document.querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var store={get:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* 보기 전환 */
+function show(v){$$(".view").forEach(function(e){e.classList.toggle("on",e.id==="v-"+v)});$$(".menu button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v)});window.scrollTo(0,0);store.set("na-view",v)}
+$$(".menu button").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.v)})});
+
+/* 업무 자료 */
+var cur="운영",q="";
+function hl(s){if(!q)return esc(s);var i=s.toLowerCase().indexOf(q.toLowerCase());return i<0?esc(s):esc(s.slice(0,i))+"<mark>"+esc(s.slice(i,i+q.length))+"</mark>"+esc(s.slice(i+q.length))}
+function renderWork(){
+  var cats=q?["운영","위생","교육"]:[cur],html="";
+  cats.forEach(function(c){
+    var rows=ITEMS.filter(function(d){return d.c===c&&(!q||(d.n+" "+d.s+" "+d.g).toLowerCase().indexOf(q.toLowerCase())>=0)});
+    if(!rows.length)return;
+    html+='<section class="sec" data-c="'+c+'"><div class="sechead"><span class="dot"></span><h2>'+c+'</h2><small>'+(q?'“'+esc(q)+'” 검색 결과 '+rows.length+'건':'3개 분류 · '+rows.length+'개 업무')+'</small></div><div class="grid3">';
+    ORDER[c].forEach(function(g){
+      var r=rows.filter(function(d){return d.g===g});if(!r.length)return;
+      html+='<div class="box"><h4><i>'+GICON[g]+'</i>'+hl(g)+'<small>'+r.length+'</small></h4>';
+      var subs=[];r.forEach(function(d){if(subs.indexOf(d.s)<0)subs.push(d.s)});
+      subs.forEach(function(s){
+        if(subs.length>1||s!==g)html+='<div class="sub">'+hl(s)+'</div>';
+        html+='<ul>'+r.filter(function(d){return d.s===s}).map(function(d){return '<li><a href="'+LIVE+d.id+'" target="_blank" rel="noopener">'+hl(d.n)+(d.y?'<span class="cy">'+esc(d.y)+'</span>':'')+'</a></li>'}).join("")+'</ul>';
+      });
+      html+='</div>';
+    });
+    html+='</div></section>';
+  });
+  $("#list").innerHTML=html||'<div class="empty">“'+esc(q)+'”에 해당하는 업무가 없습니다. 다른 낱말로 찾아보세요.</div>';
+  $$(".cat").forEach(function(b){b.classList.toggle("sel",!q&&b.dataset.c===cur)});
+}
+$$(".cat").forEach(function(b){b.addEventListener("click",function(){cur=b.dataset.c;q="";$("#q").value="";renderWork()})});
+$("#q").addEventListener("input",function(e){q=e.target.value.trim();renderWork()});
+$$(".chips button").forEach(function(c){c.addEventListener("click",function(){$("#q").value=c.textContent;q=c.textContent;renderWork();$("#q").focus()})});
+document.addEventListener("keydown",function(e){if(e.key==="/"&&$("#v-work").classList.contains("on")&&document.activeElement.id!=="q"){e.preventDefault();$("#q").focus()}});
+
+/* 점검표 */
+var ck="hy",done=store.get("na-chk",{});
+var CNAME={hy:"위생점검표",op:"운영평가표",rec:"권장사항"};
+function noLabel(n){return esc(n).replace(/^(위생|운영|권장)\s*/,'<span>$1</span><br>').replace(/^<span>권장<\/span><br>$/,'권장')}
+function renderChk(){
+  var rows=CHK[ck],html="",g="";
+  rows.forEach(function(r,i){
+    if(r.grp!==g){g=r.grp;html+='<div class="cgroup">'+esc(g)+'</div>'}
+    var key=ck+":"+r.num+":"+i,isDone=!!done[key];
+    var docs="";
+    r.docs.forEach(function(d){docs+='<span class="k">'+esc(d.k)+'</span>'+d.items.map(function(x){return x.id?'<a href="'+LIVE+x.id+'" target="_blank" rel="noopener">'+esc(x.t)+'</a>':'<span class="d">'+esc(x.t)+'</span>'}).join("")});
+    html+='<details class="citem'+(isDone?' done':'')+'"><summary><input class="ok" type="checkbox" aria-label="준비 완료" data-key="'+key+'"'+(isDone?' checked':'')+'><span class="no">'+noLabel(r.num)+'</span><span class="tt">'+esc(r.t)+'</span>'+(r.im?'<span class="pts">'+esc(r.im.split(" · ")[0])+'</span>':'<span></span>')+'</summary>'
+      +((r.crit||r.fq.length||docs)?'<div class="cbody">'+(r.crit?'<div class="cbox crit"><h5>'+esc(r.critLbl||"평가 기준")+'</h5>'+esc(r.crit)+'</div>':'')+(r.fq.length?'<div class="cbox fq"><h5>자주 지적되는 내용</h5><ul>'+r.fq.map(function(f){return '<li>'+esc(f)+'</li>'}).join("")+'</ul></div>':'')+(docs?'<div class="docs">'+docs+'</div>':'')+'</div>':'<div class="cbody"><div class="cbox crit">세부 기준은 교육청 공문을 확인하세요.</div></div>')
+      +'</details>';
+  });
+  var el=$("#chkList");el.className="v-"+ck;el.innerHTML=html;
+  $$(".citem .ok").forEach(function(c){c.addEventListener("click",function(e){e.stopPropagation()});c.addEventListener("change",function(){if(c.checked)done[c.dataset.key]=1;else delete done[c.dataset.key];store.set("na-chk",done);c.closest(".citem").classList.toggle("done",c.checked);prog()})});
+  $$(".ctab").forEach(function(t){t.classList.toggle("on",t.dataset.k===ck)});prog();
+}
+function prog(){var n=CHK[ck].length,d=0;CHK[ck].forEach(function(r,i){if(done[ck+":"+r.num+":"+i])d++});$("#pgTitle").textContent=CNAME[ck]+" 준비";$("#pgTxt").textContent=d+" / "+n;$("#pgBar").style.width=(n?d/n*100:0)+"%"}
+$$(".ctab").forEach(function(t){t.addEventListener("click",function(){ck=t.dataset.k;renderChk()})});
+
+/* 급식달력 */
+var SEASON={3:["s-study","NEW SEMESTER"],4:["s-picnic","SPRING"],5:["s-hike","SPRING"],6:["s-cook","EARLY SUMMER"],7:["s-beach","SUMMER"],8:["s-camp","SUMMER BREAK"],9:["s-tray","2ND SEMESTER"],10:["s-autumn","AUTUMN"],11:["s-autumn","LATE AUTUMN"],12:["s-snow","WINTER"],1:["s-snow","WINTER"],2:["s-snow","WINTER BREAK"]};
+var DOWK=["일","월","화","수","목","금","토"];
+var now=new Date(),todayS=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
+var mi=CAL.findIndex(function(c){return c.y===now.getFullYear()&&c.m===now.getMonth()+1});if(mi<0)mi=0;var todayMi=mi;
+function ds(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function renderCal(){
+  var C=CAL[mi],y=C.y,m=C.m,s=SEASON[m];
+  $("#calImg").src="assets/"+s[0]+".jpg";$("#calSeason").textContent=s[1];
+  var hols=C.ev.filter(function(e){return e.k==="meal"}).map(function(e){return e.n});
+  $("#calLead").textContent="이달의 업무 "+C.tk.length+"건"+(hols.length?" · 급식 연계일: "+hols.slice(0,3).join(", "):"");
+  $("#calTitle").innerHTML=y+"년 "+m+"월<span class=\"soon\">미리보기 · 2027 공개 예정</span>";
+  $("#months").innerHTML=CAL.map(function(c,i){return '<button class="'+(i===mi?'on':'')+'" data-i="'+i+'">'+c.m+'월<span class="c">'+c.tk.length+'</span></button>'}).join("");
+  $$("#months button").forEach(function(b){b.addEventListener("click",function(){mi=+b.dataset.i;renderCal()})});
+  var first=new Date(y,m-1,1),start=new Date(y,m-1,1-first.getDay()),html="";
+  for(var i=0;i<42;i++){
+    var d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i),key=ds(d),inM=d.getMonth()===m-1;
+    if(i>=35&&!inM&&d.getDate()<8)break;
+    var ev=inM?C.ev.filter(function(e){return e.d===key}):[],tk=inM?C.tk.filter(function(t){return t.d===key}):[];
+    var hol=ev.some(function(e){return e.k==="hol"});
+    html+='<div class="dcell'+(inM?'':' out')+(d.getDay()===0?' sun':'')+(d.getDay()===6?' sat':'')+(hol?' hol':'')+(key===todayS?' today':'')+(tk.length?' has':'')+'"><span class="dn">'+d.getDate()+'</span>'
+      +ev.map(function(e){return '<span class="ev '+e.k+'" title="'+esc(e.n)+'">'+(e.k==="term"?"◦ ":"")+esc(e.n)+'</span>'}).join("")
+      +tk.map(function(t){return '<a class="tk '+t.c+'" href="'+LIVE+t.id+'" target="_blank" rel="noopener" title="'+esc(t.n)+'">'+esc(t.n)+'</a>'}).join("")+'</div>';
+  }
+  $("#days").innerHTML=html;
+  $("#mlTitle").innerHTML=m+"월의 업무<small>"+C.tk.length+"건 · 날짜순</small>";
+  var t0=new Date(todayS+"T00:00:00");
+  $("#mlRows").innerHTML=C.tk.slice().sort(function(a,b){return a.d<b.d?-1:1}).map(function(t){
+    var d=new Date(t.d+"T00:00:00"),diff=Math.round((d-t0)/864e5),tag=diff===0?'<span class="tag hot">D-DAY</span>':diff>0&&diff<=7?'<span class="tag hot">D-'+diff+'</span>':diff>0?'<span class="tag">D-'+diff+'</span>':'<span class="tag past">지남</span>';
+    return '<a class="mrow '+t.c+'" href="'+LIVE+t.id+'" target="_blank" rel="noopener"><span class="dd">'+d.getDate()+'<small>'+DOWK[d.getDay()]+'요일</small></span><span><b>'+esc(t.n)+'</b><span>'+esc(t.t)+'</span></span>'+tag+'</a>';
+  }).join("");
+}
+$("#prevM").addEventListener("click",function(){if(mi>0){mi--;renderCal()}});
+$("#nextM").addEventListener("click",function(){if(mi<CAL.length-1){mi++;renderCal()}});
+$("#todayM").addEventListener("click",function(){mi=todayMi;renderCal()});
+
+renderWork();renderChk();renderCal();
+var hv=(location.hash||"").slice(1);show(["work","chk","cal"].indexOf(hv)>=0?hv:"work");
+</script>
+</body>
+</html>
