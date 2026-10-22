@@ -126,44 +126,61 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
 .docs span.d{border-color:var(--line);background:#f6f2ea;color:#7a6f5c}
 
 /* ─ 급식달력 보기 ─ */
-.calhero{margin-top:28px;border-radius:28px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);background:var(--paper);border:1px solid var(--line)}
-.calhero .in{padding:30px 34px;display:flex;flex-direction:column;justify-content:space-between;gap:20px;background:linear-gradient(135deg,var(--paper2),var(--bg))}
-.calhero .season{font-size:13px;font-weight:800;letter-spacing:.1em;color:#8a7a5c}
-.calhero h1{margin:6px 0 0;font-size:clamp(34px,4vw,54px)}
-.calhero .soon{font-size:12px;padding:2px 9px;margin-left:10px;vertical-align:10px}
-.calhero .lead{margin:10px 0 0;color:var(--muted);font-size:14.5px;line-height:1.7}
-.calhero .nav2{display:flex;gap:8px;flex-wrap:wrap}
-.calhero .nav2 button{background:var(--paper);border:1px solid var(--line);font-weight:800;font-size:14px;padding:9px 16px;border-radius:999px}
-.calhero .nav2 button:hover{border-color:var(--ink)}
-.calhero .pic{aspect-ratio:3/2;max-width:100%}
-.calhero .pic img{width:100%;height:100%;object-fit:cover;display:block}
-.dcell.out .dn{opacity:.3}
-.months{display:flex;gap:6px;margin:16px 0 22px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
-.months::-webkit-scrollbar{display:none}
-.months button{flex:none;font-size:13.5px;font-weight:800;padding:7px 14px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:#4b5563}
-.months button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.months button .c{font-size:11px;font-weight:700;opacity:.65;margin-left:3px}
-.callay{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:20px;align-items:start;padding-bottom:40px}
-.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:#4b5563;margin-bottom:10px}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-.mgrid{background:var(--paper);border:1px solid var(--line);border-radius:20px;overflow:hidden}
-.mgrid .dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:var(--paper2);border-bottom:1px solid var(--line)}
-.mgrid .dow span{padding:10px 12px;font-size:12.5px;font-weight:800;color:#7a6f5c}
+#v-cal{--mc:#7b52b8;--mc-s:#efe8fa}
+.calhero{margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,430px);gap:44px;align-items:center;padding:36px 48px 36px 44px;border-radius:32px;background:radial-gradient(90% 130% at 100% 0%,var(--mc-s) 0%,var(--paper) 62%);border:1px solid var(--line);transition:background .4s}
+.eyebrow2{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:800;letter-spacing:.12em;color:#8a7a5c}
+.bigm{display:flex;align-items:flex-end;gap:16px;margin:18px 0 0}
+.bigm b{font-size:clamp(92px,10vw,148px);line-height:.8;font-weight:900;letter-spacing:-.06em;color:var(--mc);transition:color .4s}
+.bigm span{display:flex;flex-direction:column;gap:6px;padding-bottom:4px}
+.bigm span i{font-style:normal;font-size:30px;font-weight:900;line-height:1}
+.bigm span em{font-style:normal;font-size:13px;font-weight:800;letter-spacing:.34em;color:var(--muted)}
+.calhero .lead{margin:20px 0 0;color:#4b5563;font-size:15px;line-height:1.7;max-width:470px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.stats span{background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:16px;padding:10px 16px 11px;font-size:12px;color:var(--muted);font-weight:700;min-width:92px}
+.stats span b{display:block;font-size:24px;color:var(--ink);font-weight:900;line-height:1.15}
+.nav2{display:flex;gap:8px;margin-top:24px;align-items:center}
+.nav2 button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:#fff;font:inherit;font-size:20px;font-weight:800;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.nav2 button#todayM{width:auto;padding:0 20px;border-radius:999px;font-size:13.5px}
+.nav2 button:hover{border-color:var(--mc);color:var(--mc)}
+.nav2 button:disabled{opacity:.35;cursor:default;border-color:var(--line);color:var(--ink)}
+.calpic{position:relative;padding:8px 6px 14px 0}
+.calpic::before{content:"";position:absolute;inset:22px -14px 0 26px;border-radius:30px;background:var(--mc);opacity:.16;transform:rotate(-3deg);transition:background .4s}
+.calpic img{position:relative;width:100%;aspect-ratio:381/292;object-fit:cover;border-radius:28px;display:block;box-shadow:0 34px 50px -30px rgba(60,40,10,.6);transform:rotate(1.2deg);background:#eee}
+.mstrip{display:grid;grid-template-columns:repeat(12,minmax(62px,1fr));gap:12px;margin:26px 0 28px;overflow-x:auto;scrollbar-width:none;padding:6px 4px 4px}
+.mstrip::-webkit-scrollbar{display:none}
+.mstrip button{border:0;background:transparent;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;font:inherit;color:inherit}
+.mstrip img{width:100%;max-width:86px;aspect-ratio:1;object-fit:cover;border-radius:20px;outline:3px solid transparent;outline-offset:3px;filter:saturate(.6);opacity:.7;transition:all .18s}
+.mstrip button:hover img{opacity:1;filter:none;transform:translateY(-2px)}
+.mstrip button.on img{outline-color:var(--mc);opacity:1;filter:none}
+.mstrip small{font-size:12.5px;font-weight:800;color:var(--muted);white-space:nowrap}
+.mstrip button.on small{color:var(--mc)}
+.mstrip small i{font-style:normal;font-weight:700;font-size:11px;opacity:.65;margin-left:3px}
+.callay{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px;align-items:start;padding-bottom:44px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:#6b7280;margin:0 4px 12px;font-weight:600}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:0}
+.mgrid{background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 22px 44px -34px rgba(60,40,10,.45)}
+.mgrid .dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-bottom:1px solid var(--line2)}
+.mgrid .dow em{font-style:normal}.mgrid .dow span{padding:13px 12px 11px;font-size:11px;font-weight:800;letter-spacing:.12em;color:#a0957f}
 .mgrid .dow span:first-child{color:var(--red)}.mgrid .dow span:last-child{color:var(--egg)}
 .mgrid .days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
-.dcell{min-height:104px;border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:8px 8px 6px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.dcell{min-height:116px;border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:8px 7px 8px;display:flex;flex-direction:column;gap:3px;min-width:0;transition:background .15s}
 .dcell:nth-child(7n){border-right:0}
-.dcell.out{background:#faf7f1}.dcell .dn{font-weight:800;font-size:14px}
+.dcell:nth-last-child(-n+7){border-bottom:0}
+.dcell:not(.out):hover{background:#fcfaf6}
+.dcell.out{background:repeating-linear-gradient(135deg,#fcfaf7 0 7px,#f6f2ea 7px 8px)}
+.dcell.out .dn{visibility:hidden}
+.dcell .dn{font-weight:800;font-size:13.5px;width:27px;height:27px;display:grid;place-items:center;border-radius:50%;margin:-3px 0 2px -3px;flex:none}
 .dcell.sun .dn,.dcell.hol .dn{color:var(--red)}.dcell.sat .dn{color:var(--egg)}
-.dcell.today .dn{background:var(--ink);color:#fff;border-radius:999px;width:26px;height:26px;display:grid;place-items:center}
-.ev{font-size:11px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ev.hol{color:var(--red)}.ev.term{color:#8a7a5c;font-weight:600}.ev.meal{color:var(--gold)}.ev.day{color:#6b7280;font-weight:600}
-.tk{display:block;font-size:11.5px;font-weight:700;line-height:1.3;padding:2px 6px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tk.운영{background:var(--rice-s);color:var(--rice-d)}.tk.위생{background:var(--egg-s);color:var(--egg-d)}.tk.교육{background:var(--soup-s);color:var(--soup-d)}
-.tk:hover{filter:brightness(.95)}
-.mlist{background:var(--paper);border:1px solid var(--line);border-radius:20px;overflow:hidden}
-.mlist h3{margin:0;padding:16px 18px;font-size:17px;border-bottom:1px solid var(--line);background:var(--paper2);display:flex;align-items:center;gap:8px}
-.mlist h3 small{margin-left:auto;font-size:12.5px;color:var(--muted);font-weight:700}
+.dcell.today .dn{background:var(--mc);color:#fff}
+.ev{font-size:11px;font-weight:700;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:2px}
+.ev.hol{color:var(--red)}.ev.term{color:#a0957f;font-weight:600}.ev.meal{color:var(--gold)}.ev.day{color:#6b7280;font-weight:600}
+.tk{display:block;font-size:11px;font-weight:700;line-height:1.35;padding:3px 7px 3px 6px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:3px solid}
+.tk.운영{background:var(--rice-s);color:var(--rice-d);border-color:var(--rice)}.tk.위생{background:var(--egg-s);color:var(--egg-d);border-color:var(--egg)}.tk.교육{background:var(--soup-s);color:var(--soup-d);border-color:var(--soup)}
+.tk:hover{filter:brightness(.96)}
+.mlist{background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 22px 44px -34px rgba(60,40,10,.45)}
+.mlist h3{margin:0;padding:18px 20px 15px;font-size:16.5px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--line2)}
+.mlist h3::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--mc)}
+.mlist h3 small{margin-left:auto;font-size:12px;color:var(--muted);font-weight:700}
 .mrow{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line2)}
 .mrow:last-child{border-bottom:0}
 .mrow .dd{text-align:center;border-radius:12px;padding:5px 0;font-weight:900;font-size:17px;line-height:1.1}
@@ -173,14 +190,14 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
 .mrow .tag{font-size:11.5px;font-weight:800;border-radius:999px;padding:3px 9px;white-space:nowrap;background:#f3eee4;color:#7a6f5c}
 .mrow .tag.hot{background:var(--red);color:#fff}.mrow .tag.past{background:transparent;color:#b6ab96;border:1px dashed #d8cfbf}
 .mrow:hover{background:#fbf8f2}
-.calnote{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.6}
+.calnote{font-size:12px;color:var(--muted);margin:12px 4px 0;line-height:1.6}
 .foot{padding-block:10px 40px;color:var(--muted);font-size:12.5px}
 
 /* ─ 계기교육 ─ */
-.gyc{display:block;width:100%;text-align:left;border:0;background:transparent;padding:0;font:inherit;font-size:11px;font-weight:800;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--soup-d);cursor:pointer}
-.gyc::before{content:"";display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:4px;vertical-align:0;background:currentColor}
+.gyc{display:block;width:100%;text-align:left;border:0;background:#f5f2ec;padding:3px 7px;border-radius:6px;font:inherit;font-size:11px;font-weight:800;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--soup-d);cursor:pointer}
+.gyc::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:1px;background:currentColor}
 .gyc:hover{text-decoration:underline}
-.gyc.c-법정기념일{color:#b5651d}.gyc.c-국제기념일{color:var(--egg-d)}.gyc.c-24절기{color:#7a6a4c}.gyc.c-범교과{color:var(--soup-d)}
+.gyc.c-법정기념일{color:#a85c17;background:#fdf1e3}.gyc.c-국제기념일{color:var(--egg-d);background:#edf2fe}.gyc.c-24절기{color:#6f6148;background:#f3efe6}.gyc.c-범교과{color:var(--soup-d);background:var(--soup-s)}
 .gysec{padding-bottom:44px}
 .gyhead{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin:6px 0 16px}
 .gyhead h2{margin:0;font-size:24px;letter-spacing:-.02em}
@@ -240,7 +257,7 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
 @media (max-width:1060px){
   .hero{grid-template-columns:minmax(0,1fr)}.hero .trio{display:none}
   .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .callay{grid-template-columns:minmax(0,1fr)}
+  .callay{grid-template-columns:minmax(0,1fr)}.calhero{grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:28px}
   .top .wrap{flex-wrap:wrap;gap:10px}.menu{order:3;width:100%}
 }
 @media (max-width:680px){
@@ -252,7 +269,7 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
   .citem .pts{display:none}
   .dcell{min-height:64px;padding:5px 3px}.dcell .ev,.dcell .tk,.dcell .gyc{display:none}
   .dcell.has::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--rice);margin:2px auto 0}
-  .calhero{grid-template-columns:minmax(0,1fr)}.calhero .pic{order:-1}.calhero .in{padding:20px}
+  .calhero{grid-template-columns:minmax(0,1fr);padding:22px 20px;gap:18px}.calpic{order:-1}.bigm b{font-size:84px}.mstrip{grid-template-columns:repeat(12,64px)}.mgrid .dow em{display:none}.mgrid .dow span{padding:10px 0;text-align:center}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.stats span{min-width:0;padding:8px 8px;font-size:11px}.stats span b{font-size:19px}
   .phead .side{margin-left:0}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -314,16 +331,20 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
 <main id="v-cal" class="view">
   <section class="wrap">
     <div class="calhero">
-      <div class="in"><div><div class="season" id="calSeason">AUTUMN</div><h1 id="calTitle">2026년 10월<span class="soon">미리보기 · 2027 공개 예정</span></h1>
-        <p class="lead" id="calLead"></p></div>
-        <div class="nav2"><button id="prevM">‹ 이전 달</button><button id="todayM">이번 달</button><button id="nextM">다음 달 ›</button></div></div>
-      <div class="pic"><img id="calImg" src="assets/s-autumn.jpg" alt=""></div>
+      <div>
+        <div class="eyebrow2"><span id="calYear">2026</span><span>SCHOOL MEAL CALENDAR</span><span class="soon">미리보기 · 2027 공개 예정</span></div>
+        <div class="bigm"><b id="calNum">11</b><span><i>월</i><em id="calEng">NOVEMBER</em></span></div>
+        <p class="lead" id="calLead"></p>
+        <div class="stats" id="calStats"></div>
+        <div class="nav2"><button id="prevM" aria-label="이전 달">‹</button><button id="nextM" aria-label="다음 달">›</button><button id="todayM">이번 달</button></div>
+      </div>
+      <div class="calpic"><img id="calImg" src="assets/cal/m-11.jpg" alt=""></div>
     </div>
-    <div class="months" id="months"></div>
+    <div class="mstrip" id="months"></div>
     <div class="callay">
       <div>
-        <div class="legend"><span><i style="background:var(--rice)"></i>운영</span><span><i style="background:var(--egg)"></i>위생</span><span><i style="background:var(--soup)"></i>교육</span><span><i style="background:var(--red)"></i>공휴일</span><span><i style="background:var(--gold)"></i>급식 연계일</span><span><i style="background:#c9bda6"></i>24절기</span></div>
-        <div class="mgrid"><div class="dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="days" id="days"></div></div>
+        <div class="legend"><span><i style="background:var(--rice)"></i>운영</span><span><i style="background:var(--egg)"></i>위생</span><span><i style="background:var(--soup)"></i>교육</span><span><i style="background:var(--red)"></i>공휴일</span><span><i style="background:#b5651d"></i>법정기념일</span><span><i style="background:var(--egg-d)"></i>국제기념일</span><span><i style="background:#c9bda6"></i>24절기</span></div>
+        <div class="mgrid"><div class="dow"><span><em>SUN </em>일</span><span><em>MON </em>월</span><span><em>TUE </em>화</span><span><em>WED </em>수</span><span><em>THU </em>목</span><span><em>FRI </em>금</span><span><em>SAT </em>토</span></div><div class="days" id="days"></div></div>
         <p class="calnote">업무 날짜는 아카이브의 업무 주기를 학교급식 연간 흐름에 맞춰 배치한 예시 일정입니다. 정식 공개는 2027년 예정이며 화면과 일정은 바뀔 수 있습니다.</p>
       </div>
       <aside class="mlist"><h3 id="mlTitle">10월의 업무</h3><div id="mlRows"></div></aside>
@@ -407,21 +428,22 @@ function prog(){var n=CHK[ck].length,d=0;CHK[ck].forEach(function(r,i){if(done[c
 $$(".ctab").forEach(function(t){t.addEventListener("click",function(){ck=t.dataset.k;renderChk()})});
 
 /* 급식달력 */
-var SEASON={3:["s-study","NEW SEMESTER"],4:["s-picnic","SPRING"],5:["s-hike","SPRING"],6:["s-cook","EARLY SUMMER"],7:["s-beach","SUMMER"],8:["s-camp","SUMMER BREAK"],9:["s-tray","2ND SEMESTER"],10:["s-autumn","AUTUMN"],11:["s-autumn","LATE AUTUMN"],12:["s-snow","WINTER"],1:["s-snow","WINTER"],2:["s-snow","WINTER BREAK"]};
+var MON={1:["JANUARY","#1f5fbf","#e6eefb","눈 내리는 겨울방학, 새 학년 급식을 준비하는 달입니다."],2:["FEBRUARY","#d65578","#fbe9ef","학년을 마무리하고 새 학년도 계획을 세우는 달입니다."],3:["MARCH","#4f8f34","#e8f3e1","새 학기 급식을 시작하며 기본 계획과 위생 체계를 갖추는 달입니다."],4:["APRIL","#d9951c","#fbf1dc","봄 제철 식재료와 함께 급식이 안정되는 달입니다."],5:["MAY","#3f8c45","#e5f2e6","가정의 달, 학부모와 함께하는 급식 소통이 많은 달입니다."],6:["JUNE","#2f6fd0","#e5eefb","장마가 시작되어 식중독 예방에 더욱 신경 쓰는 달입니다."],7:["JULY","#1987d6","#e1f1fb","여름방학 전, 1학기 급식을 정리하는 달입니다."],8:["AUGUST","#2a78cf","#e3eefb","여름방학 동안 시설과 서류를 점검하고 2학기를 준비하는 달입니다."],9:["SEPTEMBER","#e0702a","#fcebdf","2학기 급식을 다시 시작하고 추석 절식을 준비하는 달입니다."],10:["OCTOBER","#8a5a2b","#f3ebe2","가을 수확의 달, 제철 식재료와 영양의 날 교육을 운영합니다."],11:["NOVEMBER","#7b52b8","#efe8fa","김장과 쌀의 달, 우리 음식 문화를 배우기 좋은 달입니다."],12:["DECEMBER","#c2302b","#fbe6e4","한 해를 마무리하며 동지와 성탄 특식을 준비하는 달입니다."]};
 var DOWK=["일","월","화","수","목","금","토"];
 var now=new Date(),todayS=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
 var mi=CAL.findIndex(function(c){return c.y===now.getFullYear()&&c.m===now.getMonth()+1});if(mi<0)mi=0;var todayMi=mi;
 function ds(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function renderCal(){
-  var C=CAL[mi],y=C.y,m=C.m,s=SEASON[m];
-  $("#calImg").src="assets/"+s[0]+".jpg";$("#calSeason").textContent=s[1];
-  var hols=C.ev.filter(function(e){return e.k==="meal"}).map(function(e){return e.n});
-  $("#calLead").textContent="이달의 업무 "+C.tk.length+"건"+(hols.length?" · 급식 연계일: "+hols.slice(0,3).join(", "):"");
-  $("#calTitle").innerHTML=y+"년 "+m+"월<span class=\"soon\">미리보기 · 2027 공개 예정</span>";
-  $("#months").innerHTML=CAL.map(function(c,i){return '<button class="'+(i===mi?'on':'')+'" data-i="'+i+'">'+c.m+'월<span class="c">'+c.tk.length+'</span></button>'}).join("");
+  var C=CAL[mi],y=C.y,m=C.m,M=MON[m],vc=$("#v-cal");
+  vc.style.setProperty("--mc",M[1]);vc.style.setProperty("--mc-s",M[2]);
+  $("#calImg").src="assets/cal/m-"+m+".jpg";$("#calNum").textContent=m;$("#calEng").textContent=M[0];$("#calYear").textContent=y;
+  $("#calLead").textContent=M[3];
+  $("#months").innerHTML=CAL.map(function(c,i){return '<button class="'+(i===mi?'on':'')+'" data-i="'+i+'"><img src="assets/cal/t-'+c.m+'.jpg" alt=""><small>'+c.m+'월<i>'+c.tk.length+'</i></small></button>'}).join("");
   $$("#months button").forEach(function(b){b.addEventListener("click",function(){mi=+b.dataset.i;renderCal()})});
+  $("#prevM").disabled=mi===0;$("#nextM").disabled=mi===CAL.length-1;
   var mk=y+"-"+String(m).padStart(2,"0"),gyIdx=[];GY.forEach(function(g,j){if(g.d.indexOf(mk)===0)gyIdx.push(j)});
-  if(gyIdx.length)$("#calLead").textContent="이달의 업무 "+C.tk.length+"건 · 급식 연계 계기교육 "+gyIdx.length+"건";
+  var nTerm=C.ev.filter(function(e){return e.k==="term"}).length,nHol=C.ev.filter(function(e){return e.k==="hol"}).length;
+  $("#calStats").innerHTML='<span><b>'+C.tk.length+'</b>이달의 업무</span><span><b>'+(gyIdx.length||"–")+'</b>계기교육</span><span><b>'+nTerm+'</b>24절기</span><span><b>'+nHol+'</b>공휴일</span>';
   var first=new Date(y,m-1,1),start=new Date(y,m-1,1-first.getDay()),html="";
   for(var i=0;i<42;i++){
     var d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i),key=ds(d),inM=d.getMonth()===m-1;
