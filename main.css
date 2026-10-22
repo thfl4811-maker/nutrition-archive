@@ -292,3 +292,14 @@ svg.mark{display:inline-block;width:40px;height:29px;flex:none;filter:drop-shado
 .slogan-brand{font-family:var(--f-disp);font-weight:800;letter-spacing:.04em;font-size:clamp(16px,1.8vw,22px)}
 .logo b,.nav-cta{white-space:nowrap}
 @media (max-width:520px){.nav{gap:10px}.logo{gap:8px}.logo svg.mark{width:32px;height:23px}.logo b.en{font-size:12.5px;letter-spacing:.02em}.nav-cta{font-size:12.5px;padding:7px 12px}}
+/* 좁은 화면에서도 메뉴 보이기 */
+@media (max-width:900px){
+  .nav nav{display:flex;gap:18px;font-size:14px}
+}
+@media (max-width:680px){
+  .nav{flex-wrap:wrap;row-gap:8px}
+  .nav nav{order:3;width:100%;gap:20px;overflow-x:auto;scrollbar-width:none;padding:2px 0 4px;font-size:14px}
+  .nav nav::-webkit-scrollbar{display:none}
+  .nav nav a{white-space:nowrap}
+}
+@media (max-width:680px){.nav{background:rgba(7,8,10,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}}
