@@ -266,20 +266,19 @@ section{position:relative}
 @media (max-width:520px){.tcol .fchip{white-space:normal;font-size:10.5px;line-height:1.3;align-items:flex-start}.trays{gap:6px;padding:8px}.tcol{padding:6px}}
 
 /* ── 우리만의 표현으로 정리 ── */
-.mark{width:auto;height:auto;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:linear-gradient(145deg,#1f9a6a,#0b6b49);color:#fff;font-family:var(--f-body);font-weight:900;font-size:16px;line-height:1;gap:0}
-.mark i{display:none}
-.intro-brand .mark{width:46px;height:46px;border-radius:13px;font-size:24px}
+:root{--trio:linear-gradient(90deg,#f39a3d 0%,#f7c27e 22%,#9ab6ff 48%,#5f8ef0 62%,#8fdca4 82%,#4fae6a 100%)}
+svg.mark{display:inline-block;width:40px;height:29px;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
+.intro-brand svg.mark{width:64px;height:47px}
+.slogan-brand svg.mark{width:46px;height:34px}
 .intro-word{font-family:var(--f-body);font-weight:900;font-size:clamp(24px,2.8vw,36px);letter-spacing:-.02em}
 .intro-sub{font-size:clamp(13px,1.1vw,15px);color:var(--muted);margin-top:-6px}
-.intro-giant{font-family:var(--f-body);font-weight:900;letter-spacing:-.04em;background:none;color:var(--paper);font-size:clamp(56px,15vw,240px);bottom:1vh}
-.intro-giant .c1,.foot-giant .c1{color:#f6b45f}.intro-giant .c2,.foot-giant .c2{color:#7fa3f2}.intro-giant .c3,.foot-giant .c3{color:#7fd197}
+.intro-giant{background:var(--trio);-webkit-background-clip:text;background-clip:text;color:transparent}
 .slogan-title{flex-direction:column;gap:.15em;line-height:1.3}
 .slogan-title .sl2{color:#a8e88a}
 .slogan-brand{font-family:var(--f-body);font-weight:900;font-size:clamp(20px,2.4vw,30px);margin-top:18px;color:var(--muted)}
-.slogan-brand .mark{transform:none}
-.scatter.kr{font-family:var(--f-body);font-weight:900;letter-spacing:-.04em;font-size:clamp(34px,5vw,80px);line-height:1.12}
-.scatter.kr .w:first-child{font-family:var(--f-disp);font-weight:400;font-size:.28em;letter-spacing:.12em;color:var(--leaf);margin-bottom:.6em}
+.scatter .w:first-child{font-size:.5em;letter-spacing:.04em}
 .cta-title{font-family:"Gaegu",var(--f-body);font-size:clamp(36px,5vw,68px)}
-.foot-giant{font-family:var(--f-body);font-weight:900;letter-spacing:-.04em;font-size:clamp(64px,16vw,260px);display:flex;align-items:flex-end;justify-content:center;gap:0;position:relative}
-.foot-giant img{position:absolute;left:50%;bottom:72%;width:min(40vw,520px);transform:translateX(-50%);filter:drop-shadow(0 12px 24px rgba(0,0,0,.5))}
-.foot-giant{padding-top:clamp(90px,13vw,200px)}
+.foot-giant{position:relative;padding-top:clamp(80px,11vw,170px)}
+.foot-giant .fg{display:inline-block;background:var(--trio);-webkit-background-clip:text;background-clip:text;color:transparent}
+.foot-giant img{position:absolute;left:50%;bottom:calc(30px + .78em);width:min(36vw,460px);transform:translateX(-50%);filter:drop-shadow(0 12px 24px rgba(0,0,0,.5))}
+.slogan-brand svg.mark{transform:none}
