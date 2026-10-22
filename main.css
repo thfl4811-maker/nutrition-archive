@@ -282,3 +282,9 @@ svg.mark{display:inline-block;width:40px;height:29px;flex:none;filter:drop-shado
 .foot-giant .fg{display:inline-block;background:var(--trio);-webkit-background-clip:text;background-clip:text;color:transparent}
 .foot-giant img{position:absolute;left:50%;bottom:calc(30px + .78em);width:min(36vw,460px);transform:translateX(-50%);filter:drop-shadow(0 12px 24px rgba(0,0,0,.5))}
 .slogan-brand svg.mark{transform:none}
+
+.intro-word.en{font-family:var(--f-disp);font-weight:800;font-size:clamp(20px,2.4vw,30px);letter-spacing:.04em}
+.cta-title{font-family:var(--f-body);font-weight:900;letter-spacing:-.03em;line-height:1.35;color:var(--paper);font-size:clamp(28px,3.6vw,50px)}
+.ecard .big{line-height:1.45}
+.ecard{min-height:clamp(440px,38vw,560px)}
+.ecard .sorted-trio{width:min(60%,360px)}

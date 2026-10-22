@@ -161,7 +161,7 @@
   });
 
   /* ── 7. 마무리 ── */
-  gsap.from('.cta-title .ch', { y:40, opacity:0, rotate:function(){ return gsap.utils.random(-25,25); }, duration:.7, stagger:.035, ease:'back.out(2)',
+  gsap.from('.cta-title', { y:40, opacity:0, duration:.9, ease:'power3.out',
     scrollTrigger:{ trigger:'.cta', start:'top 65%' } });
   gsap.from('.cta-sub', { y:20, opacity:0, duration:.8, delay:.3, scrollTrigger:{ trigger:'.cta', start:'top 65%' } });
   gsap.from('.finale-card', { y:80, rotate:-4, opacity:0, duration:1.1, ease:'power3.out',
