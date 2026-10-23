@@ -3057,13 +3057,17 @@ const EMBED=EMBED_MODE==="1"||EMBED_MODE==="full";
 const NEW_URL=id=>new URL("archive-preview.html?item="+encodeURIComponent(id),location.href).href;
 if(EMBED){
   document.documentElement.classList.add("embed");
-  /* 새 자료실 창 안에서는 구글 드라이브 내려받기·바깥 링크를 새 탭으로 (창 안에서는 열리지 않음) */
-  const fixLinks=()=>document.querySelectorAll("a[href]").forEach(a=>{
+  /* 새 자료실 창 안에서는 구글 드라이브 내려받기·바깥 링크를 직접 새 탭으로 연다 (창 안에서는 드라이브 화면이 막힘) */
+  document.addEventListener("click",e=>{
+    if(e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey) return;
+    const a=e.target.closest&&e.target.closest("a[href]"); if(!a) return;
     let u; try{ u=new URL(a.getAttribute("href"),location.href); }catch(_){ return; }
-    if(u.origin!==location.origin && a.target!=="_blank"){ a.target="_blank"; a.rel="noopener"; a.removeAttribute("download"); }
+    if(u.origin===location.origin || !/^https?:$/.test(u.protocol)) return;
+    e.preventDefault();
+    const w=window.open(u.href,"_blank");
+    if(w){ try{ w.opener=null; }catch(_){} }
+    else { try{ window.top.location.href=u.href; }catch(_){ location.href=u.href; } }
   });
-  new MutationObserver(fixLinks).observe(document.documentElement,{childList:true,subtree:true});
-  document.addEventListener("click",fixLinks,true);
   const st=document.createElement("style");
   if(EMBED_MODE==="1"){
     st.textContent="html.embed,html.embed body{background:transparent!important;overflow:hidden!important}html.embed body>*:not(#scrim):not(#drawer):not(.rscrim):not(script):not(style){display:none!important}";
