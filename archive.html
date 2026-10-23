@@ -3051,20 +3051,46 @@ document.addEventListener("keydown",e=>{ if(e.key==="/"&&!/INPUT|TEXTAREA/.test(
 
 render();
 document.getElementById("arcCount").textContent=ITEMS.length;
-/* ── 새 자료실(archive-preview)에서 상세 창만 띄우는 모드 ── */
-const EMBED=new URLSearchParams(location.search).get("embed")==="1";
+/* ── 새 자료실(archive-preview) 안에 끼워 넣는 모드: embed=1(오른쪽 상세 창) · embed=full(전체 화면) ── */
+const EMBED_MODE=new URLSearchParams(location.search).get("embed");
+const EMBED=EMBED_MODE==="1"||EMBED_MODE==="full";
+const NEW_URL=id=>new URL("archive-preview.html?item="+encodeURIComponent(id),location.href).href;
 if(EMBED){
   document.documentElement.classList.add("embed");
-  const keep=new Set(["scrim","drawer","rscrim"]);
-  [...document.body.children].forEach(el=>{ if(el.tagName!=="SCRIPT" && !keep.has(el.id) && !el.classList.contains("rscrim")) el.style.display="none"; });
   const st=document.createElement("style");
-  st.textContent="html.embed,html.embed body{background:transparent!important;overflow:hidden!important}html.embed body>*:not(#scrim):not(#drawer):not(.rscrim):not(script):not(style){display:none!important}";
+  if(EMBED_MODE==="1"){
+    st.textContent="html.embed,html.embed body{background:transparent!important;overflow:hidden!important}html.embed body>*:not(#scrim):not(#drawer):not(.rscrim):not(script):not(style){display:none!important}";
+  }
   document.head.appendChild(st);
-  const _close=closeModal;
-  closeModal=function(){ _close(); try{ parent.postMessage({na:"close"},"*"); }catch(e){} };
-  openFull=function(){ if(curId) try{ window.top.location.href="archive.html#"+curId; }catch(e){ location.href="archive.html#"+curId; } };
-  window.addEventListener("message",e=>{ if(e.data&&e.data.na==="open"){ curId=e.data.id; openModal(e.data.id); } });
-  try{ parent.postMessage({na:"ready"},"*"); }catch(e){}
+  const _close=closeModal, _openFull=openFull;
+  if(EMBED_MODE==="1"){
+    closeModal=function(){ _close(); try{ parent.postMessage({na:"close"},"*"); }catch(e){} };
+    openFull=function(){ if(curId) try{ window.top.location.href=NEW_URL(curId); }catch(e){ location.href=NEW_URL(curId); } };
+    window.addEventListener("message",e=>{ if(e.data&&e.data.na==="open"){ curId=e.data.id; openModal(e.data.id); } });
+    try{ parent.postMessage({na:"ready"},"*"); }catch(e){}
+  } else {
+    /* 전체 화면: #view-full 과 그 조상만 남기고 나머지는 숨김 */
+    const vf=document.getElementById("view-full");
+    const hideOthers=()=>{ let n=vf;
+      while(n&&n!==document.body){
+        [...n.parentElement.children].forEach(sib=>{ if(sib!==n&&!["SCRIPT","STYLE"].includes(sib.tagName)&&!["scrim","drawer"].includes(sib.id)&&!sib.classList.contains("rscrim")) sib.setAttribute("data-embed-hide",""); });
+        n=n.parentElement;
+      } };
+    hideOthers(); setTimeout(hideOthers,0); window.addEventListener("load",hideOthers);
+    st.textContent="[data-embed-hide],.home-return{display:none!important}html.embed body{padding-bottom:40px!important}";
+    closeFull=function(){ const a=ITEMS.find(x=>x.id===curId); try{ parent.postMessage({na:"back",cat:a?a.category:""},"*"); }catch(e){} };
+    copyLink=function(){ const b=document.getElementById("copyBtn"); navigator.clipboard?.writeText(NEW_URL(curId||"")).then(()=>{ b.textContent="✓ 복사됨"; setTimeout(()=>b.textContent="🔗 링크 복사",1600); }).catch(()=>{}); };
+    const id=new URLSearchParams(location.search).get("id");
+    if(id&&ITEMS.some(x=>x.id===id)){ try{ showTab("arc"); }catch(e){} curId=id; _openFull(); history.replaceState(null,"",location.pathname+location.search); }
+  }
+}
+/* 예전 자료실 주소로 직접 들어오면 새 자료실로 안내 (예전 화면은 ?old=1 로만 열림) */
+if(!EMBED && window.top===window && !new URLSearchParams(location.search).has("old")){
+  const h=location.hash.slice(1);
+  let to="archive-preview.html";
+  if(h && ITEMS.some(x=>x.id===h)) to+="?item="+encodeURIComponent(h);
+  else if(/^cal/.test(h)) to+="?tab=cal";
+  location.replace(to);
 }
 (function boot(){ if(EMBED) return;
   const hs=location.hash.slice(1);

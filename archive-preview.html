@@ -193,6 +193,10 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
 .calnote{font-size:12px;color:var(--muted);margin:12px 4px 0;line-height:1.6}
 .foot{padding-block:10px 40px;color:var(--muted);font-size:12.5px}
 
+/* ─ 업무 전체 화면 (새 자료실 머리글 아래에 기존 상세 내용) ─ */
+#v-item{padding:0}
+#fullf{position:fixed;left:0;right:0;bottom:0;top:var(--hh,76px);width:100%;height:calc(100% - var(--hh,76px));border:0;background:#f6f3ec}
+body.item-on .foot{display:none}
 /* ─ 업무 상세 창 (기존 자료실 상세 화면을 오른쪽 창으로) ─ */
 #detail{position:fixed;inset:0;width:100%;height:100%;border:0;z-index:60;background:transparent;color-scheme:normal}
 .dload{position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:61;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:14px;font-weight:700;box-shadow:0 20px 40px -20px rgba(0,0,0,.35);display:flex;align-items:center;gap:10px}
@@ -361,6 +365,7 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
     </section>
   </section>
 </main>
+<main id="v-item" class="view"><iframe id="fullf" title="업무 전체 화면"></iframe></main>
 <div class="dim" id="dim"></div>
 <iframe id="detail" title="업무 상세" hidden></iframe>
 <div class="dload" id="dload" hidden><span></span>자료를 불러오는 중입니다…</div>
@@ -521,10 +526,20 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeGy()});
 
 renderWork();renderChk();renderCal();
 var hv=(location.hash||"").slice(1),QP=new URLSearchParams(location.search);
+if(QP.get("item")){
+  var hh=function(){document.documentElement.style.setProperty("--hh",$(".top").offsetHeight+"px")};hh();window.addEventListener("resize",hh);
+  document.body.classList.add("item-on");
+  $$(".view").forEach(function(e){e.classList.toggle("on",e.id==="v-item")});
+  $$(".menu button").forEach(function(b){b.classList.remove("on")});
+  $("#fullf").src="archive.html?embed=full&id="+encodeURIComponent(QP.get("item"));
+  window.addEventListener("message",function(e){if(e.data&&e.data.na==="back"){location.href="archive-preview.html"+(e.data.cat?"?category="+encodeURIComponent(e.data.cat):"")}});
+  $$(".menu button").forEach(function(b){b.addEventListener("click",function(){document.body.classList.remove("item-on");history.replaceState(null,"","archive-preview.html#"+b.dataset.v)})});
+  hv="__item";
+}
 if(!hv&&QP.get("tab"))hv=QP.get("tab");
 if(QP.get("category")&&ORDER[QP.get("category")]){cur=QP.get("category");renderWork();if(!hv)hv="work"}
 if(/^gy-\d+$/.test(hv)){var gj=+hv.slice(3),gg=GY[gj];show("cal");if(gg){mi=CAL.findIndex(function(c){return c.y===+gg.d.slice(0,4)&&c.m===+gg.d.slice(5,7)});renderCal();openGy(gj)}}
-else show(["work","chk","cal"].indexOf(hv)>=0?hv:"work");
+else if(hv!=="__item")show(["work","chk","cal"].indexOf(hv)>=0?hv:"work");
 </script>
 </body>
 </html>
