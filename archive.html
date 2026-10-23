@@ -3051,7 +3051,22 @@ document.addEventListener("keydown",e=>{ if(e.key==="/"&&!/INPUT|TEXTAREA/.test(
 
 render();
 document.getElementById("arcCount").textContent=ITEMS.length;
-(function boot(){
+/* ── 새 자료실(archive-preview)에서 상세 창만 띄우는 모드 ── */
+const EMBED=new URLSearchParams(location.search).get("embed")==="1";
+if(EMBED){
+  document.documentElement.classList.add("embed");
+  const keep=new Set(["scrim","drawer","rscrim"]);
+  [...document.body.children].forEach(el=>{ if(el.tagName!=="SCRIPT" && !keep.has(el.id) && !el.classList.contains("rscrim")) el.style.display="none"; });
+  const st=document.createElement("style");
+  st.textContent="html.embed,html.embed body{background:transparent!important;overflow:hidden!important}html.embed body>*:not(#scrim):not(#drawer):not(.rscrim):not(script):not(style){display:none!important}";
+  document.head.appendChild(st);
+  const _close=closeModal;
+  closeModal=function(){ _close(); try{ parent.postMessage({na:"close"},"*"); }catch(e){} };
+  openFull=function(){ if(curId) try{ window.top.location.href="archive.html#"+curId; }catch(e){ location.href="archive.html#"+curId; } };
+  window.addEventListener("message",e=>{ if(e.data&&e.data.na==="open"){ curId=e.data.id; openModal(e.data.id); } });
+  try{ parent.postMessage({na:"ready"},"*"); }catch(e){}
+}
+(function boot(){ if(EMBED) return;
   const hs=location.hash.slice(1);
   const mm=hs.match(/^cal-(\d{4})-(\d{2})$/);
   if(mm){ calY=+mm[1]; calM=+mm[2]; showTab("cal"); return; }
