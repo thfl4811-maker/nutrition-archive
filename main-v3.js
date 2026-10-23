@@ -141,16 +141,28 @@
   /* ── 4. 슬로건 + 벽 ── */
   gsap.from('.slogan-title, .slogan-brand, .slogan-sub', { y:30, opacity:0, duration:.9, stagger:.15, ease:'power2.out',
     scrollTrigger:{ trigger:'.slogan', start:'top 75%' } });
-  gsap.from('.tg-frame', { y:60, opacity:0, scale:.96, duration:1.1, ease:'power3.out',
-    scrollTrigger:{ trigger:'.tg', start:'top 85%' } });
-  gsap.from('.tg .cell', { y:30, opacity:0, duration:.8, stagger:.1, ease:'power2.out',
-    scrollTrigger:{ trigger:'.tg', start:'top 75%' } });
 
-  /* ── 4-1. 흐르는 바둑판: 줄마다 반대 방향으로 ── */
-  [['.frow.r1',0,-22],['.frow.r2',-22,0],['.frow.r3',-4,-26]].forEach(function(r){
-    gsap.fromTo(r[0], { xPercent:r[1] }, { xPercent:r[2], ease:'none',
-      scrollTrigger:{ trigger:'.flow', start:'top bottom', end:'bottom top', scrub:true } });
-  });
+
+  /* ── 4-1. 폴더 필름: 가운데는 정면, 양옆은 작아지며 비스듬히 물러남 ── */
+  var reel=$('#reel');
+  if (reel){
+    var rt=$$('.rtile',reel), N=rt.length, off={v:2};
+    function layout(){
+      var w=rt[0].offsetWidth;
+      rt.forEach(function(t,i){
+        var d=i-off.v, ad=Math.abs(d), c=Math.min(ad,1);
+        var x=Math.sign(d)*(c*w*.66+Math.max(ad-1,0)*w*.44);
+        var ry=-Math.sign(d)*c*38, z=-ad*120, y=ad*ad*6, sc=1-Math.min(ad,4)*.06;
+        t.style.transform='translate(-50%,-50%) translate3d('+x+'px,'+y+'px,'+z+'px) rotateY('+ry+'deg) scale('+sc+')';
+        t.style.zIndex=100-Math.round(ad*10);
+        t.style.opacity=ad>3.4?0:(ad>2.6?(3.4-ad)/.8:1);
+        t.classList.toggle('on',ad<.5);
+      });
+    }
+    layout(); window.addEventListener('resize',layout);
+    gsap.to(off,{ v:N-3, ease:'none', onUpdate:layout,
+      scrollTrigger:{ trigger:'.reel', start:'top 90%', end:'bottom 10%', scrub:.6 } });
+  }
 
   /* ── 5. Why: 흩어진 글자가 모이기 ── */
   $$('.scatter').forEach(function(h){
