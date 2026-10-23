@@ -10,9 +10,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Noto+Sans+KR:wght@400;500;700;900&family=Gaegu:wght@700&display=swap">
 <link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="v2.css">
 </head>
 <body>
-<a class="skip" href="archive.html">자료실로 바로 가기</a>
+<a class="skip" href="archive-preview.html">자료실로 바로 가기</a>
 
 <!-- ───────── 1. 인트로: 식판 창 속으로 ───────── -->
 <section class="intro" id="intro" aria-label="식판 속 세상으로 들어가는 첫 화면">
@@ -36,7 +37,10 @@
 
     <div class="chev" aria-hidden="true"><i></i><i></i><i></i></div>
 
-    <div class="intro-giant" aria-hidden="true"><span>NUTRITION</span> <span>ARCHIVE</span></div>
+    <div class="lanes" aria-hidden="true">
+      <p class="lanes-words"><span class="op">운영</span><i>·</i><span class="hy">위생</span><i>·</i><span class="ed">교육</span></p>
+      <p class="lanes-sub">학교급식 업무를 한 식판에</p>
+    </div>
     <div class="intro-fade" aria-hidden="true"></div>
   </div>
 </section>
@@ -46,11 +50,11 @@
   <a class="logo" href="#about"><svg class="mark" viewBox="0 0 44 32" aria-hidden="true"><defs><linearGradient id="trS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f5f7"/><stop offset="1" stop-color="#a3abb3"/></linearGradient><linearGradient id="trC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa2aa"/><stop offset="1" stop-color="#d9dde1"/></linearGradient></defs><rect x="1" y="1" width="42" height="30" rx="7" fill="url(#trS)" stroke="#8a929a" stroke-width="1"/><g fill="url(#trC)" stroke="#8a929a" stroke-width=".8"><rect x="5" y="4.5" width="10" height="8" rx="2.5"/><rect x="17" y="4.5" width="10" height="8" rx="2.5"/><rect x="29" y="4.5" width="10" height="8" rx="2.5"/><rect x="5" y="15" width="16" height="12.5" rx="3"/><rect x="23" y="15" width="16" height="12.5" rx="3"/></g><circle cx="10" cy="8.5" r="2.2" fill="#f2a24a"/><circle cx="22" cy="8.5" r="2.2" fill="#4d7fe8"/><circle cx="34" cy="8.5" r="2.2" fill="#4fae6a"/></svg><b class="en">NUTRITION ARCHIVE</b></a>
   <nav aria-label="메인 메뉴">
     <a href="guide.html">소개</a>
-    <a href="archive.html">자료실</a>
-    <a href="archive.html?tab=chk">점검표</a>
-    <a href="archive.html?tab=cal">급식달력 <em class="soon">2027 공개 예정</em></a>
+    <a href="archive-preview.html">자료실</a>
+    <a href="archive-preview.html?tab=chk">점검표</a>
+    <a href="archive-preview.html?tab=cal">급식달력 <em class="soon">2027 공개 예정</em></a>
   </nav>
-  <a class="nav-cta" href="archive.html">자료실 바로가기</a>
+  <a class="nav-cta" href="archive-preview.html">자료실 바로가기</a>
 </header>
 
 <main id="main">
@@ -123,17 +127,13 @@
   <h2 class="slogan-title"><span>업무는 더 간편하게,</span><span class="sl2">교육은 더 깊이 있게.</span></h2>
   <p class="slogan-brand"><svg class="mark" viewBox="0 0 44 32" aria-hidden="true"><defs><linearGradient id="trS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f5f7"/><stop offset="1" stop-color="#a3abb3"/></linearGradient><linearGradient id="trC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa2aa"/><stop offset="1" stop-color="#d9dde1"/></linearGradient></defs><rect x="1" y="1" width="42" height="30" rx="7" fill="url(#trS)" stroke="#8a929a" stroke-width="1"/><g fill="url(#trC)" stroke="#8a929a" stroke-width=".8"><rect x="5" y="4.5" width="10" height="8" rx="2.5"/><rect x="17" y="4.5" width="10" height="8" rx="2.5"/><rect x="29" y="4.5" width="10" height="8" rx="2.5"/><rect x="5" y="15" width="16" height="12.5" rx="3"/><rect x="23" y="15" width="16" height="12.5" rx="3"/></g><circle cx="10" cy="8.5" r="2.2" fill="#f2a24a"/><circle cx="22" cy="8.5" r="2.2" fill="#4d7fe8"/><circle cx="34" cy="8.5" r="2.2" fill="#4fae6a"/></svg>NUTRITION ARCHIVE</p>
   <p class="slogan-sub">영양교사의 업무 경험을 바탕으로 AI와 함께 정리한 학교급식 자료실입니다.</p>
-  <div class="wall-wrap" aria-hidden="true">
-    <div class="wall" id="wall">
-      <div class="row">
-        <img src="assets/ui-cal.jpg" alt=""><img src="assets/card1.jpg" alt=""><img src="assets/ui-arc.jpg" alt=""><img src="assets/card2.jpg" alt=""><img src="assets/ui-modal.jpg" alt=""><img src="assets/card3.jpg" alt="">
-      </div>
-      <div class="row">
-        <img src="assets/card5.jpg" alt=""><img src="assets/ui-chk.jpg" alt=""><img src="assets/card6.jpg" alt=""><img src="assets/ui-insp.jpg" alt=""><img src="assets/card4.jpg" alt=""><img src="assets/ui-board.jpg" alt="">
-      </div>
-      <div class="row">
-        <img src="assets/ui-search.jpg" alt=""><img src="assets/banner-top.jpg" alt=""><img src="assets/ui-calbot.jpg" alt=""><img src="assets/card1.jpg" alt=""><img src="assets/ui-cal.jpg" alt=""><img src="assets/card2.jpg" alt="">
-      </div>
+  <div class="tg" id="tg">
+    <div class="tg-frame">
+      <figure class="cell s"><div class="ph"><img src="assets/gb-arc.jpg" alt="쌀이가 주황·파랑·초록 서류철을 서랍장에 정리하고 있어요." loading="lazy"></div><figcaption><b>자료실</b><span>업무 46건을 운영·위생·교육으로</span></figcaption></figure>
+      <figure class="cell s"><div class="ph"><img src="assets/gb-chk.jpg" alt="찬이가 클립보드의 점검 항목에 체크하고 있어요." loading="lazy"></div><figcaption><b>점검표</b><span>위생 38 · 운영 12 항목과 관련 서류</span></figcaption></figure>
+      <figure class="cell s"><div class="ph"><img src="assets/gb-cal.jpg" alt="꾹이가 단풍잎과 눈송이가 붙은 탁상 달력을 넘기고 있어요." loading="lazy"></div><figcaption><b>급식달력</b><span>2027 공개 예정 · 미리보기</span></figcaption></figure>
+      <figure class="cell l"><div class="ph"><img src="assets/gb-base.jpg" alt="삼총사가 주황·파랑·초록 책 위에 앉아 읽고 쓰고 있어요." loading="lazy"></div><figcaption><b>근거 · 기준 · 서식</b><span>업무마다 법령 근거와 점검 기준, 서식을 함께</span></figcaption></figure>
+      <figure class="cell l"><div class="ph"><img src="assets/gb-edu.jpg" alt="삼총사가 칠판 앞에서 팥죽과 김치를 들고 수업하고 있어요." loading="lazy"></div><figcaption><b>계기교육</b><span>급식과 이어지는 식생활 교육 자료</span></figcaption></figure>
     </div>
   </div>
 </section>
@@ -143,7 +143,6 @@
   <div class="why-head">
     <h2 class="scatter" aria-label="What's inside the archive"><span class="w">WHAT'S INSIDE</span><span class="w">THE ARCHIVE</span></h2>
     <p class="why-copy">
-      영양아카이브는 단순한 자료 모음이 아닙니다.<br>
       업무 하나를 누르면 법령 근거, 2026 위생점검표·운영평가표 항목,<br>
       절차와 서식까지 순서대로 펼쳐집니다.
     </p>
@@ -151,38 +150,38 @@
 
   <div class="bento">
     <article class="b b1">
-      <span class="no">01</span>
+      <span class="no en">OPERATIONS</span>
       <div class="b-copy">
         <h3>운영 · 쌀이</h3>
         <p>운영계획서와 학운위 심의부터 예산·계약·정보공개까지.<br>매달, 매 학기 챙겨야 할 운영 업무를 근거와 서식으로 정리하였습니다.</p>
-        <a href="archive.html?category=운영">운영 자료 보기 ↗</a>
+        <a href="archive-preview.html?category=운영">운영 자료 보기 ↗</a>
       </div>
       <img class="b-char" src="assets/ssal.png" alt="숟가락을 든 쌀이">
     </article>
     <article class="b b2">
-      <span class="no">02</span>
+      <span class="no en">FOOD SAFETY</span>
       <div class="b-copy">
         <h3>위생 · 찬이</h3>
         <p>CCP/CP 기록지, 일일위생점검, 식중독 대책반.<br>2026 위생점검표 항목과 연계됩니다.</p>
-        <a href="archive.html?category=위생">위생 자료 보기 ↗</a>
+        <a href="archive-preview.html?category=위생">위생 자료 보기 ↗</a>
       </div>
       <img class="b-char" src="assets/chan.png" alt="포크를 든 찬이">
     </article>
     <article class="b b3">
-      <span class="no">03</span>
+      <span class="no en">EDUCATION</span>
       <div class="b-copy">
         <h3>교육 · 꾹이</h3>
         <p>정규 교육과정, 영양상담, 학부모·교직원 교육까지.<br>수업에 활용할 수 있는 영양·식생활 교육자료를 모았습니다.</p>
-        <a href="archive.html?category=교육">교육 자료 보기 ↗</a>
+        <a href="archive-preview.html?category=교육">교육 자료 보기 ↗</a>
       </div>
       <img class="b-char" src="assets/kkuk.png" alt="젓가락을 든 꾹이">
     </article>
     <article class="b b4">
-      <span class="no">04</span>
+      <span class="no en">CALENDAR · CHECKLIST</span>
       <div class="b-copy">
         <h3>급식달력 · 점검표 <em class="soon">2027 공개 예정</em></h3>
         <p>업무 주기를 연간 급식 일정에 맞춰 달력으로 제공하고,<br>점검표 항목에서 관련 서류를 바로 찾을 수 있습니다.</p>
-        <a href="archive.html?tab=cal">급식달력 미리보기 ↗</a>
+        <a href="archive-preview.html?tab=cal">급식달력 미리보기 ↗</a>
       </div>
       <div class="ticker" aria-label="아카이브에 담긴 업무 목록"><ol id="ticker"></ol></div>
     </article>
@@ -216,27 +215,23 @@
     <img src="assets/trio-cut.png" alt="쌀이, 찬이, 꾹이가 나란히 서서 인사해요.">
     <span class="ground" aria-hidden="true"></span>
   </figure>
-  <a class="cta-btn" href="archive.html">자료실 들어가기</a>
+  <a class="cta-btn" href="archive-preview.html">자료실 들어가기</a>
 </section>
 
 </main>
 
-<footer class="foot">
-  <div class="foot-giant" aria-hidden="true"><img src="assets/trio-cut.png" alt=""><span class="fg">NUTRITION ARCHIVE</span></div>
-  <div class="foot-row">
-    <div class="foot-about">
-      <p>AI 기반 학교급식 업무 효율화 플랫폼<br>경기도교육청 미래학교급식 플랫폼 TF</p>
-      <small>자료 기준: 학교급식법령 · 2026 학교급식 기본방향 · 학교급식 위생관리지침서(제6차 개정)<br>법령·지침 개정에 따라 내용이 달라질 수 있으므로 최신 공문을 함께 확인하시기 바랍니다.<br>© 영양아카이브</small>
-    </div>
-    <div class="foot-col">
-      <h4>Menu</h4>
-      <a href="guide.html">소개</a><a href="archive.html">자료실</a><a href="archive.html?tab=chk">점검표</a><a href="archive.html?tab=cal">급식달력 <em class="soon">2027 공개 예정</em></a>
-    </div>
-    <div class="foot-col">
-      <h4>Archive</h4>
-      <a href="archive.html?category=운영">운영 · 쌀이 ↗</a><a href="archive.html?category=위생">위생 · 찬이 ↗</a><a href="archive.html?category=교육">교육 · 꾹이 ↗</a>
-    </div>
+<footer class="foot v2">
+  <div class="fbrand">
+    <img src="assets/trio-cut.png" alt="" aria-hidden="true">
+    <p class="fg en">NUTRITION ARCHIVE</p>
+    <p class="ftag">AI 기반 학교급식 업무 효율화 플랫폼 · 경기도교육청 미래학교급식 플랫폼 TF</p>
   </div>
+  <nav class="flinks" aria-label="바닥글 메뉴">
+    <a href="guide.html">소개</a><a href="archive-preview.html">자료실</a><a href="archive-preview.html?tab=chk">점검표</a><a href="archive-preview.html?tab=cal">급식달력 <em class="soon">2027 공개 예정</em></a>
+    <span class="sep" aria-hidden="true"></span>
+    <a href="archive-preview.html?category=운영">운영 · 쌀이</a><a href="archive-preview.html?category=위생">위생 · 찬이</a><a href="archive-preview.html?category=교육">교육 · 꾹이</a>
+  </nav>
+  <small class="fnote">자료 기준: 학교급식법령 · 2026 학교급식 기본방향 · 학교급식 위생관리지침서(제6차 개정)<br>법령·지침 개정에 따라 내용이 달라질 수 있으므로 최신 공문을 함께 확인하시기 바랍니다. © 영양아카이브</small>
 </footer>
 
 <button class="totop" id="totop" type="button" aria-label="맨 위로">↑</button>
@@ -244,6 +239,6 @@
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
-<script src="main.js"></script>
+<script src="main-v2.js"></script>
 </body>
 </html>

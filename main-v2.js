@@ -98,7 +98,7 @@
   var tl = gsap.timeline({
     defaults:{ ease:'none' },
     scrollTrigger:{ trigger:'#intro', start:'top top', end:'bottom bottom', scrub:true,
-      onUpdate:function(self){ target = clamp((self.progress - 0.08) / 0.72); } }
+      onUpdate:function(self){ target = clamp((self.progress - 0.04) / 0.58); } }
   });
   tl.to('.intro-brand', { opacity:0, y:-60, duration:.12 }, 0)
     .to('.chev', { opacity:0, duration:.06 }, 0)
@@ -106,11 +106,13 @@
     .to(tray, { width:'100vw', height:'100vh', top:'50%', duration:.4, ease:'power1.inOut' }, .04)
     .to('.tray-window', { borderRadius:0, boxShadow:'0 0 0 0 rgba(0,0,0,0)', duration:.4, ease:'power1.inOut' }, .04)
     .to('.tray-handle', { opacity:0, duration:.1 }, .1)
-    .to('.tray-window video', { filter:'brightness(.45)', duration:.14 }, .7)
-    .to('.lanes-eyebrow', { opacity:1, y:0, duration:.06 }, .72)
-    .to('.lane', { opacity:1, y:0, duration:.06, stagger:.04 }, .75)
-    .to('.lanes', { opacity:.2, duration:.06 }, .92)
-    .to('.intro-fade', { opacity:1, duration:.1 }, .9);
+    .to('.tray-window video', { filter:'brightness(.36)', duration:.08 }, .6)
+    .to('.lanes-words span', { opacity:1, y:0, duration:.05, stagger:.035 }, .62)
+    .to('.lanes-words i', { opacity:.5, duration:.04 }, .66)
+    .to('.lanes-sub', { opacity:1, y:0, duration:.05 }, .7)
+    .to('.lanes', { opacity:0, y:-40, duration:.1 }, .86)
+    .to('.tray-window', { scale:1.08, filter:'blur(6px)', duration:.22 }, .78)
+    .to('.intro-fade', { opacity:.9, duration:.18 }, .82);
 
   /* 상단 메뉴 · 맨 위로 */
   ScrollTrigger.create({ trigger:'#main', start:'top 70%', onEnter:function(){ nav.classList.add('on'); totop.classList.add('on'); },
