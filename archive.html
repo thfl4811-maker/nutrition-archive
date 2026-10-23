@@ -3057,6 +3057,13 @@ const EMBED=EMBED_MODE==="1"||EMBED_MODE==="full";
 const NEW_URL=id=>new URL("archive-preview.html?item="+encodeURIComponent(id),location.href).href;
 if(EMBED){
   document.documentElement.classList.add("embed");
+  /* 새 자료실 창 안에서는 구글 드라이브 내려받기·바깥 링크를 새 탭으로 (창 안에서는 열리지 않음) */
+  const fixLinks=()=>document.querySelectorAll("a[href]").forEach(a=>{
+    let u; try{ u=new URL(a.getAttribute("href"),location.href); }catch(_){ return; }
+    if(u.origin!==location.origin && a.target!=="_blank"){ a.target="_blank"; a.rel="noopener"; a.removeAttribute("download"); }
+  });
+  new MutationObserver(fixLinks).observe(document.documentElement,{childList:true,subtree:true});
+  document.addEventListener("click",fixLinks,true);
   const st=document.createElement("style");
   if(EMBED_MODE==="1"){
     st.textContent="html.embed,html.embed body{background:transparent!important;overflow:hidden!important}html.embed body>*:not(#scrim):not(#drawer):not(.rscrim):not(script):not(style){display:none!important}";
