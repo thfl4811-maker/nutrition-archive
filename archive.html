@@ -2611,11 +2611,11 @@ const SHEETS=[["cover","위생표지"],["h1","위생(1)"],["h2","위생(2)"],["h
 function sheetHTML(){
   const r=rec(),T=totals(r);
   return `<div class="xbar">
-    <button class="pri" onclick="xPrint('all')">🖨 전체 인쇄 (6장)</button><button onclick="xPrint('one')">이 시트만 인쇄</button>
-    <button onclick="xBackup()">점검결과 저장(파일)</button><label class="b">불러오기<input type="file" accept=".json" hidden onchange="xLoad(this)"></label>
+    <button class="pri" onclick="xExcel(this)">📥 엑셀 양식으로 내려받기</button><button onclick="xPrint('all')">🖨 전체 인쇄 (6장)</button><button onclick="xPrint('one')">이 시트만 인쇄</button>
+    <button onclick="xBackup()" title="입력한 내용을 파일로 저장해 다른 컴퓨터에서 이어서 쓸 수 있어요">다른 컴퓨터로 옮기기(저장)</button><label class="b" title="옮기기용으로 저장한 파일(.json)을 불러와요">옮긴 파일 불러오기<input type="file" accept=".json" hidden onchange="xLoad(this)"></label>
     <button onclick="xReset()">새 점검표(모두 적합으로)</button>
     <span class="xsum">위생 총점 <b>${T.t}</b>점 · 등급 <b>${T.g}</b> <small>(1) ${T.a} + (2) ${T.b} − 감점 ${T.c}</small></span></div>
-  <p class="ipnote s">엑셀 점검표와 같은 양식이에요. 처음엔 모두 <b>적합·우수</b>로 채워져 있으니 <b>지적된 항목만 바꾸세요.</b> 비고 칸은 목록에서 고르거나 직접 써도 돼요. 입력은 자동 저장됩니다.</p>
+  <p class="ipnote s">엑셀 점검표와 같은 양식이에요. 처음엔 모두 <b>적합·우수</b>로 채워져 있으니 <b>지적된 항목만 바꾸세요.</b> 비고 칸은 목록에서 고르거나 직접 써도 돼요. 입력은 자동 저장되고, <b>📥 엑셀 양식으로 내려받기</b>를 누르면 교육청 엑셀 양식(6장)에 입력한 값이 채워진 파일을 받을 수 있어요.</p>
   <div class="xtabs">${SHEETS.map(([k,l])=>`<button class="${ipS.sheet===k?'on':''}" onclick="ipS.sheet='${k}';ipRender()">${l}</button>`).join("")}</div>
   <div class="xwrap">${SHEETS.map(([k])=>`<div class="xsheet" data-s="${k}" ${ipS.sheet===k?"":"hidden"}>${SHEETFN[k](r,T)}</div>`).join("")}</div>
   <datalist id="dl_conf1"><option value="영양교사"><option value="영양사"></datalist><datalist id="dl_conf2"><option value="교장"><option value="교감"><option value="행정실장"></datalist>`;
@@ -2685,6 +2685,137 @@ function noteCell(path,val,opts,bad){const id="dl_"+path.replace(/\./g,"_");
 function xReset(){if(!confirm("새 점검표로 시작할까요? 지금 입력한 내용은 지워져요. (먼저 「점검결과 저장」을 권장해요)"))return;const r=blankRec();const s=iget("school",{name:"",code:""});r.cover.school=s.name;r.cover.code=s.code;recSave(r);ipRender();}
 function xBackup(){const r=rec();const b=new Blob([JSON.stringify({kind:"insp2026",version:1,rec:r},null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=`${(r.cover&&r.cover.school)||"학교"}_2026_위생점검표및운영평가표_결과.json`;a.click();}
 function xLoad(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const j=JSON.parse(t);if(!j.rec||!j.rec.h1)throw 0;recSave(j.rec);ipRender();}catch(e){alert("점검결과 파일을 읽을 수 없어요.");}});}
+/* ---------- ③ 점검표 → 실제 엑셀 양식(.xlsx)으로 내려받기 ----------
+   assets/forms/insp2026-template.xlsx(교육청 양식 원본)를 그대로 복사해서 빈칸에 입력값만 채웁니다.
+   테두리·셀 병합·글꼴·인쇄 설정·계산식은 원본 그대로 남고, 파일을 열면 점수가 다시 계산돼요. */
+const XLSX_TPL="assets/forms/insp2026-template.xlsx";
+const XNS="http://schemas.openxmlformats.org/spreadsheetml/2006/main";
+function xLoadJSZip(){return window.JSZip?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="vendor/jszip.min.js";s.onload=ok;s.onerror=()=>no(new Error("JSZip을 불러오지 못했어요"));document.head.appendChild(s);});}
+function xColN(c){let n=0;for(const ch of c)n=n*26+ch.charCodeAt(0)-64;return n;}
+function xSplit(ref){const m=ref.match(/^([A-Z]+)(\d+)$/);return [m[1],+m[2]];}
+function XBook(zip,ssDoc){this.zip=zip;this.ss=ssDoc;this.ssMap=null;}
+XBook.prototype.str=function(t){ // 공유 문자열 번호
+  const root=this.ss.documentElement,pf=root.prefix?root.prefix+":":"";
+  if(!this.ssMap){this.ssMap=new Map();Array.prototype.forEach.call(root.getElementsByTagNameNS(XNS,"si"),(si,i)=>{if(si.getElementsByTagNameNS(XNS,"r").length)return;const tt=si.getElementsByTagNameNS(XNS,"t")[0];if(tt&&!this.ssMap.has(tt.textContent))this.ssMap.set(tt.textContent,i);});this._n=root.getElementsByTagNameNS(XNS,"si").length;}
+  if(this.ssMap.has(t))return this.ssMap.get(t);
+  const si=this.ss.createElementNS(XNS,pf+"si"),te=this.ss.createElementNS(XNS,pf+"t");
+  te.setAttributeNS("http://www.w3.org/XML/1998/namespace","xml:space","preserve");te.textContent=t;si.appendChild(te);root.appendChild(si);
+  const i=this._n++;this.ssMap.set(t,i);root.setAttribute("uniqueCount",String(this._n));
+  const c=+root.getAttribute("count")||0;root.setAttribute("count",String(c+1));return i;
+};
+function XSheet(book,doc){this.b=book;this.d=doc;const r=doc.documentElement;this.pf=r.prefix?r.prefix+":":"";this.sd=r.getElementsByTagNameNS(XNS,"sheetData")[0];}
+XSheet.prototype.el=function(n){return this.d.createElementNS(XNS,this.pf+n);};
+XSheet.prototype.cell=function(ref){
+  const [col,rn]=xSplit(ref);let row=null,after=null;
+  for(const r of this.sd.getElementsByTagNameNS(XNS,"row")){const n=+r.getAttribute("r");if(n===rn){row=r;break;}if(n>rn){after=r;break;}}
+  if(!row){row=this.el("row");row.setAttribute("r",String(rn));this.sd.insertBefore(row,after);}
+  let before=null;
+  for(const c of row.getElementsByTagNameNS(XNS,"c")){const cc=xSplit(c.getAttribute("r"))[0];if(cc===col)return c;if(xColN(cc)>xColN(col)){before=c;break;}}
+  const c=this.el("c");c.setAttribute("r",ref);row.insertBefore(c,before);return c;
+};
+XSheet.prototype._clear=function(c,keepF){Array.from(c.childNodes).forEach(k=>{if(!(keepF&&k.localName==="f"))c.removeChild(k);});c.removeAttribute("t");};
+/* 값 넣기: 계산식이 있던 칸이면 계산식을 지우고 값으로 바꿔요 */
+XSheet.prototype.set=function(ref,val){
+  const c=this.cell(ref);this._clear(c,false);
+  if(val===null||val===undefined||val==="")return;
+  const v=this.el("v");
+  if(typeof val==="number"){v.textContent=String(val);}
+  else{c.setAttribute("t","s");v.textContent=String(this.b.str(String(val)));}
+  c.appendChild(v);
+};
+/* 계산식 칸: 계산식은 그대로 두고, 열기 전 미리보기용 결과값만 맞춰 둬요 */
+XSheet.prototype.cache=function(ref,val){
+  const c=this.cell(ref);if(!c.getElementsByTagNameNS(XNS,"f").length)return this.set(ref,val);
+  this._clear(c,true);const v=this.el("v");
+  if(typeof val==="number")v.textContent=String(val);else{c.setAttribute("t","str");v.textContent=String(val??"");}
+  c.appendChild(v);
+};
+XSheet.prototype.like=function(ref,from){const st=this.cell(from).getAttribute("s");if(st!==null)this.cell(ref).setAttribute("s",st);};
+const xNum=v=>{const s=String(v??"").trim();return /^-?\d+(\.\d+)?$/.test(s)?+s:s;};
+const xDate=v=>{if(!v)return "2026   .   .";const [y,m,d]=v.split("-");return `${y}. ${+m}. ${+d}.`;};
+async function xBuildXlsx(r){
+  await xLoadJSZip();
+  const res=await fetch(XLSX_TPL);if(!res.ok)throw new Error("엑셀 양식 파일을 찾지 못했어요 ("+res.status+")");
+  const zip=await JSZip.loadAsync(await res.arrayBuffer());
+  const P=new DOMParser(),S=new XMLSerializer();
+  const read=async p=>P.parseFromString(await zip.file(p).async("string"),"application/xml");
+  const book=new XBook(zip,await read("xl/sharedStrings.xml"));
+  /* 시트 이름 → 파일 */
+  const wb=await read("xl/workbook.xml"),rels=await read("xl/_rels/workbook.xml.rels");
+  const tgt={};Array.from(rels.getElementsByTagName("Relationship")).forEach(x=>tgt[x.getAttribute("Id")]=x.getAttribute("Target"));
+  const files={},sheets={};
+  Array.from(wb.getElementsByTagNameNS(XNS,"sheet")).forEach(s=>{const id=s.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships","id");files[s.getAttribute("name")]="xl/"+tgt[id].replace(/^\/?(xl\/)?/,"");});
+  for(const n of Object.keys(files))sheets[n]=new XSheet(book,await read(files[n]));
+  const T=totals(r),c=r.cover||{},sch=iget("school",{name:"",code:""});
+
+  /* 위생(1): 16항목 평점 3/0, 비고 */
+  const s1=sheets["위생(1)"];
+  for(let n=1;n<=16;n++){const x=r.h1[n],row=n+4,bad=+x.p===0;
+    s1.set("F"+row,+x.p);s1.cache("C"+row,bad?"부적합":"적합");
+    s1.set("E"+row,x.m||"");}
+  s1.cache("G2",T.a);
+  /* 위생(2): 17~34번, 우수·보통·미흡 칸에 ☑ */
+  const s2=sheets["위생(2)"],R2={17:5,18:8,19:11,20:14,21:17,22:20,23:23,24:26,25:29,26:32,27:35,28:38,29:41,30:43,31:45,32:48,33:51,34:54};
+  for(let n=17;n<=34;n++){const x=r.h2[n],row=R2[n],sc=HY(n).sc,p=+x.p,top=sc[0][1];
+    s2.set("G"+row,p);for(let j=1;j<sc.length;j++)s2.set("F"+(row+j),"");
+    sc.forEach((z,j)=>s2.cache("D"+(row+j),z[1]===p?"☑":"□"));
+    s2.set("F"+row,x.m||"");}
+  s2.cache("H2",T.b);
+  /* 위생(3): 감점 4항목 */
+  const s3=sheets["위생(3)"];
+  for(let n=1;n<=4;n++){const x=r.h3[n],row=n+4;s3.set("D"+row,+x.p||0);
+    s3.set("C"+row,x.m||"");}
+  s3.cache("E2",-T.c);
+  /* 위생표지 */
+  const s0=sheets["위생표지"];
+  s0.set("A3",`[학교 관리번호 : ${c.code??sch.code??""} ]`);
+  const C8={A:"school",C:"found",E:"head",G:"cls",I:"stu",K:"staff",M:"reg",O:"nt",Q:"ck",S:"cw1",U:"cw2",V:"etc",X:"sum"};
+  for(const [col,k] of Object.entries(C8)){const v=k==="school"?(c.school??sch.name):c[k];if(v!==undefined&&v!=="")s0.set(col+"8",xNum(v));}
+  const C12={A:"mb",B:"ml",D:"md",F:"ms",I:"days"};
+  for(const [col,k] of Object.entries(C12))if(c[k]!==undefined&&c[k]!=="")s0.set(col+"12",xNum(c[k]));
+  if(c.op==="direct")s0.set("K12","○");
+  if(c.ctype)s0.set("M12",c.ctype);
+  if(c.cname)s0.set("N12",`( ${c.cname} )`);
+  if(c.srv==="hall")s0.set("Q12","○");if(c.srv==="class")s0.set("R12","○");if(c.srv==="both")s0.set("T12","○");
+  if(c.note)s0.set("V12",c.note);
+  const f1=[...Array(16)].map((_,i)=>i+1).filter(n=>+r.h1[n].p===0).map(n=>`${n}. ${r.h1[n].m||"부적합"}`);
+  const f2=[...Array(18)].map((_,i)=>i+17).filter(n=>+r.h2[n].p<HY(n).sc[0][1]).map(n=>`${n}. ${r.h2[n].m||(HY(n).sc.find(z=>z[1]===+r.h2[n].p)||[""])[0]}`);
+  const f3=[1,2,3,4].filter(n=>+r.h3[n].p>0).map(n=>`${n}. ${r.h3[n].m||"감점 "+r.h3[n].p+"점"}`);
+  s0.set("I15",f1.length?f1.join(" / "):"해당 사항 없음");
+  s0.set("I16",f2.length?f2.join(" / "):"해당 사항 없음");
+  s0.set("I17",f3.length?f3.join(" / "):"해당 사항 없음");
+  s0.cache("AA4",T.t);s0.cache("G13",T.g);
+  if(c.good)s0.set("I21",c.good);if(c.sug)s0.set("I22",c.sug);
+  s0.set("L24",xDate(c.date));
+  [["i1",25],["i2",26],["c1",27],["c2",28]].forEach(([p,row])=>{if(c[p+"o"])s0.set("J"+row,c[p+"o"]);if(c[p+"r"])s0.set("P"+row,c[p+"r"]);if(c[p+"n"])s0.set("U"+row,c[p+"n"]);});
+  /* 운영평가표: 교육청(법령 5) · 학교(자체 7) */
+  const sign=(sh,rows)=>rows.forEach(([p,row])=>{if(c[p+"o"]){sh.set("C"+row,c[p+"o"]);sh.like("C"+row,"E"+row);}if(c[p+"r"])sh.set("D"+row,"직급) "+c[p+"r"]);if(c[p+"n"])sh.set("E"+row,"성명) "+c[p+"n"]);});
+  const s4=sheets["운영(교육청)"];
+  for(let n=1;n<=5;n++){const x=r.o1[n];s4.set("F"+(n+7),x.v);s4.set("G"+(n+7),x.m||"");}
+  s4.set("D14",xDate(c.date));sign(s4,[["i1",16],["i2",17],["c1",18],["c2",19]]);
+  const s5=sheets["운영(학교)"];
+  for(let n=1;n<=7;n++){const x=r.o2[n];s5.set("F"+(n+6),x.v);s5.set("G"+(n+6),x.m||"");}
+  s5.set("D16",xDate(c.date));sign(s5,[["i1",18],["i2",19],["c1",20]]);
+
+  /* 저장: 파일을 열 때 점수를 다시 계산하도록 표시 */
+  const cp=wb.getElementsByTagNameNS(XNS,"calcPr")[0];if(cp)cp.setAttribute("fullCalcOnLoad","1");
+  zip.file("xl/workbook.xml",S.serializeToString(wb));
+  zip.file("xl/sharedStrings.xml",S.serializeToString(book.ss));
+  for(const n of Object.keys(files))zip.file(files[n],S.serializeToString(sheets[n].d));
+  return zip.generateAsync({type:"blob",compression:"DEFLATE",mimeType:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+}
+async function xExcel(btn){
+  const r=rec(),c=r.cover||{},old=btn?btn.textContent:"";
+  if(btn){btn.disabled=true;btn.textContent="엑셀 만드는 중…";}
+  try{
+    const blob=await xBuildXlsx(r);
+    const sch=(c.school||iget("school",{name:""}).name||"학교").replace(/[\\/:*?"<>|]/g,"");
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=`${sch}_2026_학교급식_위생점검표_운영평가표_${c.date||new Date().toISOString().slice(0,10)}.xlsx`;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  }catch(e){alert("엑셀 파일을 만들지 못했어요. ("+e.message+")\n인쇄 버튼으로 출력하거나 잠시 뒤 다시 시도해 주세요.");}
+  finally{if(btn){btn.disabled=false;btn.textContent=old;}}
+}
 function xPrint(which){
   const all=which==="all";
   let p=document.getElementById("prt");if(!p){p=document.createElement("div");p.id="prt";document.body.appendChild(p);}

@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="main.css">
 <link rel="stylesheet" href="v2.css">
 <link rel="stylesheet" href="v3.css">
+<link rel="stylesheet" href="v4.css">
+<script>try{if(sessionStorage.getItem("na-intro")||matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-seen")}catch(e){}</script>
 </head>
 <body>
 <a class="skip" href="archive-preview.html">자료실로 바로 가기</a>
@@ -36,7 +38,7 @@
       </div>
     </div>
 
-    <div class="chev" aria-hidden="true"><i></i><i></i><i></i></div>
+    <button class="intro-skip" id="introSkip" type="button">건너뛰기 <span aria-hidden="true">›</span></button>
 
     <div class="lanes" aria-hidden="true">
       <p class="lanes-words"><span class="op">운영</span><i>·</i><span class="hy">위생</span><i>·</i><span class="ed">교육</span></p>
@@ -46,17 +48,9 @@
   </div>
 </section>
 
-<!-- ───────── 상단 메뉴 ───────── -->
-<header class="nav" id="nav">
-  <a class="logo" href="#about"><svg class="mark" viewBox="0 0 44 32" aria-hidden="true"><defs><linearGradient id="trS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f5f7"/><stop offset="1" stop-color="#a3abb3"/></linearGradient><linearGradient id="trC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa2aa"/><stop offset="1" stop-color="#d9dde1"/></linearGradient></defs><rect x="1" y="1" width="42" height="30" rx="7" fill="url(#trS)" stroke="#8a929a" stroke-width="1"/><g fill="url(#trC)" stroke="#8a929a" stroke-width=".8"><rect x="5" y="4.5" width="10" height="8" rx="2.5"/><rect x="17" y="4.5" width="10" height="8" rx="2.5"/><rect x="29" y="4.5" width="10" height="8" rx="2.5"/><rect x="5" y="15" width="16" height="12.5" rx="3"/><rect x="23" y="15" width="16" height="12.5" rx="3"/></g><circle cx="10" cy="8.5" r="2.2" fill="#f2a24a"/><circle cx="22" cy="8.5" r="2.2" fill="#4d7fe8"/><circle cx="34" cy="8.5" r="2.2" fill="#4fae6a"/></svg><b class="en">NUTRITION ARCHIVE</b></a>
-  <nav aria-label="메인 메뉴">
-    <a href="guide.html">소개</a>
-    <a href="archive-preview.html">자료실</a>
-    <a href="archive-preview.html?tab=chk">점검표</a>
-    <a href="archive-preview.html?tab=cal">급식달력 <em class="soon">2027 공개 예정</em></a>
-  </nav>
-  <a class="nav-cta" href="archive-preview.html">자료실 바로가기</a>
-</header>
+<!-- ───────── 상단 메뉴 (모든 페이지 공통: nav.js) ───────── -->
+<header id="siteNav" data-theme="dark" data-active="home"></header>
+<script src="nav.js"></script>
 
 <main id="main">
 
@@ -127,7 +121,8 @@
 <section class="slogan">
   <h2 class="slogan-title"><span>업무는 더 간편하게,</span><span class="sl2">교육은 더 깊이 있게.</span></h2>
   <p class="slogan-brand"><svg class="mark" viewBox="0 0 44 32" aria-hidden="true"><defs><linearGradient id="trS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f5f7"/><stop offset="1" stop-color="#a3abb3"/></linearGradient><linearGradient id="trC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa2aa"/><stop offset="1" stop-color="#d9dde1"/></linearGradient></defs><rect x="1" y="1" width="42" height="30" rx="7" fill="url(#trS)" stroke="#8a929a" stroke-width="1"/><g fill="url(#trC)" stroke="#8a929a" stroke-width=".8"><rect x="5" y="4.5" width="10" height="8" rx="2.5"/><rect x="17" y="4.5" width="10" height="8" rx="2.5"/><rect x="29" y="4.5" width="10" height="8" rx="2.5"/><rect x="5" y="15" width="16" height="12.5" rx="3"/><rect x="23" y="15" width="16" height="12.5" rx="3"/></g><circle cx="10" cy="8.5" r="2.2" fill="#f2a24a"/><circle cx="22" cy="8.5" r="2.2" fill="#4d7fe8"/><circle cx="34" cy="8.5" r="2.2" fill="#4fae6a"/></svg>NUTRITION ARCHIVE</p>
-  <p class="slogan-sub">영양교사의 업무 경험을 바탕으로 AI와 함께 정리한 학교급식 자료실입니다.</p>
+  <p class="slogan-sub">영양·식생활교육 노션 연구단으로 함께 자료를 모아 온 영양교사들이<br class="dk"> <b>경기도교육청 미래학교급식 플랫폼 TF</b>로 모여 만든 학교급식 자료실입니다.</p>
+  <p class="slogan-team"><span><em>팀장</em>김소리</span><span><em>팀원</em>양지현 <i aria-hidden="true">·</i> 이수빈 <i aria-hidden="true">·</i> 임서영</span></p>
 </section>
 
 
@@ -205,7 +200,7 @@
 <!-- ───────── 6. 숫자로 보는 아카이브 ───────── -->
 <section class="numbers">
   <div class="numbers-head">
-    <p>영양교사 TF가 노션에 축적해 온 업무 자료를 하나의 사이트로 정리하였습니다.<br>
+    <p>미래학교급식 플랫폼 TF가 노션 연구단 시절부터 축적해 온 업무 자료를 하나의 사이트로 정리하였습니다.<br>
     학교급식법령, 2026 학교급식 기본방향, 제6차 개정 위생관리지침서를 기준으로<br>
     업무마다 근거와 점검 기준을 맞춰 두었습니다.</p>
     <h2 class="scatter right" aria-label="In numbers"><span class="w">IN</span><span class="w">NUMBERS</span></h2>
@@ -239,9 +234,10 @@
     <img src="assets/trio-cut.png" alt="" aria-hidden="true">
     <p class="fg en">NUTRITION ARCHIVE</p>
     <p class="ftag">AI 기반 학교급식 업무 효율화 플랫폼 · 경기도교육청 미래학교급식 플랫폼 TF</p>
+    <p class="fteam">팀장 김소리 · 팀원 양지현 · 이수빈 · 임서영</p>
   </div>
   <nav class="flinks" aria-label="바닥글 메뉴">
-    <a href="guide.html">소개</a><a href="archive-preview.html">자료실</a><a href="archive-preview.html?tab=chk">점검표</a><a href="archive-preview.html?tab=cal">급식달력 <em class="soon">2027 공개 예정</em></a>
+    <a href="guide.html">이용안내</a><a href="archive-preview.html">자료실</a><a href="archive-preview.html?tab=chk">점검표</a><a href="archive-preview.html?tab=cal">급식달력 <em class="soon">2027 공개 예정</em></a>
     <span class="sep" aria-hidden="true"></span>
     <a href="archive-preview.html?category=운영">운영 · 쌀이</a><a href="archive-preview.html?category=위생">위생 · 찬이</a><a href="archive-preview.html?category=교육">교육 · 꾹이</a>
   </nav>
@@ -253,6 +249,6 @@
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
-<script src="main-v3.js"></script>
+<script src="main-v4.js"></script>
 </body>
 </html>

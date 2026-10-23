@@ -1,0 +1,43 @@
+/* v4: 첫 화면 인트로를 스크롤 대신 5초 자동 재생으로, 상단 메뉴는 nav.js 공통 메뉴로 */
+
+/* ── 인트로: 화면 전체를 덮는 막. 재생이 끝나면 걷혀서 아래 GOOD MEALS 화면이 드러나요 ── */
+.intro{position:fixed;inset:0;height:100vh;height:100svh;z-index:45}
+.intro-pin{position:absolute;inset:0;height:auto}
+#main{margin-top:0}
+html.intro-seen .intro{display:none}
+html.intro-lock,html.intro-lock body{overflow:hidden}
+
+/* 상단 메뉴(높이 --sn-h) 아래로 로고 글자를 내려요 */
+.intro-brand{top:calc(var(--sn-h,64px) + clamp(16px,6vh,90px))}
+.tray{top:calc(50% + var(--sn-h,64px) * .5 + 4vh)}
+@media (max-height:620px){.intro-brand{top:calc(var(--sn-h,64px) + 12px)}.intro-sub{display:none}}
+
+/* 건너뛰기 */
+.intro-skip{position:absolute;right:calc(24px + env(safe-area-inset-right,0px));bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:6;
+  display:flex;align-items:center;gap:6px;padding:9px 16px 9px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(7,8,10,.5);color:var(--paper);font:700 14px/1 var(--f-body);cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .2s,opacity .3s}
+.intro-skip:hover{background:rgba(7,8,10,.8)}
+.intro-skip span{font-size:18px;line-height:0;transform:translateY(-1px)}
+
+/* 재생 진행 막대 */
+.intro-bar{position:absolute;left:0;bottom:0;height:3px;width:100%;z-index:6;background:linear-gradient(90deg,#f2a24a,#4d7fe8,#4fae6a);transform-origin:0 50%;transform:scaleX(0);opacity:.85}
+
+@media (prefers-reduced-motion:reduce){.intro{display:none}}
+
+/* ── 만든 사람들: 소개 칸(슬로건) 아래 팀 이름 ── */
+.slogan-sub{line-height:1.8}
+.slogan-sub b{color:var(--paper);font-weight:700}
+.slogan-team{margin:18px auto 0;padding:0 16px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 12px;font-size:clamp(15px,1.3vw,18px);font-weight:700;color:var(--paper)}
+.slogan-team span{display:inline-flex;align-items:center;gap:7px}
+.slogan-team em{font-style:normal;font-size:.72em;font-weight:700;letter-spacing:.04em;color:var(--leaf);border:1px solid rgba(158,224,106,.4);border-radius:999px;padding:1px 9px}
+.slogan-team i{font-style:normal;color:var(--dim)}
+.fteam{margin:6px 0 0;color:var(--dim);font-size:13px}
+.slogan-team{gap:8px 22px}
+.slogan-team span{white-space:nowrap}
+@media (max-width:640px){.slogan-sub br.dk{display:none}}
+.slogan-team{flex-wrap:nowrap;white-space:nowrap}
+@media (max-width:480px){.slogan-team{gap:10px;font-size:14px}.slogan-team span{gap:5px}.slogan-team em{font-size:11px;padding:1px 7px}}
+@media (max-width:350px){.slogan-team{font-size:12.5px;gap:8px}}
+
+/* 좁은 화면: 식판 칸 파일 이름이 잘리지 않게 줄바꿈 */
+@media (max-width:520px){.tcol .fchip{flex-wrap:wrap;overflow:visible;word-break:keep-all;overflow-wrap:anywhere}}

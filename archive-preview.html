@@ -172,9 +172,9 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
 .dcell .dn{font-weight:800;font-size:13.5px;width:27px;height:27px;display:grid;place-items:center;border-radius:50%;margin:-3px 0 2px -3px;flex:none}
 .dcell.sun .dn,.dcell.hol .dn{color:var(--red)}.dcell.sat .dn{color:var(--egg)}
 .dcell.today .dn{background:var(--mc);color:#fff}
-.ev{font-size:11px;font-weight:700;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:2px}
+.ev{font-size:11px;font-weight:700;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere;padding-left:2px}
 .ev.hol{color:var(--red)}.ev.term{color:#a0957f;font-weight:600}.ev.meal{color:var(--gold)}.ev.day{color:#6b7280;font-weight:600}
-.tk{display:block;font-size:11px;font-weight:700;line-height:1.35;padding:3px 7px 3px 6px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:3px solid}
+.tk{display:block;font-size:11px;font-weight:700;line-height:1.35;padding:3px 7px 3px 6px;border-radius:6px;word-break:keep-all;overflow-wrap:anywhere;border-left:3px solid}
 .tk.운영{background:var(--rice-s);color:var(--rice-d);border-color:var(--rice)}.tk.위생{background:var(--egg-s);color:var(--egg-d);border-color:var(--egg)}.tk.교육{background:var(--soup-s);color:var(--soup-d);border-color:var(--soup)}
 .tk:hover{filter:brightness(.96)}
 .mlist{background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 22px 44px -34px rgba(60,40,10,.45)}
@@ -195,7 +195,7 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
 
 /* ─ 업무 전체 화면 (새 자료실 머리글 아래에 기존 상세 내용) ─ */
 #v-item{padding:0}
-#fullf{position:fixed;left:0;right:0;bottom:0;top:var(--hh,76px);width:100%;height:calc(100% - var(--hh,76px));border:0;background:#f6f3ec}
+#fullf{position:fixed;left:0;right:0;bottom:0;top:var(--sn-h,65px);width:100%;height:calc(100% - var(--sn-h,65px));border:0;background:#f6f3ec}
 body.item-on .foot{display:none}
 /* ─ 업무 상세 창 (기존 자료실 상세 화면을 오른쪽 창으로) ─ */
 #detail{position:fixed;inset:0;width:100%;height:100%;border:0;z-index:60;background:transparent;color-scheme:normal}
@@ -204,7 +204,7 @@ body.item-on .foot{display:none}
 .dload span{width:16px;height:16px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--rice);animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 /* ─ 계기교육 ─ */
-.gyc{display:block;width:100%;text-align:left;border:0;background:#f5f2ec;padding:3px 7px;border-radius:6px;font:inherit;font-size:11px;font-weight:800;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--soup-d);cursor:pointer}
+.gyc{display:block;width:100%;text-align:left;border:0;background:#f5f2ec;padding:3px 7px;border-radius:6px;font:inherit;font-size:11px;font-weight:800;line-height:1.3;word-break:keep-all;overflow-wrap:anywhere;color:var(--soup-d);cursor:pointer}
 .gyc::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:1px;background:currentColor}
 .gyc:hover{text-decoration:underline}
 .gyc.c-법정기념일{color:#a85c17;background:#fdf1e3}.gyc.c-국제기념일{color:var(--egg-d);background:#edf2fe}.gyc.c-24절기{color:#6f6148;background:#f3efe6}.gyc.c-범교과{color:var(--soup-d);background:var(--soup-s)}
@@ -288,15 +288,8 @@ body.item-on .foot{display:none}
 <body>
 
 
-<header class="top"><div class="wrap">
-  <a class="logo" href="./"><svg width="40" height="29" viewBox="0 0 44 32"><defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f5f7"/><stop offset="1" stop-color="#a3abb3"/></linearGradient><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa2aa"/><stop offset="1" stop-color="#d9dde1"/></linearGradient></defs><rect x="1" y="1" width="42" height="30" rx="7" fill="url(#a)" stroke="#8a929a"/><g fill="url(#b)" stroke="#8a929a" stroke-width=".8"><rect x="5" y="4.5" width="10" height="8" rx="2.5"/><rect x="17" y="4.5" width="10" height="8" rx="2.5"/><rect x="29" y="4.5" width="10" height="8" rx="2.5"/><rect x="5" y="15" width="16" height="12.5" rx="3"/><rect x="23" y="15" width="16" height="12.5" rx="3"/></g><circle cx="10" cy="8.5" r="2.2" fill="#f2a24a"/><circle cx="22" cy="8.5" r="2.2" fill="#4d7fe8"/><circle cx="34" cy="8.5" r="2.2" fill="#4fae6a"/></svg><b>NUTRITION ARCHIVE</b></a>
-  <nav class="menu" aria-label="자료실 메뉴">
-    <button data-v="work" class="on">업무 자료</button>
-    <button data-v="chk">점검표</button>
-    <button data-v="cal">급식달력 <span class="soon">2027 공개 예정</span></button>
-  </nav>
-  <a class="home" href="./">첫 화면 ↗</a>
-</div></header>
+<header id="siteNav" data-theme="light" data-active="arc"></header>
+<script src="nav.js"></script>
 
 <!-- ───── 업무 자료 ───── -->
 <main id="v-work" class="view on">
@@ -386,8 +379,16 @@ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp
 var store={get:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
 /* 보기 전환 */
-function show(v){$$(".view").forEach(function(e){e.classList.toggle("on",e.id==="v-"+v)});$$(".menu button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v)});window.scrollTo(0,0);store.set("na-view",v)}
-$$(".menu button").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.v)})});
+var NAVK={work:"arc",chk:"chk",cal:"cal"};
+function show(v){$$(".view").forEach(function(e){e.classList.toggle("on",e.id==="v-"+v)});if(window.SiteNav)SiteNav.setActive(NAVK[v]);window.scrollTo(0,0);store.set("na-view",v)}
+/* 공통 상단 메뉴(nav.js) 클릭: 페이지를 다시 열지 않고 화면만 바꿔요 */
+function navUrl(v,c){return "archive-preview.html"+(c?"?category="+encodeURIComponent(c):v==="work"?"":"?tab="+v)}
+if(window.SiteNav)SiteNav.onNav(function(k,c){
+  var v={arc:"work",chk:"chk",cal:"cal"}[k];if(!v)return false;
+  if(document.body.classList.contains("item-on")){document.body.classList.remove("item-on");$("#fullf").removeAttribute("src")}
+  if(c){cur=c;q="";$("#q").value="";renderWork()}
+  show(v);history.replaceState(null,"",navUrl(v,c));return true;
+});
 
 /* 업무 자료 */
 var cur="운영",q="";
@@ -412,8 +413,9 @@ function renderWork(){
   });
   $("#list").innerHTML=html||'<div class="empty">“'+esc(q)+'”에 해당하는 업무가 없습니다. 다른 낱말로 찾아보세요.</div>';
   $$(".cat").forEach(function(b){b.classList.toggle("sel",!q&&b.dataset.c===cur)});
+  if(window.SiteNav)SiteNav.setSub(q?null:cur);
 }
-$$(".cat").forEach(function(b){b.addEventListener("click",function(){cur=b.dataset.c;q="";$("#q").value="";renderWork()})});
+$$(".cat").forEach(function(b){b.addEventListener("click",function(){cur=b.dataset.c;q="";$("#q").value="";renderWork();history.replaceState(null,"",navUrl("work",cur))})});
 $("#q").addEventListener("input",function(e){q=e.target.value.trim();renderWork()});
 $$(".chips button").forEach(function(c){c.addEventListener("click",function(){$("#q").value=c.textContent;q=c.textContent;renderWork();$("#q").focus()})});
 document.addEventListener("keydown",function(e){if(e.key==="/"&&$("#v-work").classList.contains("on")&&document.activeElement.id!=="q"){e.preventDefault();$("#q").focus()}});
@@ -527,13 +529,11 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeGy()});
 renderWork();renderChk();renderCal();
 var hv=(location.hash||"").slice(1),QP=new URLSearchParams(location.search);
 if(QP.get("item")){
-  var hh=function(){document.documentElement.style.setProperty("--hh",$(".top").offsetHeight+"px")};hh();window.addEventListener("resize",hh);
   document.body.classList.add("item-on");
   $$(".view").forEach(function(e){e.classList.toggle("on",e.id==="v-item")});
-  $$(".menu button").forEach(function(b){b.classList.remove("on")});
+  if(window.SiteNav){SiteNav.setActive("arc");SiteNav.showSub(false)}
   $("#fullf").src="archive.html?embed=full&id="+encodeURIComponent(QP.get("item"));
   window.addEventListener("message",function(e){if(e.data&&e.data.na==="back"){location.href="archive-preview.html"+(e.data.cat?"?category="+encodeURIComponent(e.data.cat):"")}});
-  $$(".menu button").forEach(function(b){b.addEventListener("click",function(){document.body.classList.remove("item-on");history.replaceState(null,"","archive-preview.html#"+b.dataset.v)})});
   hv="__item";
 }
 if(!hv&&QP.get("tab"))hv=QP.get("tab");
