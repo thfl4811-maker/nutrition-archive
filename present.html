@@ -212,9 +212,11 @@ h2.tt{font-size:68px;line-height:1.22;font-weight:900;letter-spacing:-.025em;mar
 .road{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:60px 0 60px;position:relative}
 .road::before{content:"";position:absolute;left:30px;right:30px;top:29px;height:3px;background:linear-gradient(90deg,var(--op),var(--hy),var(--ed));opacity:.6}
 .road div{position:relative;padding-right:40px}
-.road div i{display:grid;place-items:center;width:60px;height:60px;border-radius:50%;background:var(--bg);box-shadow:inset 0 0 0 3px var(--paper);font-style:normal;font-family:var(--f-disp);font-weight:600;font-size:22px;margin-bottom:24px;position:relative}
+.road div i{display:grid;place-items:center;width:60px;height:60px;letter-spacing:-.02em;border-radius:50%;background:var(--bg);box-shadow:inset 0 0 0 3px var(--paper);font-style:normal;font-family:var(--f-disp);font-weight:600;font-size:22px;margin-bottom:24px;position:relative}
 .road b{display:block;font-size:32px;font-weight:900;margin-bottom:10px}
 .road span{font-size:22px;color:var(--muted);line-height:1.6}
+.road ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}.road li{font-size:21px;color:var(--muted);line-height:1.5;padding-left:18px;position:relative}.road li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--leaf)}
+#s7 .tt{font-size:62px}#s7 .road{margin:48px 0 50px}
 .road em{display:inline-block;font-style:normal;font-size:18px;font-weight:800;color:var(--leaf);margin-bottom:8px;letter-spacing:.04em}
 .end{display:flex;align-items:center;gap:56px;padding:40px 46px;border-radius:28px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
 .end img.qr{width:200px;height:200px;border-radius:16px;background:#fff;padding:10px}
@@ -279,32 +281,6 @@ body.edit #editTip{display:block}
   <img class="trio" src="assets/trio-cut.png" alt="" data-s="2">
 </section>
 
-<!-- 2. 시작: 현장의 목소리 -->
-<section class="slide" id="s2" data-title="시작">
-  <p class="kick" data-s="1">WHY</p>
-  <h2 class="tt" data-s="1" data-e="s2v2-tt">선생님들이 가장 불편한 곳에서<br>업무효율화를 시작했습니다</h2>
-  <p class="lead" data-s="1" data-e="s2v2-lead">2025년 노션 연구단에서 출발해 업무효율화 플랫폼 TF로 방향을 잡고, 영양교사 90명에게 먼저 물었습니다.</p>
-  <div class="sv">
-    <div class="svc" data-s="2">
-      <h4>노션 플랫폼 사용 현황</h4>
-      <div class="stack"><i style="width:24.4%;background:var(--ed)"><b>24%</b></i><i style="width:30%;background:var(--op)"><b>30%</b></i><i style="width:45.6%;background:#5a5f69"><b>46%</b></i></div>
-      <div class="lg"><span><em style="background:var(--ed)"></em>사용 중 22명</span><span><em style="background:var(--op)"></em>쓰다 중단 27명</span><span><em style="background:#5a5f69"></em>사용 안 함 41명</span></div>
-      <div class="big2"><b>22명 전원</b><span>실제 사용자는 모두 &lsquo;업무 효율이 높아졌다&rsquo;고 답했습니다<br><small>(매우 향상 10명 · 다소 향상 12명)</small></span></div>
-    </div>
-    <div class="svc" data-s="3">
-      <h4>쓰지 않거나 중단한 이유 <small>(68명, 중복 응답)</small></h4>
-      <div class="bars">
-        <div><span>노션 자체가 익숙하지 않음</span><i style="--w:100%"></i><b>44</b></div>
-        <div><span>사용 방법이 어려움</span><i style="--w:66%"></i><b>29</b></div>
-        <div><span>초기 세팅이 부담됨</span><i style="--w:61%"></i><b>27</b></div>
-        <div><span>업무와 연결하는 방법을 모름</span><i style="--w:50%"></i><b>22</b></div>
-      </div>
-      <p class="svk" data-e="s2v2-k">효과는 이미 확인됐고, 문제는 <b>진입장벽</b>이었습니다.</p>
-    </div>
-  </div>
-  <p class="src" data-s="3">출처: 2026 영양 ALL-IN-ONE 플랫폼 활용 및 개선 방향 설문 (미래학교급식 플랫폼 개발 TF, 응답 90명)</p>
-</section>
-
 <!-- 2-1. 노션 아카이브 → 사이트 -->
 <section class="slide" id="s2b" data-title="노션 아카이브에서 사이트로">
   <p class="kick" data-s="1">FROM NOTION</p>
@@ -340,6 +316,32 @@ body.edit #editTip{display:block}
       <div data-s="5" style="margin-top:14px"><button class="demo sm" data-demo="arc"><i>▶</i>지금 자료실 열기</button></div>
     </div>
   </div>
+</section>
+
+<!-- 2. 시작: 현장의 목소리 -->
+<section class="slide" id="s2" data-title="시작">
+  <p class="kick" data-s="1">WHY</p>
+  <h2 class="tt" data-s="1" data-e="s2v2-tt">선생님들이 가장 불편한 곳에서<br>업무효율화를 시작했습니다</h2>
+  <p class="lead" data-s="1" data-e="s2v2-lead">2025년 노션 연구단에서 출발해 업무효율화 플랫폼 TF로 방향을 잡고, 영양교사 90명에게 먼저 물었습니다.</p>
+  <div class="sv">
+    <div class="svc" data-s="2">
+      <h4>노션 플랫폼 사용 현황</h4>
+      <div class="stack"><i style="width:24.4%;background:var(--ed)"><b>24%</b></i><i style="width:30%;background:var(--op)"><b>30%</b></i><i style="width:45.6%;background:#5a5f69"><b>46%</b></i></div>
+      <div class="lg"><span><em style="background:var(--ed)"></em>사용 중 22명</span><span><em style="background:var(--op)"></em>쓰다 중단 27명</span><span><em style="background:#5a5f69"></em>사용 안 함 41명</span></div>
+      <div class="big2"><b>22명 전원</b><span>실제 사용자는 모두 &lsquo;업무 효율이 높아졌다&rsquo;고 답했습니다<br><small>(매우 향상 10명 · 다소 향상 12명)</small></span></div>
+    </div>
+    <div class="svc" data-s="3">
+      <h4>쓰지 않거나 중단한 이유 <small>(68명, 중복 응답)</small></h4>
+      <div class="bars">
+        <div><span>노션 자체가 익숙하지 않음</span><i style="--w:100%"></i><b>44</b></div>
+        <div><span>사용 방법이 어려움</span><i style="--w:66%"></i><b>29</b></div>
+        <div><span>초기 세팅이 부담됨</span><i style="--w:61%"></i><b>27</b></div>
+        <div><span>업무와 연결하는 방법을 모름</span><i style="--w:50%"></i><b>22</b></div>
+      </div>
+      <p class="svk" data-e="s2v2-k">효과는 이미 확인됐고, 문제는 <b>진입장벽</b>이었습니다.</p>
+    </div>
+  </div>
+  <p class="src" data-s="3">출처: 2026 영양 ALL-IN-ONE 플랫폼 활용 및 개선 방향 설문 (미래학교급식 플랫폼 개발 TF, 응답 90명)</p>
 </section>
 
 <!-- 4. 자료실 -->
@@ -413,11 +415,11 @@ body.edit #editTip{display:block}
 <!-- 7. 앞으로 -->
 <section class="slide" id="s7" data-title="앞으로">
   <p class="kick" data-s="1">NEXT</p>
-  <h2 class="tt" data-s="1" data-e="s7-tt">현장에서 바로 쓰는 자료실로<br>키워 가겠습니다</h2>
+  <h2 class="tt" data-s="1" data-e="s7v2-tt">현장의 경험을 모아,<br>실무에 바로 활용하는 영양아카이브로</h2>
   <div class="road" data-s="2">
-    <div><i>1</i><em>공개 전</em><b data-e="s7-r1">자료 정비</b><span data-e="s7-r1s">파일 속 개인정보 정리,<br>공개 동의가 필요한 자료 확인</span></div>
-    <div><i>2</i><em>2026 ~ 2027</em><b data-e="s7-r2">시범 운영</b><span data-e="s7-r2s">교육청 누리집 연결,<br>이용 현황과 현장 의견 수렴</span></div>
-    <div><i>3</i><em>2027학년도</em><b data-e="s7-r3">급식달력 공개</b><span data-e="s7-r3s">계기교육·업무 일정 확대,<br>업무 서식과 AI 도구 연결</span></div>
+    <div><i>01</i><em>공개 전</em><b data-e="s7v2-r1">자료 정비 및 기반 구축</b><ul data-e="s7v2-r1s"><li>개인정보 및 저작권 등 자료 적정성 검토</li><li>자료 표준화 및 공개 범위 정비</li></ul></div>
+    <div><i>02</i><em>2026 ~ 2027</em><b data-e="s7v2-r2">현장 중심 시범 운영</b><ul data-e="s7v2-r2s"><li>경기도교육청 누리집 연계 및 시범 운영</li><li>활용 현황 분석과 현장 의견 반영</li></ul></div>
+    <div><i>03</i><em>2027학년도</em><b data-e="s7v2-r3">학교급식 업무지원 체계 고도화</b><ul data-e="s7v2-r3s"><li>급식달력 기반 계기교육·업무 일정 확대</li><li>업무 서식 및 AI 도구 연계로 현장 활용성 강화</li></ul></div>
   </div>
   <div class="end" data-s="3">
     <img class="qr" src="assets/present/qr.png" alt="영양아카이브 주소 QR 코드">
