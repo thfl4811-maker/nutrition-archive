@@ -123,6 +123,38 @@ h2.tt{font-size:68px;line-height:1.22;font-weight:900;letter-spacing:-.025em;mar
 .num p{margin:12px 0 0;font-size:21px;color:var(--muted)}
 .num:nth-child(1) b{color:var(--op)}.num:nth-child(2) b{color:var(--hy)}.num:nth-child(3) b{color:var(--ed)}
 
+
+/* ── 2. 설문 ── */
+.sv{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:34px}
+.svc{border-radius:26px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);padding:34px 40px}
+.svc h4{margin:0 0 22px;font-size:26px;font-weight:900}.svc h4 small{font-size:17px;color:var(--muted);font-weight:500}
+.stack{display:flex;height:64px;border-radius:14px;overflow:hidden}
+.stack i{display:flex;align-items:center;justify-content:center;font-style:normal}
+.stack b{font-family:var(--f-disp);font-size:22px;color:#0b0d10}.stack i:last-child b{color:#fff}
+.lg{display:flex;gap:22px;margin:14px 0 30px;font-size:18px;color:var(--muted)}.lg em{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:7px}
+.big2{display:flex;align-items:center;gap:22px;padding-top:24px;border-top:1px solid var(--line)}
+.big2 b{font-size:50px;font-weight:900;color:var(--leaf);white-space:nowrap}.big2 span{font-size:21px;line-height:1.55;color:#d7d9dd}.big2 small{color:var(--muted);font-size:17px}
+.bars{display:flex;flex-direction:column;gap:16px}
+.bars div{display:grid;grid-template-columns:300px 1fr 50px;align-items:center;gap:14px;font-size:20px}
+.bars i{height:22px;border-radius:6px;background:linear-gradient(90deg,var(--op),#ff9c8f);width:var(--w)}
+.bars b{font-family:var(--f-disp);font-size:22px;text-align:right}
+.svk{margin:30px 0 0;font-size:25px;font-weight:700}.svk b{color:#ff9c8f}
+.src{position:absolute;left:130px;bottom:70px;font-size:15px;color:var(--dim);margin:0}
+.credit{display:flex;gap:16px;margin-top:20px}
+.credit div{flex:1;border-radius:16px;padding:14px 18px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--line);font-size:20px;font-weight:800}
+.credit em{display:block;font-style:normal;font-size:15px;font-weight:700;color:var(--leaf);margin-bottom:4px}
+.chk li.hl{box-shadow:inset 0 0 0 2px var(--leaf);background:rgba(158,224,106,.08)}.chk li.hl span{background:var(--leaf)}
+.chk ol{gap:12px;margin:26px 0 30px}.chk li{padding:16px 22px}
+
+
+#s2b .tt{font-size:56px;margin-bottom:14px}#s2b .lead{font-size:23px;max-width:1650px}
+#s2b .nt{margin-top:24px}#s2b .nview .npage{height:440px;padding:20px 32px}#s2b .ncall{font-size:13px;line-height:1.6;padding:9px 14px}#s2b .nh{font-size:28px;margin-bottom:10px}
+#s2b .ntb td,#s2b .ntb th{padding:4px 8px;font-size:13px}
+#s2b .ntr{gap:12px;padding-top:0}#s2b .np,#s2b .ns{padding:12px 16px;gap:4px}#s2b .np b,#s2b .ns b{font-size:21px}#s2b .np span,#s2b .ns span{font-size:16px}
+#s2b .credit{margin-top:6px}#s2b .credit div{font-size:18px;padding:10px 14px}
+#s5 .tt{font-size:56px;margin-bottom:16px}#s5 .lead{font-size:22px}#s5 .chk ol{margin:20px 0 22px;gap:10px}#s5 .chk li{padding:12px 18px}#s5 .chk li b{font-size:23px}#s5 .chk li small{font-size:17px}
+#s6 .lead{font-size:23px}#s6 .mons{margin:20px 0 16px}#s6 .mons button img{width:100px;height:100px}#s6 .big b{font-size:96px}#s6 .gylist li{padding:9px 16px;font-size:21px}
+
 /* ── 4. 자료실 레버 ── */
 .arc{display:grid;grid-template-columns:440px 150px 1fr;gap:40px;margin-top:20px;align-items:start}
 .arc .lt .lead{font-size:25px}
@@ -247,40 +279,37 @@ body.edit #editTip{display:block}
   <img class="trio" src="assets/trio-cut.png" alt="" data-s="2">
 </section>
 
-<!-- 2. 왜 만들었나 -->
-<section class="slide" id="s2" data-title="왜 만들었나">
+<!-- 2. 시작: 현장의 목소리 -->
+<section class="slide" id="s2" data-title="시작">
   <p class="kick" data-s="1">WHY</p>
-  <h2 class="tt" data-s="1" data-e="s2-tt">근거를 찾느라 업무가 늦어지는<br>현장의 어려움에서 시작했습니다</h2>
-  <div class="why">
-    <div class="mess" data-s="2">
-      <q data-e="s2-q1">이 서류, 근거가 뭐였더라?</q>
-      <q data-e="s2-q2">작년 계획서는 어디 뒀지?</q>
-      <p data-e="s2-p"><b>흩어진 공문과 지침 사이에서</b><br>매년 같은 자료를 다시 찾고 있었습니다.</p>
-      <div class="chip" style="left:60px;bottom:180px;transform:rotate(-6deg)"><em class="pdf">PDF</em>2026 학교급식 기본방향.pdf</div>
-      <div class="chip" style="left:330px;bottom:120px;transform:rotate(5deg)"><em class="hwp">HWP</em>학교급식 운영계획서(최종).hwp</div>
-      <div class="chip" style="left:90px;bottom:60px;transform:rotate(3deg)"><em class="xls">XLS</em>CCP기록지_최종_진짜최종.xlsx</div>
-      <div class="chip" style="left:470px;bottom:220px;transform:rotate(-4deg)"><em class="pdf">PDF</em>위생관리지침서_제6차개정.pdf</div>
-      <div class="chip" style="left:40px;bottom:-6px;transform:rotate(-3deg)"><em class="hwp">HWP</em>식중독 대책반 구성(안).hwp</div>
-      <div class="chip" style="left:440px;bottom:20px;transform:rotate(7deg)"><em class="xls">XLS</em>위생점검표_2026.xlsx</div>
+  <h2 class="tt" data-s="1" data-e="s2v2-tt">선생님들이 가장 불편한 곳에서<br>업무효율화를 시작했습니다</h2>
+  <p class="lead" data-s="1" data-e="s2v2-lead">2025년 노션 연구단에서 출발해 업무효율화 플랫폼 TF로 방향을 잡고, 영양교사 90명에게 먼저 물었습니다.</p>
+  <div class="sv">
+    <div class="svc" data-s="2">
+      <h4>노션 플랫폼 사용 현황</h4>
+      <div class="stack"><i style="width:24.4%;background:var(--ed)"><b>24%</b></i><i style="width:30%;background:var(--op)"><b>30%</b></i><i style="width:45.6%;background:#5a5f69"><b>46%</b></i></div>
+      <div class="lg"><span><em style="background:var(--ed)"></em>사용 중 22명</span><span><em style="background:var(--op)"></em>쓰다 중단 27명</span><span><em style="background:#5a5f69"></em>사용 안 함 41명</span></div>
+      <div class="big2"><b>22명 전원</b><span>실제 사용자는 모두 &lsquo;업무 효율이 높아졌다&rsquo;고 답했습니다<br><small>(매우 향상 10명 · 다소 향상 12명)</small></span></div>
     </div>
-    <div class="flow" data-s="3">
-      <h3 data-e="s2-h3">업무 하나를 누르면</h3>
-      <p class="fl" data-e="s2-fl">필요한 것이 한 화면에 차례로 나옵니다.</p>
-      <div class="steps">
-        <div><span>1</span>근거<small>법령·지침 원문</small></div>
-        <div><span>2</span>점검 기준<small>2026 위생점검·운영평가</small></div>
-        <div><span>3</span>절차<small>시기·방법·결과 조치</small></div>
-        <div><span>4</span>서식<small>바로 내려받기</small></div>
+    <div class="svc" data-s="3">
+      <h4>쓰지 않거나 중단한 이유 <small>(68명, 중복 응답)</small></h4>
+      <div class="bars">
+        <div><span>노션 자체가 익숙하지 않음</span><i style="--w:100%"></i><b>44</b></div>
+        <div><span>사용 방법이 어려움</span><i style="--w:66%"></i><b>29</b></div>
+        <div><span>초기 세팅이 부담됨</span><i style="--w:61%"></i><b>27</b></div>
+        <div><span>업무와 연결하는 방법을 모름</span><i style="--w:50%"></i><b>22</b></div>
       </div>
+      <p class="svk" data-e="s2v2-k">효과는 이미 확인됐고, 문제는 <b>진입장벽</b>이었습니다.</p>
     </div>
   </div>
+  <p class="src" data-s="3">출처: 2026 영양 ALL-IN-ONE 플랫폼 활용 및 개선 방향 설문 (미래학교급식 플랫폼 개발 TF, 응답 90명)</p>
 </section>
-
 
 <!-- 2-1. 노션 아카이브 → 사이트 -->
 <section class="slide" id="s2b" data-title="노션 아카이브에서 사이트로">
   <p class="kick" data-s="1">FROM NOTION</p>
-  <h2 class="tt" data-s="1" data-e="s2b-tt">노션 아카이브를<br>누구나 쓰기 쉬운 사이트로</h2>
+  <h2 class="tt" data-s="1" data-e="s2bv2-tt">2025 노션 아카이브를<br>현장에 맞게 다시 만들었습니다</h2>
+  <p class="lead" data-s="1" data-e="s2bv2-lead">노션 아카이브는 잘 정리된 메모장 같아 익숙해지면 편리하지만, 처음 쓰기에는 장벽이 높았습니다. 2026 미래학교급식 플랫폼에서 이를 리뉴얼해 다시 기획·제작·배포했습니다.</p>
   <div class="nt">
     <div class="ntl" data-s="2">
       <div class="bframe nview"><div class="bar"><b></b><b></b><b></b><span>bush-lawyer-428.notion.site · 영양 아카이브</span></div>
@@ -307,26 +336,9 @@ body.edit #editTip{display:block}
       <div class="nrow" data-s="3"><div class="np"><b>사용자 진입장벽</b><span>노션 사용법(토글, 데이터베이스 보기)을 알아야 자료에 닿을 수 있었습니다.</span></div><i>→</i><div class="ns"><b>첫 화면에서 바로</b><span>운영·위생·교육 카드를 누르면 업무 목록으로 들어갑니다.</span></div></div>
       <div class="nrow" data-s="4"><div class="np"><b>검색 불편</b><span>필요한 업무와 서식을 찾기가 번거로웠습니다.</span></div><i>→</i><div class="ns"><b>통합 검색</b><span>업무 이름·분류로 검색하고, 자주 찾는 업무를 버튼으로 둡니다.</span></div></div>
       <div class="nrow" data-s="5"><div class="np"><b>자료 위치 파악 어려움</b><span>자료가 하위 페이지와 토글 속에 흩어져 있었습니다.</span></div><i>→</i><div class="ns"><b>한 화면에 같은 순서로</b><span>근거 → 점검 기준 → 절차 → 서식 순서로 펼쳐 보입니다.</span></div></div>
-      <div data-s="5" style="margin-top:22px"><button class="demo" data-demo="arc"><i>▶</i>지금 자료실 열기</button></div>
+      <div data-s="5" class="credit"><div><em>기획·제작·디자인</em>김소리</div><div><em>자료 수집·선별</em>양지현 · 이수빈 · 임서영</div></div>
+      <div data-s="5" style="margin-top:14px"><button class="demo sm" data-demo="arc"><i>▶</i>지금 자료실 열기</button></div>
     </div>
-  </div>
-</section>
-
-<!-- 3. 한눈에 -->
-<section class="slide" id="s3" data-title="사이트 한눈에">
-  <p class="kick" data-s="1">OVERVIEW</p>
-  <h2 class="tt" data-s="1" data-e="s3-tt">자료실 · 점검표 · 급식달력을<br>하나의 사이트로</h2>
-  <div class="ov" data-s="2">
-    <div class="ovc"><img src="assets/present/p-list.jpg" alt=""><div class="tx"><b>자료실</b><span data-e="s3-c1">운영·위생·교육 업무별 근거, 점검 기준, 절차, 서식</span><button class="demo sm" data-demo="arc"><i>▶</i>바로 보기</button></div></div>
-    <div class="ovc"><img src="assets/present/p-items.jpg" alt=""><div class="tx"><b>점검표</b><span data-e="s3-c2">2026 위생점검·운영평가 항목과 관련 서류 연결</span><button class="demo sm" data-demo="chk"><i>▶</i>바로 보기</button></div></div>
-    <div class="ovc"><img src="assets/present/p-cal.jpg" alt=""><div class="tx"><b>급식달력 <em class="tag">미리보기</em></b><span data-e="s3-c3">월별 업무와 계기교육을 연간 달력으로</span><button class="demo sm" data-demo="cal11"><i>▶</i>바로 보기</button></div></div>
-    <div class="ovc"><img src="assets/present/p-guide.jpg" alt=""><div class="tx"><b>이용안내</b><span data-e="s3-c4">처음 쓰는 선생님을 위한 사용 방법</span><button class="demo sm" data-demo="guide"><i>▶</i>바로 보기</button></div></div>
-  </div>
-  <div class="nums" data-s="3">
-    <div class="num" data-to="44"><b>0</b><u>건</u><p>운영·위생·교육 업무</p></div>
-    <div class="num" data-to="37"><b>0</b><u>항목</u><p>2026 위생점검표</p></div>
-    <div class="num" data-to="12"><b>0</b><u>항목</u><p>운영평가표 (법령 5·자체 7)</p></div>
-    <div class="num" data-to="12"><b>0</b><u>개월</u><p>업무가 표시되는 급식달력</p></div>
   </div>
 </section>
 
@@ -335,8 +347,8 @@ body.edit #editTip{display:block}
   <div class="arc">
     <div class="lt">
       <p class="kick" data-s="1">ARCHIVE</p>
-      <h2 class="tt" data-s="1" data-e="s4-tt">업무를 누르면<br>근거부터 서식까지</h2>
-      <p class="lead" data-s="1" data-e="s4-lead">운영·위생·교육 세 갈래로 나누고, 업무마다 같은 순서로 정리했습니다.</p>
+      <h2 class="tt" data-s="1" data-e="s4v3-tt">업무 하나,<br>한 페이지로</h2>
+      <p class="lead" data-s="1" data-e="s4v2-lead">업무를 운영·위생·교육 세 갈래로 나누고, 업무마다 <b>근거 → 점검 기준 → 절차 → 서식 → 참고자료</b>가 한 페이지에 정리되도록 체계화했습니다.</p>
       <div class="pick" data-s="2">
         <button data-k="op"><img src="assets/ssal.png" alt=""><span><b class="c-op">운영 · 쌀이</b><small>학교급식 설문조사</small></span></button>
         <button data-k="hy"><img src="assets/chan.png" alt=""><span><b class="c-hy">위생 · 찬이</b><small>위생관리지침 및 자료</small></span></button>
@@ -360,12 +372,13 @@ body.edit #editTip{display:block}
   <div class="chk">
     <div>
       <p class="kick" data-s="1">CHECKLIST</p>
-      <h2 class="tt" data-s="1" data-e="s5-tt">점검 준비부터<br>점검표 출력까지</h2>
-      <p class="lead" data-s="1" data-e="s5-lead">교육청 위생점검·운영평가(학기 1회)를 한 페이지에서 준비합니다.</p>
+      <h2 class="tt" data-s="1" data-e="s5v2-tt">위생점검표·운영평가표,<br>준비부터 출력까지</h2>
+      <p class="lead" data-s="1" data-e="s5v2-lead">전자서류가 아니어도, 행정업무를 보는 영양교사의 점검 준비를 돕습니다.</p>
       <ol data-s="2">
-        <li><span>1</span><div><b>준비서류 한눈에</b><small>업무별로 갖춰야 할 서류를 확인하고 올려 둡니다.</small></div></li>
-        <li><span>2</span><div><b>점검항목</b><small>2026 공식 점검표 기준, 자주 지적되는 내용까지</small></div></li>
-        <li><span>3</span><div><b>점검표 입력·출력</b><small>입력한 뒤 엑셀 양식으로 내려받거나 바로 인쇄합니다.</small></div></li>
+        <li><span>1</span><div><b>준비서류 한눈에</b><small data-e="s5v2-l1">업무별로 갖춰야 할 서류를 한 화면에서 확인합니다.</small></div></li>
+        <li><span>2</span><div><b>점검항목 체계화</b><small data-e="s5v2-l2">2026 공식 점검표 기준과 자주 지적되는 내용을 정리했습니다.</small></div></li>
+        <li><span>3</span><div><b>점검표 입력</b><small data-e="s5v2-l3">지역교육청 점검 때 한눈에 보여 주고, 컨설팅형 점검으로 나아가는 발판이 됩니다.</small></div></li>
+        <li class="hl"><span>★</span><div><b>엑셀 서식으로 바로 내려받기·인쇄</b><small data-e="s5v2-l4">입력한 내용을 교육청 엑셀 양식 그대로 받아 바로 출력합니다.</small></div></li>
       </ol>
       <div data-s="3"><button class="demo" data-demo="chk"><i>▶</i>점검표 바로 열기</button></div>
     </div>
@@ -382,7 +395,7 @@ body.edit #editTip{display:block}
     <div>
       <p class="kick" data-s="1">CALENDAR</p>
       <h2 class="tt" data-s="1"><span data-e="s6-tt">급식달력</span><span class="soon">2027 공개 예정</span></h2>
-      <p class="lead" data-s="1" data-e="s6-lead">달마다 해야 할 업무와, 급식과 연계할 수 있는 계기교육을 함께 보여 줍니다.</p>
+      <p class="lead" data-s="1" data-e="s6v2-lead">내년에 선보일 급식달력은 날마다 해야 할 업무와 교육을 중심으로, 교육자료뿐 아니라 관련 사이트·동영상·업무서식·공문까지 체계적으로 정리할 예정입니다.</p>
       <div class="mons" data-s="2">
         <button data-m="10"><img src="assets/cal/t-10.jpg" alt=""><b>10월</b></button>
         <button data-m="11" class="on"><img src="assets/cal/t-11.jpg" alt=""><b>11월</b></button>
@@ -417,7 +430,7 @@ body.edit #editTip{display:block}
 
 <nav id="ctl" aria-label="발표 조작">
   <button id="prev" title="이전 (←)">‹ 이전</button>
-  <span class="pg" id="pg">1 / 8</span>
+  <span class="pg" id="pg">1 / 7</span>
   <button id="next" title="다음 (→, Space, Enter)">다음 ›</button>
   <button id="openDemo" title="바로 시연 창 열기 (D)">▶ 시연</button>
   <button id="edit" title="편집 모드 (E)">✎ 편집</button>
