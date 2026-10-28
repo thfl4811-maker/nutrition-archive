@@ -3214,7 +3214,7 @@ if(EMBED){
   if(EMBED_MODE==="1"){
     closeModal=function(){ _close(); try{ parent.postMessage({na:"close"},"*"); }catch(e){} };
     openFull=function(){ if(curId) try{ window.top.location.href=NEW_URL(curId); }catch(e){ location.href=NEW_URL(curId); } };
-    window.addEventListener("message",e=>{ if(e.data&&e.data.na==="open"){ const id=e.data.id, go=()=>{ curId=id; openModal(id); }; /* 운영 자료는 뒤쪽 스크립트(노션 원문)가 다 읽힌 뒤에 그려요 */ if((ITEMS.find(x=>x.id===id)||{}).category==="운영"&&document.readyState==="loading") document.addEventListener("DOMContentLoaded",go,{once:true}); else go(); } });
+    window.addEventListener("message",e=>{ if(e.data&&e.data.na==="open"){ const id=e.data.id, go=()=>{ curId=id; openModal(id); }; /* 운영 자료는 뒤쪽 스크립트(노션 원문)가 다 읽힌 뒤에 그려요 */ if(((ITEMS.find(x=>x.id===id)||{category:"운영"}).category==="운영")&&document.readyState==="loading") document.addEventListener("DOMContentLoaded",go,{once:true}); else go(); } });
     try{ parent.postMessage({na:"ready"},"*"); }catch(e){}
   } else {
     /* 전체 화면: #view-full 과 그 조상만 남기고 나머지는 숨김 */
@@ -3229,7 +3229,7 @@ if(EMBED){
     closeFull=function(){ const a=ITEMS.find(x=>x.id===curId); try{ parent.postMessage({na:"back",cat:a?a.category:""},"*"); }catch(e){} };
     copyLink=function(){ const b=document.getElementById("copyBtn"); navigator.clipboard?.writeText(NEW_URL(curId||"")).then(()=>{ b.textContent="✓ 복사됨"; setTimeout(()=>b.textContent="🔗 링크 복사",1600); }).catch(()=>{}); };
     const id=new URLSearchParams(location.search).get("id");
-    if(id&&ITEMS.some(x=>x.id===id)){ const go=()=>{ try{ showTab("arc"); }catch(e){} curId=id; _openFull(); hideOthers(); history.replaceState(null,"",location.pathname+location.search); }; /* 뒤쪽 스크립트(운영 노션 원문 등)가 다 읽힌 뒤에 그려야 내용이 빠지지 않아요 */ const late=(ITEMS.find(x=>x.id===id)||{}).category==="운영"; if(late&&document.readyState==="loading") document.addEventListener("DOMContentLoaded",go,{once:true}); else go(); }
+    if(id){ const go=()=>{ if(!ITEMS.some(x=>x.id===id)) return; try{ showTab("arc"); }catch(e){} curId=id; _openFull(); hideOthers(); history.replaceState(null,"",location.pathname+location.search); }; /* 운영 원문·교육 세부 업무는 뒤쪽 스크립트에서 만들어지므로, 다 읽힌 뒤에 그려요 */ const early=ITEMS.find(x=>x.id===id); const late=!early||early.category==="운영"; if(late&&document.readyState==="loading") document.addEventListener("DOMContentLoaded",go,{once:true}); else go(); }
   }
 }
 /* 예전 자료실 주소로 직접 들어오면 새 자료실로 안내 (예전 화면은 ?old=1 로만 열림) */
