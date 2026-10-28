@@ -173,6 +173,30 @@ h2.tt{font-size:68px;line-height:1.22;font-weight:900;letter-spacing:-.025em;mar
 .fx .a{font-size:19px;color:#e3e5e8}.fx .a b{color:var(--leaf)}
 .fxn{margin:10px 0 0;font-size:14px;color:var(--dim)}
 
+
+/* ── 점검표 2장 ── */
+.chkx .tt{font-size:58px;margin-bottom:14px}.chkx .lead{font-size:23px}
+.ckchips{display:flex;gap:12px;margin-top:4px}.ckchips span{display:flex;align-items:baseline;gap:8px;padding:8px 16px;border-radius:999px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px var(--line);font-size:18px;color:#d7d9dd}.ckchips b{font-family:var(--f-disp);font-size:24px;color:var(--hy)}
+.ckg{display:grid;grid-template-columns:470px 1fr;gap:40px;margin-top:26px;align-items:start}
+.cks{display:flex;flex-direction:column;gap:12px}
+.cks>button{display:flex;gap:16px;align-items:flex-start;text-align:left;border:0;border-radius:18px;padding:16px 20px;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px var(--line);transition:background .25s,box-shadow .25s,opacity .25s;opacity:.6}
+.cks>button i{font-style:normal;flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.12);font-family:var(--f-disp);font-size:18px;font-weight:600}
+.cks>button b{display:block;font-size:24px;font-weight:900;margin-bottom:4px}.cks>button small{font-size:17px;color:var(--muted);line-height:1.5}
+.cks>button.on{opacity:1;background:rgba(111,149,240,.12);box-shadow:inset 0 0 0 2px var(--hy)}.cks>button.on i{background:var(--hy);color:#0b0d10}
+.cks>button.star.on{background:rgba(158,224,106,.1);box-shadow:inset 0 0 0 2px var(--leaf)}.cks>button.star.on i{background:var(--leaf)}
+.ckgo{display:flex;gap:10px;margin-top:6px}
+.cksheets{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}.cksheets span{font-size:14px;font-weight:700;padding:5px 10px;border-radius:8px 8px 0 0;background:#e9f3e6;color:#1e5e33;border:1px solid #bcd9b5}
+.ckimg{position:relative}.ckimg img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;display:block;transition:opacity .3s}
+.ckpins{position:absolute;inset:0;pointer-events:none}
+.pin{position:absolute;width:0;height:0;opacity:0;transition:opacity .35s ease}
+.pin.on{opacity:1}
+.pin i{position:absolute;left:-17px;top:-17px;width:34px;height:34px;border-radius:50%;background:#e5484d;color:#fff;font-style:normal;font-weight:900;font-size:17px;display:grid;place-items:center;box-shadow:0 0 0 6px rgba(229,72,77,.25);animation:pp 1.6s infinite}
+.pin span{position:absolute;white-space:nowrap;background:#111318;color:#fff;font-size:17px;font-weight:800;padding:8px 13px;border-radius:10px;box-shadow:0 8px 20px -6px rgba(0,0,0,.6);left:26px;top:0;transform:translateY(-50%)}
+.pin.l span{left:auto;right:26px}
+.pin.d span{top:26px;transform:none;left:-17px}.pin.u span{top:auto;bottom:26px;transform:none;left:-17px}
+.pin.d.l span,.pin.u.l span{left:auto;right:-17px}
+@keyframes pp{50%{box-shadow:0 0 0 12px rgba(229,72,77,.08)}}
+
 /* ── 4. 자료실 레버 ── */
 .arc{display:grid;grid-template-columns:440px 150px 1fr;gap:40px;margin-top:20px;align-items:start}
 .arc .lt .lead{font-size:25px}
@@ -385,25 +409,35 @@ body.edit #editTip{display:block}
   </div>
 </section>
 
-<!-- 5. 점검표 -->
-<section class="slide" id="s5" data-title="점검표">
-  <div class="chk">
-    <div>
-      <p class="kick" data-s="1">CHECKLIST</p>
-      <h2 class="tt" data-s="1" data-e="s5v2-tt">위생점검표·운영평가표,<br>준비부터 출력까지</h2>
-      <p class="lead" data-s="1" data-e="s5v2-lead">전자서류가 아니어도, 행정업무를 보는 영양교사의 점검 준비를 돕습니다.</p>
-      <ol data-s="2">
-        <li><span>1</span><div><b>준비서류 한눈에</b><small data-e="s5v2-l1">업무별로 갖춰야 할 서류를 한 화면에서 확인합니다.</small></div></li>
-        <li><span>2</span><div><b>점검항목 체계화</b><small data-e="s5v2-l2">2026 공식 점검표 기준과 자주 지적되는 내용을 정리했습니다.</small></div></li>
-        <li><span>3</span><div><b>점검표 입력</b><small data-e="s5v2-l3">지역교육청 점검 때 한눈에 보여 주고, 컨설팅형 점검으로 나아가는 발판이 됩니다.</small></div></li>
-        <li class="hl"><span>★</span><div><b>엑셀 서식으로 바로 내려받기·인쇄</b><small data-e="s5v2-l4">입력한 내용을 교육청 엑셀 양식 그대로 받아 바로 출력합니다.</small></div></li>
-      </ol>
-      <div data-s="3"><button class="demo" data-demo="chk"><i>▶</i>점검표 바로 열기</button></div>
+<!-- 5-1. 점검표: 점검 전 -->
+<section class="slide chkx" id="s5a" data-title="점검표 · 점검 전">
+  <p class="kick" data-s="1">CHECKLIST · 점검 전</p>
+  <h2 class="tt" data-s="1" data-e="s5a-tt">점검 전, 무엇을 준비할지 한눈에</h2>
+  <div class="ckchips" data-s="1"><span><b>38</b>위생점검표</span><span><b>12</b>운영평가표</span><span><b>4</b>권장사항</span><span><b>40</b>준비서류</span></div>
+  <div class="ckg">
+    <div class="cks" data-s="1">
+      <button data-st="0"><i>1</i><span><b>점검표 한눈에</b><small>항목을 체크하며 준비 상황을 관리합니다.</small></span></button>
+      <button data-st="1"><i>2</i><span><b>항목별 기준</b><small>부적합 기준·자주 지적되는 내용·관련 서류를 펼쳐 봅니다.</small></span></button>
+      <button data-st="2"><i>3</i><span><b>준비서류 한눈에</b><small>필요 서류 40종을 유형별로 정리하고 파일·링크를 올립니다.</small></span></button>
+      <div class="ckgo"><button class="demo sm" data-demo="chktab"><i>▶</i>점검표 열기</button><button class="demo sm ghost" data-demo="prep"><i>▶</i>준비서류 열기</button></div>
     </div>
-    <div data-s="2">
-      <div class="tabs2"><button class="on" data-img="p-sheet">③ 점검표</button><button data-img="p-items">② 점검항목</button></div>
-      <div class="bframe swap" id="chkFrame"><div class="bar"><b></b><b></b><b></b><span>점검표 › 위생점검표 및 운영평가표</span></div><img id="chkImg" src="assets/present/p-sheet.jpg" alt=""></div>
+    <div class="ckshot" data-s="1"><div class="bframe"><div class="bar"><b></b><b></b><b></b><span class="ckurl"></span></div><div class="ckimg"><img alt=""><div class="ckpins"></div></div></div></div>
+  </div>
+</section>
+
+<!-- 5-2. 점검표: 점검 당일 -->
+<section class="slide chkx" id="s5b" data-title="점검표 · 점검 당일">
+  <p class="kick" data-s="1">CHECKLIST · 점검 당일</p>
+  <h2 class="tt" data-s="1" data-e="s5b-tt">입력하면 교육청 양식이 그대로 완성됩니다</h2>
+  <p class="lead" data-s="1" data-e="s5b-lead">전자서류가 아니어도, 지역교육청 점검 때 한눈에 보여 주는 컨설팅 자료가 됩니다.</p>
+  <div class="ckg">
+    <div class="cks" data-s="1">
+      <button data-st="0"><i>4</i><span><b>점검표 입력</b><small>처음엔 모두 적합으로 채워져 있어 지적 항목만 바꾸면 총점·등급이 자동 계산됩니다.</small></span></button>
+      <button data-st="1" class="star"><i>★</i><span><b>엑셀 내려받기·인쇄</b><small>교육청 엑셀 양식(6장)에 입력값이 채워진 파일을 받아 바로 출력합니다.</small></span></button>
+      <div class="cksheets"><span>위생표지</span><span>위생(1)</span><span>위생(2)</span><span>위생(3)</span><span>운영(교육청)</span><span>운영(학교)</span></div>
+      <div class="ckgo"><button class="demo sm" data-demo="chk"><i>▶</i>점검표 입력 열기</button></div>
     </div>
+    <div class="ckshot" data-s="1"><div class="bframe"><div class="bar"><b></b><b></b><b></b><span class="ckurl"></span></div><div class="ckimg"><img alt=""><div class="ckpins"></div></div></div></div>
   </div>
 </section>
 
@@ -490,12 +524,13 @@ function go(i,s){
   step=s==null?1:s;paint();
   try{history.replaceState(null,"","#"+(cur+1))}catch(e){}
 }
-function next(){ if(step<maxStep(cur)){step++;paint()} else if(cur<slides.length-1) go(cur+1,1) }
-function prev(){ if(step>1){step--;paint()} else if(cur>0) go(cur-1,maxStep(cur-1)) }
+function next(){ var sl=slides[cur]; if(step>=maxStep(cur)&&sl.classList.contains("chkx")&&CKS[sl.id]&&(+sl.dataset.ck||0)<CKS[sl.id].length-1){ckSet(sl,(+sl.dataset.ck||0)+1);return} if(step<maxStep(cur)){step++;paint()} else if(cur<slides.length-1) go(cur+1,1) }
+function prev(){ var sl=slides[cur]; if(sl.classList.contains("chkx")&&(+sl.dataset.ck||0)>0){ckSet(sl,(+sl.dataset.ck||0)-1);return} if(step>1){step--;paint()} else if(cur>0) go(cur-1,maxStep(cur-1)) }
 
 /* 슬라이드에 들어갈 때 */
 var cover=$("#cover");
 function onEnter(i){
+  if(slides[i].classList.contains("chkx")&&typeof ckSet==="function")ckSet(slides[i],0);
   if(slides[i].id==="s1"&&cover){try{cover.currentTime=0;cover.play().catch(function(){})}catch(e){}}
 }
 function onStep(i,s){
@@ -547,6 +582,19 @@ $$(".tabs2 button").forEach(function(b){b.addEventListener("click",function(){
   swap([$("#chkFrame")],function(){$("#chkImg").src="assets/present/"+b.dataset.img+".jpg"});
 })});
 
+
+/* ── 점검표 단계 + 설명 핀 ── */
+var CKS={"s5a": [{"img": "c1", "t": "점검표 › 위생점검표 및 운영평가표", "pins": [[50, 36.7, "위생 38 · 운영평가 12 · 권장 4를 한 화면에"], [50, 49.7, "체크할수록 준비율이 차올라요"], [5.8, 63.4, "준비된 항목은 바로 체크"]]}, {"img": "c2", "t": "점검표 › 항목 펼치기", "pins": [[31.8, 30.3, "부적합 기준"], [75.2, 30.3, "자주 지적되는 내용"], [52.5, 41.9, "관련 서류 → 자료실로 바로 이동"]]}, {"img": "c3", "t": "위생점검표 및 운영평가표 › ① 준비서류 한눈에", "pins": [[50, 53.3, "서류 40종 준비 현황"], [5.3, 66.8, "서류를 유형별로 분류"], [12.1, 86, "서류마다 파일·링크 올리기"]]}], "s5b": [{"img": "c4", "t": "위생점검표 및 운영평가표 › ③ 점검표", "pins": [[88.8, 43.3, "총점·등급 자동 계산"], [9.8, 53.7, "교육청 양식 6장 그대로"], [93.7, 81, "지적 항목만 바꾸고 비고 기재"]]}, {"img": "c4", "t": "위생점검표 및 운영평가표 › ③ 점검표", "pins": [[7.8, 43.3, "교육청 엑셀 양식으로 내려받기", "d"], [18.7, 43.3, "6장 한 번에 인쇄", "u"], [37.6, 43.3, "다른 컴퓨터로 옮겨 이어서 입력", "d"]]}]};
+function ckSet(sl,k){
+  var cfg=CKS[sl.id];if(!cfg)return;k=Math.max(0,Math.min(cfg.length-1,k));var c=cfg[k];sl.dataset.ck=k;
+  $$(".cks>button",sl).forEach(function(b){b.classList.toggle("on",+b.dataset.st===k)});
+  var img=$(".ckimg img",sl);if(img.getAttribute("src")!=="assets/present/"+c.img+".jpg")img.src="assets/present/"+c.img+".jpg";
+  $(".ckurl",sl).textContent=c.t;
+  var box=$(".ckpins",sl);box.innerHTML=c.pins.map(function(p,i){return '<div class="pin'+(p[0]>55?' l':'')+(p[3]?' '+p[3]:'')+'" style="left:'+p[0]+'%;top:'+p[1]+'%"><i>'+(i+1)+'</i><span>'+p[2]+'</span></div>'}).join("");
+  var pins=$$(".pin",box);pins.forEach(function(e,i){setTimeout(function(){e.classList.add("on")},150+i*350)});
+}
+$$(".chkx").forEach(function(sl){ckSet(sl,0);$$(".cks>button",sl).forEach(function(b){b.addEventListener("click",function(e){e.stopPropagation();ckSet(sl,+b.dataset.st)})})});
+
 /* ── 6. 급식달력 월 ── */
 var GY={
   10:{gy:0,name:"영양의 날",list:[["10.14","영양의 날","기타 기념일"],["10.15","스포츠의 날","법정기념일"],["10.16","세계 식량의 날","국제기념일"],["10.23","상강","24절기"]]},
@@ -579,6 +627,8 @@ var DEMOS=[
   {k:"hy",t:"위생 · 위생관리지침",u:"archive-preview.html?category="+encodeURIComponent("위생"),img:"p-hy",after:function(w){return waitFor(function(){return w.openDetail},8000).then(function(){w.openDetail("hygiene-guidelines")})}},
   {k:"ed",t:"교육 · 음식문화",u:"archive-preview.html?category="+encodeURIComponent("교육"),img:"p-ed",after:function(w){return waitFor(function(){return w.openDetail},8000).then(function(){w.openDetail("edu-food-culture")})}},
   {k:"chk",t:"점검표",u:"archive-preview.html?item=hygiene-inspection",img:"p-sheet",after:function(w){return waitFor(function(){var x=inner(w);return x&&x.ipTab&&x.document.getElementById("ipbody")&&x},15000).then(function(x){x.ipTab("sheet")})}},
+  {k:"chktab",t:"점검표 한눈에",u:"archive-preview.html?tab=chk",img:"c1"},
+  {k:"prep",t:"준비서류",u:"archive-preview.html?item=hygiene-inspection",img:"c3",after:function(w){return waitFor(function(){var x=inner(w);return x&&x.ipTab&&x.document.getElementById("ipbody")&&x},15000).then(function(x){x.ipTab("prep")})}},
   {k:"cal10",t:"급식달력 10월",u:"archive-preview.html#gy-0",img:"p-gy10"},
   {k:"cal11",t:"급식달력 11월",u:"archive-preview.html#gy-6",img:"p-gy11"},
   {k:"cal12",t:"급식달력 12월",u:"archive-preview.html#gy-13",img:"p-gy12"},
@@ -641,6 +691,7 @@ document.addEventListener("keydown",function(e){
   else if(k==="f"||k==="F")toggleFs();
   else if(k==="e"||k==="E")setEdit(true);
   else if(k==="d"||k==="D")openDemo("arc");
+  else if(slides[cur].classList.contains("chkx")&&(k==="ArrowUp"||k==="ArrowDown")){e.preventDefault();var sl=slides[cur];ckSet(sl,(+sl.dataset.ck||0)+(k==="ArrowDown"?1:-1))}
   else if(slides[cur].id==="s4"&&(k==="ArrowUp"||k==="ArrowDown")){e.preventDefault();var o=["op","hy","ed"],i=o.indexOf(arcK)+(k==="ArrowDown"?1:-1);if(i>=0&&i<3)setArc(o[i])}
 });
 $("#viewport").addEventListener("click",function(e){
