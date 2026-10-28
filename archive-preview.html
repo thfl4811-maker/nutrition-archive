@@ -127,7 +127,7 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
 
 /* ─ 급식달력 보기 ─ */
 #v-cal{--mc:#7b52b8;--mc-s:#efe8fa}
-.calhero{margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,430px);gap:44px;align-items:center;padding:36px 48px 36px 44px;border-radius:32px;background:radial-gradient(90% 130% at 100% 0%,var(--mc-s) 0%,var(--paper) 62%);border:1px solid var(--line);transition:background .4s}
+.calhero{margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px) minmax(0,430px);gap:36px;align-items:center;padding:36px 48px 36px 44px;border-radius:32px;background:radial-gradient(90% 130% at 100% 0%,var(--mc-s) 0%,var(--paper) 62%);border:1px solid var(--line);transition:background .4s}
 .eyebrow2{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;font-weight:800;letter-spacing:.12em;color:#8a7a5c}
 .bigm{display:flex;align-items:flex-end;gap:16px;margin:18px 0 0}
 .bigm b{font-size:clamp(92px,10vw,148px);line-height:.8;font-weight:900;letter-spacing:-.06em;color:var(--mc);transition:color .4s}
@@ -143,6 +143,21 @@ mark{background:#fff1b8;color:inherit;border-radius:3px;padding:0 1px}
 .nav2 button#todayM{width:auto;padding:0 20px;border-radius:999px;font-size:13.5px}
 .nav2 button:hover{border-color:var(--mc);color:var(--mc)}
 .nav2 button:disabled{opacity:.35;cursor:default;border-color:var(--line);color:var(--ink)}
+/* NEIS 학사일정 */
+.neis{align-self:stretch;display:flex;flex-direction:column;gap:12px;padding:22px 22px 18px;border-radius:24px;background:rgba(255,255,255,.72);border:1px solid var(--line);box-shadow:0 18px 36px -30px rgba(60,40,10,.45);backdrop-filter:blur(4px)}
+.neis .nh2{display:flex;gap:12px;align-items:center}.neis .nic{font-size:26px;width:46px;height:46px;border-radius:14px;background:var(--mc-s);display:grid;place-items:center;flex:none}
+.neis .nh2 b{display:block;font-size:16px;font-weight:900}.neis .nh2 small{display:block;font-size:12.5px;color:#6b7280;margin-top:2px}
+.nrow2{display:flex;gap:8px}.nrow2 input,.nkey input{flex:1;min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:14px;background:#fff}
+.nrow2 button{border:0;border-radius:12px;padding:0 16px;font:inherit;font-weight:800;font-size:14px;background:#1b1e24;color:#fff;cursor:pointer}
+.nkey summary{font-size:12.5px;color:#6b7280;cursor:pointer}.nkey input{width:100%;margin-top:8px}.nkey p{margin:6px 0 0;font-size:11.5px;color:#9aa0a8}
+.nlist{display:flex;flex-direction:column;gap:6px;max-height:150px;overflow:auto}.nlist:empty{display:none}
+.nlist button{text-align:left;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font:inherit;font-size:13px;cursor:pointer}.nlist button:hover{border-color:var(--mc)}
+.nlist button small{display:block;color:#6b7280;font-size:11.5px}
+.nmsg{margin:0;font-size:12.5px;line-height:1.6;color:#4b5563}.nmsg.err{color:#c0392b}.nmsg b{color:#1b1e24}
+.nmsg .nclr{border:0;background:none;color:#9aa0a8;text-decoration:underline;font:inherit;font-size:12px;cursor:pointer;padding:0;margin-left:4px}
+.nex{list-style:none;margin:auto 0 0;padding:12px 0 0;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:7px}.nex li{display:flex;justify-content:space-between;gap:8px;font-size:12.5px}.nex span{color:#6b7280}.nex b{color:#8a3b14;font-weight:800}.neis.loaded .nex{display:none}
+.ev.aca{color:#b5562b}.tk.aca{background:#fbeee6;color:#8a3b14;border-color:#e07a45;cursor:default}
+.mrow.aca .dd{background:#fbeee6;color:#8a3b14}
 .calpic{position:relative;padding:8px 6px 14px 0}
 .calpic::before{content:"";position:absolute;inset:22px -14px 0 26px;border-radius:30px;background:var(--mc);opacity:.16;transform:rotate(-3deg);transition:background .4s}
 .calpic img{position:relative;width:100%;aspect-ratio:381/292;object-fit:cover;border-radius:28px;display:block;box-shadow:0 34px 50px -30px rgba(60,40,10,.6);transform:rotate(1.2deg);background:#eee}
@@ -267,7 +282,7 @@ body.item-on .foot{display:none}
 @media (max-width:1060px){
   .hero{grid-template-columns:minmax(0,1fr)}.hero .trio{display:none}
   .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .callay{grid-template-columns:minmax(0,1fr)}.calhero{grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:28px}
+  .callay{grid-template-columns:minmax(0,1fr)}.calhero{grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:28px}.neis{grid-column:1/-1;order:3}
   .top .wrap{flex-wrap:wrap;gap:10px}.menu{order:3;width:100%}
 }
 @media (max-width:680px){
@@ -341,6 +356,14 @@ body.item-on .foot{display:none}
         <p class="lead" id="calLead"></p>
         <div class="stats" id="calStats"></div>
         <div class="nav2"><button id="prevM" aria-label="이전 달">‹</button><button id="nextM" aria-label="다음 달">›</button><button id="todayM">이번 달</button></div>
+      </div>
+      <div class="neis" id="neisBox">
+        <div class="nh2"><span class="nic">🏫</span><div><b>우리 학교 학사일정 불러오기</b><small>NEIS 연동 · 학교 이름만 넣으면 돼요</small></div></div>
+        <div class="nrow2"><input id="neisName" placeholder="학교 이름 (예: 동탄중앙고등학교)" autocomplete="off"><button id="neisGo">찾기</button></div>
+        <details class="nkey"><summary>NEIS 인증키 넣기 (선택)</summary><input id="neisKey" placeholder="open.neis.go.kr 에서 발급받은 키"><p>인증키가 없으면 학사일정이 일부만 조회될 수 있어요.</p></details>
+        <div class="nlist" id="neisSchools"></div>
+        <p class="nmsg" id="neisMsg">학교를 고르면 이번 학년도 학사일정이 달력에 표시되고, 행사에 맞춰 급식 업무(식수 조정·단축급식 등)가 자동으로 붙어요.</p>
+        <ul class="nex" id="neisEx"><li><span>🏫 수학여행·체험학습</span><b>식수 조정·발주 수정</b></li><li><span>🏫 재량휴업일</span><b>급식 미실시·업체 통보</b></li><li><span>🏫 고사·시험</span><b>급식시간 조정 확인</b></li><li><span>🏫 방학식·졸업식</span><b>단축급식·발주 조정</b></li></ul>
       </div>
       <div class="calpic"><img id="calImg" src="assets/cal/m-11.jpg" alt=""></div>
     </div>
@@ -462,7 +485,7 @@ function renderCal(){
   $("#prevM").disabled=mi===0;$("#nextM").disabled=mi===CAL.length-1;
   var mk=y+"-"+String(m).padStart(2,"0"),gyIdx=[];GY.forEach(function(g,j){if(g.d.indexOf(mk)===0)gyIdx.push(j)});
   var nTerm=C.ev.filter(function(e){return e.k==="term"}).length,nHol=C.ev.filter(function(e){return e.k==="hol"}).length;
-  $("#calStats").innerHTML='<span><b>'+C.tk.length+'</b>이달의 업무</span><span><b>'+(gyIdx.length||"–")+'</b>계기교육</span><span><b>'+nTerm+'</b>24절기</span><span><b>'+nHol+'</b>공휴일</span>';
+  $("#calStats").innerHTML='<span><b>'+C.tk.length+'</b>이달의 업무</span><span><b>'+(gyIdx.length||"–")+'</b>계기교육</span><span><b>'+nTerm+'</b>24절기</span><span><b>'+nHol+'</b>공휴일</span>'+(acaName?'<span><b>'+acaMonth(y,m).length+'</b>학사일정</span>':'');
   var first=new Date(y,m-1,1),start=new Date(y,m-1,1-first.getDay()),html="";
   for(var i=0;i<42;i++){
     var d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i),key=ds(d),inM=d.getMonth()===m-1;
@@ -471,10 +494,11 @@ function renderCal(){
     var hol=ev.some(function(e){return e.k==="hol"});
     var gd=inM?gyIdx.filter(function(j){return GY[j].d===key}):[];
     if(gd.length)ev=ev.filter(function(e){return e.k!=="meal"&&!gd.some(function(j){return GY[j].n===e.n})});
+    var ah=(inM&&ACA[key])?ACA[key].map(function(n){var t=acaTask(n);return '<span class="ev aca" title="'+esc(n)+'">🏫 '+esc(n)+'</span>'+(t?'<span class="tk aca" title="'+esc(t)+'">🍚 '+esc(t.split(/[:·]/)[0])+'</span>':'')}).join(""):"";
     var gyH=gd.map(function(j){return '<button class="gyc c-'+GY[j].cat+'" data-g="'+j+'" title="'+esc(GY[j].n)+'">'+esc(GY[j].n)+'</button>'}).join("");
     html+='<div class="dcell'+(inM?'':' out')+(d.getDay()===0?' sun':'')+(d.getDay()===6?' sat':'')+(hol?' hol':'')+(key===todayS?' today':'')+(tk.length?' has':'')+'"><span class="dn">'+d.getDate()+'</span>'
       +ev.map(function(e){return '<span class="ev '+e.k+'" title="'+esc(e.n)+'">'+(e.k==="term"?"◦ ":"")+esc(e.n)+'</span>'}).join("")
-      +gyH+tk.map(function(t){return '<a class="tk '+t.c+'" href="'+LIVE+t.id+'" target="_blank" rel="noopener" title="'+esc(t.n)+'">'+esc(t.n)+'</a>'}).join("")+'</div>';
+      +ah+gyH+tk.map(function(t){return '<a class="tk '+t.c+'" href="'+LIVE+t.id+'" target="_blank" rel="noopener" title="'+esc(t.n)+'">'+esc(t.n)+'</a>'}).join("")+'</div>';
   }
   $("#days").innerHTML=html;
   $("#gyTitle").textContent=m+"월 계기교육 · 급식 연계";
@@ -482,13 +506,55 @@ function renderCal(){
   $("#gyGrid").innerHTML=gyIdx.length?gyIdx.map(function(j){var g=GY[j];return '<button class="gcard" data-g="'+j+'"><span class="gtop"><span class="gd">'+gDate(g,true)+'</span><span class="gbadge c-'+g.cat+'">'+esc(g.cat)+'</span><span class="gth">'+esc(g.th)+'</span></span><h4>'+esc(g.n)+'</h4><p>🍚 '+esc(g.menu)+'</p><span class="more">설명·교육자료 보기 →</span></button>'}).join(""):'<div class="gyempty">미리보기에서는 <b>10월~12월</b>의 계기교육만 제공합니다. 다른 달은 2027년 정식 공개 때 함께 제공할 예정입니다. <button class="dcopy" id="goNov" style="margin-left:6px">10월 보기</button></div>';
   $$("[data-g]").forEach(function(b){b.addEventListener("click",function(){openGy(+b.dataset.g)})});
   var gn=$("#goNov");if(gn)gn.addEventListener("click",function(){mi=CAL.findIndex(function(c){return c.m===10});renderCal()});
-  $("#mlTitle").innerHTML=m+"월의 업무<small>"+C.tk.length+"건 · 날짜순</small>";
+  var AT=acaMonth(y,m).filter(function(a){return a.t});
+  $("#mlTitle").innerHTML=m+"월의 업무<small>"+(C.tk.length+AT.length)+"건 · 날짜순</small>";
   var t0=new Date(todayS+"T00:00:00");
-  $("#mlRows").innerHTML=C.tk.slice().sort(function(a,b){return a.d<b.d?-1:1}).map(function(t){
+  $("#mlRows").innerHTML=C.tk.concat(AT.map(function(a){return {aca:1,d:a.d,n:a.t,ev:a.n}})).sort(function(a,b){return a.d<b.d?-1:1}).map(function(t){
     var d=new Date(t.d+"T00:00:00"),diff=Math.round((d-t0)/864e5),tag=diff===0?'<span class="tag hot">D-DAY</span>':diff>0&&diff<=7?'<span class="tag hot">D-'+diff+'</span>':diff>0?'<span class="tag">D-'+diff+'</span>':'<span class="tag past">지남</span>';
+    if(t.aca) return '<div class="mrow aca"><span class="dd">'+d.getDate()+'<small>'+DOWK[d.getDay()]+'요일</small></span><span><b>'+esc(t.n)+'</b><span>🏫 '+esc(t.ev)+'</span></span>'+tag+'</div>';
     return '<a class="mrow '+t.c+'" href="'+LIVE+t.id+'" target="_blank" rel="noopener"><span class="dd">'+d.getDate()+'<small>'+DOWK[d.getDay()]+'요일</small></span><span><b>'+esc(t.n)+'</b><span>'+esc(t.t)+'</span></span>'+tag+'</a>';
   }).join("");
 }
+/* ── NEIS 학사일정: 학교 이름으로 찾아 이번 학년도(3월~다음 해 2월) 일정을 달력에 얹어요 ── */
+var ACA={},acaName="";
+var ACA_RULES=[[/입학|개학|개교/,"급식 개시 점검: 첫 급식 식재료 발주·설비 가동 확인"],[/방학식|종업|졸업|수료/,"단축·미실시 급식 확인, 식재료 발주 조정"],[/체험학습|수학여행|수련|야영|소풍|현장학습/,"식수 조정: 급식 인원·발주 수정"],[/고사|시험|평가/,"급식시간 조정 여부 확인"],[/재량휴업|휴업일/,"급식 미실시: 발주 취소·업체 통보"],[/체육대회|운동회|축제|한마당/,"배식 시간·메뉴(간편식) 검토"],[/공개수업|학부모/,"급식 모니터링·검수 참관 연계"],[/단축/,"급식시간 조정"]];
+function acaTask(n){for(var i=0;i<ACA_RULES.length;i++)if(ACA_RULES[i][0].test(n))return ACA_RULES[i][1];return null}
+function acaMonth(y,m){var mk=y+"-"+String(m).padStart(2,"0"),out=[];Object.keys(ACA).forEach(function(k){if(k.indexOf(mk)===0)ACA[k].forEach(function(n){out.push({d:k,n:n,t:acaTask(n)})})});return out}
+var NEIS="https://open.neis.go.kr/hub/";
+function neisURL(path,params){var k=($("#neisKey").value||"").trim();var p=new URLSearchParams(Object.assign({Type:"json",pIndex:"1",pSize:k?"1000":"5"},params));if(k)p.set("KEY",k);return NEIS+path+"?"+p.toString()}
+function nmsg(h,err){var e=$("#neisMsg");e.className="nmsg"+(err?" err":"");e.innerHTML=h}
+function neisFind(){
+  var nm=($("#neisName").value||"").trim(); if(!nm){nmsg("학교 이름을 입력해 주세요.",1);return}
+  nmsg("학교를 찾는 중…");
+  fetch(neisURL("schoolInfo",{SCHUL_NM:nm})).then(function(r){return r.json()}).then(function(j){
+    var rows=(j.schoolInfo&&j.schoolInfo[1]&&j.schoolInfo[1].row)||[];
+    if(!rows.length){nmsg("학교를 찾지 못했어요. 이름을 다시 확인해 주세요.",1);$("#neisSchools").innerHTML="";return}
+    $("#neisSchools").innerHTML=rows.map(function(x,i){return '<button data-ni="'+i+'">🏫 <b>'+esc(x.SCHUL_NM)+'</b><small>'+esc(x.ATPT_OFCDC_SC_NM||"")+' · '+esc(x.ORG_RDNMA||"")+'</small></button>'}).join("");
+    $$("#neisSchools [data-ni]").forEach(function(b){b.addEventListener("click",function(){var x=rows[+b.dataset.ni];neisLoad(x.ATPT_OFCDC_SC_CODE,x.SD_SCHUL_CODE,x.SCHUL_NM)})});
+    nmsg("아래에서 우리 학교를 골라 주세요.");
+  }).catch(function(){nmsg("NEIS에 연결하지 못했어요. 인터넷 연결이나 인증키를 확인해 주세요.",1)});
+}
+function neisLoad(atpt,code,name){
+  nmsg("<b>"+esc(name)+"</b> 학사일정을 불러오는 중…");
+  var sy=CAL[0].y;
+  fetch(neisURL("SchoolSchedule",{ATPT_OFCDC_SC_CODE:atpt,SD_SCHUL_CODE:code,AA_FROM_YMD:sy+"0301",AA_TO_YMD:(sy+1)+"0228"})).then(function(r){return r.json()}).then(function(j){
+    var rows=(j.SchoolSchedule&&j.SchoolSchedule[1]&&j.SchoolSchedule[1].row)||[];ACA={};
+    rows.forEach(function(x){if(!x.EVENT_NM||/토요휴업일/.test(x.EVENT_NM))return;var k=x.AA_YMD.slice(0,4)+"-"+x.AA_YMD.slice(4,6)+"-"+x.AA_YMD.slice(6,8);(ACA[k]=ACA[k]||[]).push(x.EVENT_NM)});
+    acaName=name;$("#neisSchools").innerHTML="";
+    store.set("na-neis",{nm:$("#neisName").value.trim(),key:($("#neisKey").value||"").trim(),name:name,aca:ACA});
+    acaDone();renderCal();
+  }).catch(function(){nmsg("학사일정을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.",1)});
+}
+function acaDone(){
+  $("#neisBox").classList.add("loaded");
+  var all=[];Object.keys(ACA).forEach(function(k){all=all.concat(ACA[k])});
+  var linked=all.filter(acaTask).length,noKey=!($("#neisKey").value||"").trim();
+  nmsg("<b>"+esc(acaName)+"</b> 학사일정 "+all.length+"건을 달력에 표시했어요. 급식 업무가 붙은 행사 "+linked+"건."+(noKey&&all.length<=5?" (인증키가 없어 일부만 조회됐어요)":"")+' <button class="nclr" id="neisClr">지우기</button>');
+  var c=$("#neisClr");if(c)c.addEventListener("click",function(){ACA={};acaName="";store.set("na-neis",null);$("#neisBox").classList.remove("loaded");nmsg("학사일정을 지웠어요. 다른 학교를 찾아볼 수 있어요.");renderCal()});
+}
+$("#neisGo").addEventListener("click",neisFind);
+$("#neisName").addEventListener("keydown",function(e){if(e.key==="Enter")neisFind()});
+(function(){var sv=store.get("na-neis",null);if(sv){$("#neisName").value=sv.nm||"";$("#neisKey").value=sv.key||"";if(sv.aca&&sv.name){ACA=sv.aca;acaName=sv.name;acaDone()}}})();
 $("#prevM").addEventListener("click",function(){if(mi>0){mi--;renderCal()}});
 $("#nextM").addEventListener("click",function(){if(mi<CAL.length-1){mi++;renderCal()}});
 $("#todayM").addEventListener("click",function(){mi=todayMi;renderCal()});
