@@ -360,7 +360,7 @@ body.item-on .foot{display:none}
       <div class="neis" id="neisBox">
         <div class="nh2"><span class="nic">🏫</span><div><b>우리 학교 학사일정 불러오기</b><small>NEIS 연동 · 학교 이름만 넣으면 돼요</small></div></div>
         <div class="nrow2"><input id="neisName" placeholder="학교 이름 (예: 동탄중앙고등학교)" autocomplete="off"><button id="neisGo">찾기</button></div>
-        <details class="nkey"><summary>NEIS 인증키 넣기 (선택)</summary><input id="neisKey" placeholder="open.neis.go.kr 에서 발급받은 키"><p>인증키가 없으면 학사일정이 일부만 조회될 수 있어요.</p></details>
+        <details class="nkey"><summary>NEIS 인증키 넣기 (선택)</summary><input id="neisKey" placeholder="open.neis.go.kr 에서 발급받은 키"><p>없어도 돼요. 인증키가 있으면 한 번에 더 빨리 불러와요.</p></details>
         <div class="nlist" id="neisSchools"></div>
         <p class="nmsg" id="neisMsg">학교를 고르면 이번 학년도 학사일정이 달력에 표시되고, 행사에 맞춰 급식 업무(식수 조정·단축급식 등)가 자동으로 붙어요.</p>
         <ul class="nex" id="neisEx"><li><span>🏫 수학여행·체험학습</span><b>식수 조정·발주 수정</b></li><li><span>🏫 재량휴업일</span><b>급식 미실시·업체 통보</b></li><li><span>🏫 고사·시험</span><b>급식시간 조정 확인</b></li><li><span>🏫 방학식·졸업식</span><b>단축급식·발주 조정</b></li></ul>
@@ -516,7 +516,7 @@ function renderCal(){
   }).join("");
 }
 /* ── NEIS 학사일정: 학교 이름으로 찾아 이번 학년도(3월~다음 해 2월) 일정을 달력에 얹어요 ── */
-var ACA={},acaName="";
+var ACA={},acaName="",acaPartial=false;
 var ACA_RULES=[[/입학|개학|개교/,"급식 개시 점검: 첫 급식 식재료 발주·설비 가동 확인"],[/방학식|종업|졸업|수료/,"단축·미실시 급식 확인, 식재료 발주 조정"],[/체험학습|수학여행|수련|야영|소풍|현장학습/,"식수 조정: 급식 인원·발주 수정"],[/고사|시험|평가/,"급식시간 조정 여부 확인"],[/재량휴업|휴업일/,"급식 미실시: 발주 취소·업체 통보"],[/체육대회|운동회|축제|한마당/,"배식 시간·메뉴(간편식) 검토"],[/공개수업|학부모/,"급식 모니터링·검수 참관 연계"],[/단축/,"급식시간 조정"]];
 function acaTask(n){for(var i=0;i<ACA_RULES.length;i++)if(ACA_RULES[i][0].test(n))return ACA_RULES[i][1];return null}
 function acaMonth(y,m){var mk=y+"-"+String(m).padStart(2,"0"),out=[];Object.keys(ACA).forEach(function(k){if(k.indexOf(mk)===0)ACA[k].forEach(function(n){out.push({d:k,n:n,t:acaTask(n)})})});return out}
@@ -536,25 +536,39 @@ function neisFind(){
 }
 function neisLoad(atpt,code,name){
   nmsg("<b>"+esc(name)+"</b> 학사일정을 불러오는 중…");
-  var sy=CAL[0].y;
-  fetch(neisURL("SchoolSchedule",{ATPT_OFCDC_SC_CODE:atpt,SD_SCHUL_CODE:code,AA_FROM_YMD:sy+"0301",AA_TO_YMD:(sy+1)+"0228"})).then(function(r){return r.json()}).then(function(j){
-    var rows=(j.SchoolSchedule&&j.SchoolSchedule[1]&&j.SchoolSchedule[1].row)||[];ACA={};
-    rows.forEach(function(x){if(!x.EVENT_NM||/토요휴업일/.test(x.EVENT_NM))return;var k=x.AA_YMD.slice(0,4)+"-"+x.AA_YMD.slice(4,6)+"-"+x.AA_YMD.slice(6,8);(ACA[k]=ACA[k]||[]).push(x.EVENT_NM)});
-    acaName=name;$("#neisSchools").innerHTML="";
-    store.set("na-neis",{nm:$("#neisName").value.trim(),key:($("#neisKey").value||"").trim(),name:name,aca:ACA});
+  var sy=CAL[0].y,key=($("#neisKey").value||"").trim(),base={ATPT_OFCDC_SC_CODE:atpt,SD_SCHUL_CODE:code};
+  function ymd8(d){return d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")}
+  function get(from,to){return fetch(neisURL("SchoolSchedule",Object.assign({AA_FROM_YMD:from,AA_TO_YMD:to},base))).then(function(r){return r.json()}).then(function(j){var S=j.SchoolSchedule;return S?{rows:S[1].row||[],total:(S[0].head[0]||{}).list_total_count||0}:{rows:[],total:0}})}
+  var job;
+  if(key){ job=get(sy+"0301",(sy+1)+"0228").then(function(r){return {rows:r.rows,partial:false}}); }
+  else{
+    /* 인증키가 없으면 한 번에 5건만 와요 → 일주일씩 나눠 받아 합쳐요 */
+    var wk=[],d=new Date(sy,2,1),end=new Date(sy+1,1,28);
+    while(d<=end){var e=new Date(d.getFullYear(),d.getMonth(),d.getDate()+6);if(e>end)e=end;wk.push([ymd8(d),ymd8(e)]);d=new Date(e.getFullYear(),e.getMonth(),e.getDate()+1)}
+    var rows=[],partial=false,idx=0,done=0;
+    job=new Promise(function(res,rej){
+      function next(){if(idx>=wk.length)return;var w=wk[idx++];get(w[0],w[1]).then(function(r){rows=rows.concat(r.rows);if(r.total>r.rows.length)partial=true}).catch(function(){partial=true}).then(function(){done++;nmsg("<b>"+esc(name)+"</b> 학사일정을 불러오는 중… ("+Math.round(done/wk.length*100)+"%)");if(done===wk.length)res({rows:rows,partial:partial});else next()})}
+      for(var k=0;k<6;k++)next();
+    });
+  }
+  job.then(function(r){
+    ACA={};var seen={};
+    r.rows.forEach(function(x){if(!x.EVENT_NM||/토요휴업일/.test(x.EVENT_NM))return;var k=x.AA_YMD.slice(0,4)+"-"+x.AA_YMD.slice(4,6)+"-"+x.AA_YMD.slice(6,8);if(seen[k+x.EVENT_NM])return;seen[k+x.EVENT_NM]=1;(ACA[k]=ACA[k]||[]).push(x.EVENT_NM)});
+    acaName=name;acaPartial=r.partial;$("#neisSchools").innerHTML="";
+    store.set("na-neis",{nm:$("#neisName").value.trim(),key:key,name:name,aca:ACA,partial:r.partial});
     acaDone();renderCal();
   }).catch(function(){nmsg("학사일정을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.",1)});
 }
 function acaDone(){
   $("#neisBox").classList.add("loaded");
   var all=[];Object.keys(ACA).forEach(function(k){all=all.concat(ACA[k])});
-  var linked=all.filter(acaTask).length,noKey=!($("#neisKey").value||"").trim();
-  nmsg("<b>"+esc(acaName)+"</b> 학사일정 "+all.length+"건을 달력에 표시했어요. 급식 업무가 붙은 행사 "+linked+"건."+(noKey&&all.length<=5?" (인증키가 없어 일부만 조회됐어요)":"")+' <button class="nclr" id="neisClr">지우기</button>');
+  var linked=all.filter(acaTask).length;
+  nmsg("<b>"+esc(acaName)+"</b> 학사일정 "+all.length+"건을 달력에 표시했어요. 급식 업무가 붙은 행사 "+linked+"건."+(acaPartial?" (일부 날짜는 다 받아오지 못했을 수 있어요)":"")+' <button class="nclr" id="neisClr">지우기</button>');
   var c=$("#neisClr");if(c)c.addEventListener("click",function(){ACA={};acaName="";store.set("na-neis",null);$("#neisBox").classList.remove("loaded");nmsg("학사일정을 지웠어요. 다른 학교를 찾아볼 수 있어요.");renderCal()});
 }
 $("#neisGo").addEventListener("click",neisFind);
 $("#neisName").addEventListener("keydown",function(e){if(e.key==="Enter")neisFind()});
-(function(){var sv=store.get("na-neis",null);if(sv){$("#neisName").value=sv.nm||"";$("#neisKey").value=sv.key||"";if(sv.aca&&sv.name){ACA=sv.aca;acaName=sv.name;acaDone()}}})();
+(function(){var sv=store.get("na-neis",null);if(sv){$("#neisName").value=sv.nm||"";$("#neisKey").value=sv.key||"";if(sv.aca&&sv.name){ACA=sv.aca;acaName=sv.name;acaPartial=!!sv.partial;acaDone()}}})();
 $("#prevM").addEventListener("click",function(){if(mi>0){mi--;renderCal()}});
 $("#nextM").addEventListener("click",function(){if(mi<CAL.length-1){mi++;renderCal()}});
 $("#todayM").addEventListener("click",function(){mi=todayMi;renderCal()});
