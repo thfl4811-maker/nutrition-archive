@@ -547,7 +547,7 @@ function neisLoad(atpt,code,name){
     while(d<=end){var e=new Date(d.getFullYear(),d.getMonth(),d.getDate()+6);if(e>end)e=end;wk.push([ymd8(d),ymd8(e)]);d=new Date(e.getFullYear(),e.getMonth(),e.getDate()+1)}
     var rows=[],partial=false,idx=0,done=0;
     job=new Promise(function(res,rej){
-      function next(){if(idx>=wk.length)return;var w=wk[idx++];get(w[0],w[1]).then(function(r){rows=rows.concat(r.rows);if(r.total>r.rows.length)partial=true}).catch(function(){partial=true}).then(function(){done++;nmsg("<b>"+esc(name)+"</b> 학사일정을 불러오는 중… ("+Math.round(done/wk.length*100)+"%)");if(done===wk.length)res({rows:rows,partial:partial});else next()})}
+      function next(){if(idx>=wk.length)return;var w=wk[idx++];get(w[0],w[1]).then(function(r){if(r.total>r.rows.length&&w[0]!==w[1]){var a=new Date(+w[0].slice(0,4),+w[0].slice(4,6)-1,+w[0].slice(6)),z=w[1];while(ymd8(a)<=z){wk.push([ymd8(a),ymd8(a)]);a=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1)}for(var q=0;q<5;q++)setTimeout(next,0)}else{rows=rows.concat(r.rows);if(r.total>r.rows.length)partial=true}}).catch(function(){partial=true}).then(function(){done++;nmsg("<b>"+esc(name)+"</b> 학사일정을 불러오는 중… ("+Math.round(done/wk.length*100)+"%)");if(done===wk.length&&idx>=wk.length)res({rows:rows,partial:partial});else next()})}
       for(var k=0;k<6;k++)next();
     });
   }
