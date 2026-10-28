@@ -560,21 +560,21 @@ $("#dx").addEventListener("click",closeDemo);
 $("#dnext").addEventListener("click",function(){closeDemo();go(slides.length-1,maxStep(slides.length-1))});
 function openDemo(k){
   var d=DEMOS.filter(function(x){return x.k===k})[0]||DEMOS[0];
-  if(d.ext){var w=window.open(d.ext,"_blank");if(w){try{w.opener=null}catch(_){}}return;}
-  dk=d.k;
-  $$("#dtop [data-dk]").forEach(function(b){b.classList.toggle("on",b.dataset.dk===dk)});
-  dEl.classList.add("on");fb.classList.remove("on");ld.classList.remove("off");loaded=false;
+  if(d.ext){var x=window.open(d.ext,"_blank");if(x){try{x.opener=null}catch(_){}}return;}
+  /* 시연은 새 탭 하나("na-demo")에서 열어요. 버튼을 다시 누르면 같은 탭이 그 화면으로 바뀌어요. */
   if(d.pre)d.pre();
-  clearTimeout(dTimer);
-  dTimer=setTimeout(function(){ if(!loaded){ $("#dfbImg").src="assets/present/"+d.img+".jpg"; fb.classList.add("on"); } },15000);
-  fr.onload=function(){
-    loaded=true;ld.classList.add("off");
-    var w=fr.contentWindow;
-    if(d.after) d.after(w).catch(function(){});
-    try{ w.focus() }catch(e){}
-  };
-  fr.src=d.u+(d.u.indexOf("#")<0?(d.u.indexOf("?")<0?"?":"&")+"t="+Date.now():"");
-  if(d.u.indexOf("#")>=0){ var p=d.u.split("#"); fr.src=p[0]+"?t="+Date.now()+"#"+p[1]; }
+  var t=String(Date.now()), url;
+  if(d.u.indexOf("#")>=0){ var p=d.u.split("#"); url=p[0]+"?t="+t+"#"+p[1]; }
+  else url=d.u+(d.u.indexOf("?")<0?"?":"&")+"t="+t;
+  var w=window.open("","na-demo");
+  if(!w){ window.open(url,"_blank"); return; }
+  try{ if(d.pre) w.sessionStorage.removeItem("na-intro"); }catch(e){}
+  try{ w.location.href=url; }catch(e){ w=window.open(url,"na-demo"); }
+  try{ w.focus(); }catch(e){}
+  if(d.after){
+    waitFor(function(){ try{ return w.location.search.indexOf("t="+t)>=0 && w.document.readyState==="complete" && w; }catch(e){ return null; } },20000)
+      .then(function(){ return d.after(w); }).catch(function(){});
+  }
 }
 function closeDemo(){dEl.classList.remove("on");clearTimeout(dTimer);fr.onload=null;fr.src="about:blank";try{window.focus()}catch(e){}}
 $$("[data-demo]").forEach(function(b){b.addEventListener("click",function(e){e.stopPropagation();openDemo(b.dataset.demo)})});
