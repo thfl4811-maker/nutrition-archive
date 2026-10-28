@@ -218,7 +218,7 @@ h2.tt{font-size:68px;line-height:1.22;font-weight:900;letter-spacing:-.025em;mar
 .lever .knob.drag{transition:none;cursor:grabbing}
 .lever .knob img{width:70px;height:70px;object-fit:contain;pointer-events:none}
 .view{position:relative}
-.view .bframe img{aspect-ratio:16/10.4}
+.view .bframe img{aspect-ratio:16/10}
 .view .cap{display:flex;align-items:center;gap:20px;margin-top:22px}
 .view .cap p{margin:0;font-size:23px;line-height:1.55;color:#d7d9dd;flex:1}
 .view .cap p b{font-weight:900}
@@ -407,7 +407,7 @@ body.edit #editTip{display:block}
       <div class="knob" id="knob" style="top:12%"><img id="knobImg" src="assets/ssal.png" alt=""></div>
     </div>
     <div class="view" data-s="2">
-      <div class="bframe swap" id="arcFrame"><div class="bar"><b></b><b></b><b></b><span id="arcUrl">자료실 › 운영 › 학교급식 설문조사</span></div><img id="arcImg" src="assets/present/p-op.jpg" alt=""></div>
+      <div class="bframe swap" id="arcFrame"><div class="bar"><b></b><b></b><b></b><span id="arcUrl">자료실 › 운영 › 학교급식 설문조사</span></div><div class="ckimg"><img id="arcImg" src="assets/present/p-op.jpg" alt=""><div class="ckpins" id="arcPins"></div></div></div>
       <div class="cap"><p id="arcCap" class="swap"></p><button class="demo" id="arcGo"><i>▶</i>이 화면 바로 열기</button></div>
     </div>
   </div>
@@ -540,6 +540,7 @@ function onEnter(i){
 function onStep(i,s){
   var id=slides[i].id;
   if(id==="s3"&&s>=3) countUp();
+  if(id==="s4"&&s===2&&typeof arcPins==="function") arcPins(ARC[arcK]);
 }
 
 /* ── 숫자 채우기 ── */
@@ -553,11 +554,11 @@ $$(".num").forEach(function(n){n.addEventListener("mouseenter",function(){countO
 
 /* ── 4. 자료실 레버 ── */
 var ARC={
-  op:{img:"p-op",ch:"assets/ssal.png",url:"자료실 › 운영 › 학교급식 설문조사",demo:"op",top:12,
+  op:{pins:[[20,62.3,"20개 업무를 분류별로"],[90,22,"근거 법령 바로 확인"],[90,43,"2026 점검표 기준 연결"]],img:"p-op",ch:"assets/ssal.png",url:"자료실 › 운영 › 학교급식 설문조사",demo:"op",top:12,
       cap:'<b class="c-op">학교급식 설문조사</b> — 근거·점검항목·절차에 이어 설문조사 웹앱까지 바로 연결<span class="new">NEW</span>'},
-  hy:{img:"p-hy",ch:"assets/chan.png",url:"자료실 › 위생 › 위생관리지침 및 자료",demo:"hy",top:50,
+  hy:{pins:[[20,62.3,"위생 11개 업무"],[90,36.5,"항목별 부적합 기준"],[90,63,"자주 지적되는 내용까지"]],img:"p-hy",ch:"assets/chan.png",url:"자료실 › 위생 › 위생관리지침 및 자료",demo:"hy",top:50,
       cap:'<b class="c-hy">위생관리지침 및 자료</b> — 2026 위생점검 항목별 부적합 기준과 자주 지적되는 내용'},
-  ed:{img:"p-ed",ch:"assets/kkuk.png",url:"자료실 › 교육 › 음식문화",demo:"ed",top:88,
+  ed:{pins:[[20,62.3,"교육 15개 업무"],[90,22,"근거 법령 4건 정리"],[90,61.2,"점검기준까지 한 페이지에"]],img:"p-ed",ch:"assets/kkuk.png",url:"자료실 › 교육 › 음식문화",demo:"ed",top:88,
       cap:'<b class="c-ed">음식문화</b> — 향토·세계·전통음식, 로컬푸드 주제별 수업 자료와 영상'}
 };
 var arcK="op",knob=$("#knob");
@@ -565,8 +566,9 @@ function setArc(k,instant){
   arcK=k;var d=ARC[k];
   $$(".pick button").forEach(function(b){b.classList.toggle("on",b.dataset.k===k)});
   knob.style.top=d.top+"%";$("#knobImg").src=d.ch;
-  swap([$("#arcFrame"),$("#arcCap")],function(){ $("#arcImg").src="assets/present/"+d.img+".jpg"; $("#arcUrl").textContent=d.url; $("#arcCap").innerHTML=d.cap; },instant);
+  swap([$("#arcFrame"),$("#arcCap")],function(){ $("#arcImg").src="assets/present/"+d.img+".jpg"; $("#arcUrl").textContent=d.url; $("#arcCap").innerHTML=d.cap; arcPins(d); },instant);
 }
+var arcT=[];function arcPins(d){arcT.forEach(clearTimeout);arcT=[];var box=$("#arcPins");box.innerHTML=d.pins.map(function(p,i){return '<div class="pin'+(p[0]>55?' l':'')+'" style="left:'+p[0]+'%;top:'+p[1]+'%"><i>'+(i+1)+'</i><span>'+p[2]+'</span></div>'}).join("");$$(".pin",box).forEach(function(e,i){arcT.push(setTimeout(function(){e.classList.add("on")},400+i*450))})}
 function swap(els,fn,instant){ if(instant){fn();return} els.forEach(function(e){e.classList.add("out")}); setTimeout(function(){fn();els.forEach(function(e){e.classList.remove("out")})},260) }
 $$(".pick button").forEach(function(b){b.addEventListener("click",function(){setArc(b.dataset.k)})});
 $("#arcGo").addEventListener("click",function(){openDemo(ARC[arcK].demo)});
