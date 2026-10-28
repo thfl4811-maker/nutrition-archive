@@ -83,6 +83,30 @@ h2.tt{font-size:68px;line-height:1.22;font-weight:900;letter-spacing:-.025em;mar
 .steps div span{font-family:var(--f-disp);font-size:20px;color:#0b0d10;background:var(--leaf);width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none}
 .steps div small{font-size:20px;font-weight:500;color:var(--muted);margin-left:auto}
 
+
+/* ── 2-1. 노션 → 사이트 ── */
+.nt{display:grid;grid-template-columns:880px 1fr;gap:56px;margin-top:20px;align-items:start}
+.nview .npage{background:#fff;color:#37352f;padding:26px 36px 22px;height:560px;overflow:hidden;font-family:ui-sans-serif,-apple-system,"Segoe UI","Noto Sans KR",sans-serif}
+.nh{font-size:34px;font-weight:800;display:flex;align-items:center;gap:12px;margin-bottom:14px}.nh .nic{font-size:36px}
+.ncall{background:#e7f3f8;border-radius:6px;padding:12px 16px;font-size:14px;line-height:1.75;margin-bottom:14px}
+.ntabs{display:flex;gap:16px;font-size:14px;color:#787774;margin-bottom:8px}.ntabs b{color:#37352f;background:#efefed;border-radius:5px;padding:2px 9px}
+.ngrp{font-size:14px;color:#787774;margin:8px 0 6px}.ngrp em{font-style:normal;border-radius:4px;padding:1px 7px;color:#37352f;margin-right:4px}
+.ngrp .g1{background:#dbeddb}.ngrp .g2{background:#ffe2dd}.ngrp .g3{background:#e8deee}
+.ntb{border-collapse:collapse;width:100%;font-size:14px}
+.ntb th{text-align:left;font-weight:500;color:#787774;border-bottom:1px solid #e9e9e7;padding:6px 8px}
+.ntb td{border-bottom:1px solid #e9e9e7;padding:6px 8px;white-space:nowrap}
+.ntb i{font-style:normal;background:#dbeddb;border-radius:4px;padding:1px 6px}.ntb i.o{background:#fadec9}.ntb i.g{background:#e3e2e0}
+.ntb u{text-decoration:none;background:#e8deee;border-radius:4px;padding:1px 6px}.ntb u.p{background:#fdecc8}
+.ncap{display:flex;align-items:center;justify-content:space-between;margin-top:16px;font-size:20px;color:var(--muted)}
+.ntr{display:flex;flex-direction:column;gap:18px;padding-top:6px}
+.nrow{display:grid;grid-template-columns:1fr 34px 1fr;align-items:stretch;gap:12px}
+.nrow>i{font-style:normal;align-self:center;text-align:center;font-size:28px;color:var(--leaf)}
+.np,.ns{border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.np{background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px var(--line)}
+.ns{background:rgba(158,224,106,.08);box-shadow:inset 0 0 0 1px rgba(158,224,106,.35)}
+.np b{font-size:24px;font-weight:900;color:#ff9c8f}.ns b{font-size:24px;font-weight:900;color:var(--leaf)}
+.np span,.ns span{font-size:18px;color:#c9ccd2;line-height:1.55}
+
 /* ── 3. 한눈에 ── */
 .ov{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:36px}
 .ovc{border-radius:22px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden;display:flex;flex-direction:column}
@@ -252,6 +276,42 @@ body.edit #editTip{display:block}
   </div>
 </section>
 
+
+<!-- 2-1. 노션 아카이브 → 사이트 -->
+<section class="slide" id="s2b" data-title="노션 아카이브에서 사이트로">
+  <p class="kick" data-s="1">FROM NOTION</p>
+  <h2 class="tt" data-s="1" data-e="s2b-tt">노션 아카이브를<br>누구나 쓰기 쉬운 사이트로</h2>
+  <div class="nt">
+    <div class="ntl" data-s="2">
+      <div class="bframe nview"><div class="bar"><b></b><b></b><b></b><span>bush-lawyer-428.notion.site · 영양 아카이브</span></div>
+        <div class="npage">
+          <div class="nh"><span class="nic">📕</span>영양 아카이브</div>
+          <div class="ncall">💡 [영양교사 아카이브] 페이지를 사용하기 전 반드시 확인해 주세요!<br>※ 업무별 매뉴얼과 참고자료가 정리된 읽기 전용 페이지입니다.<br>👉 업무별 [관련 근거, 위생·운영점검항목, 참고 자료, 참고 사이트 등]의 내용으로 구성</div>
+          <div class="ntabs"><b>업무목록</b><span>점검분류</span><span>Table</span><span>List</span></div>
+          <div class="ngrp">▸ <em class="g1">운영</em> 20</div>
+          <div class="ngrp">▾ <em class="g2">위생</em> 10</div>
+          <table class="ntb"><tr><th>업무소분류</th><th>업무명</th><th>점검분류</th><th>반복주기</th></tr>
+            <tr><td><i>위생 HACCP 서류관리</i></td><td>📋 일일위생점검</td><td><u>위생점검</u></td><td>매일</td></tr>
+            <tr><td><i>위생 HACCP 서류관리</i></td><td>📁 CCP/CP 기록지</td><td><u>위생점검</u></td><td>매일</td></tr>
+            <tr><td><i>위생 HACCP 서류관리</i></td><td>✅ CCP 및 CP 점검</td><td><u>위생점검</u></td><td>학기당 1회</td></tr>
+            <tr><td><i class="o">위생관련증명서</i></td><td>🩺 건강문진 동의서</td><td><u>위생점검</u></td><td>채용 시</td></tr>
+            <tr><td><i class="o">위생관련증명서</i></td><td>🕷 소독필증</td><td><u>위생점검</u></td><td>연 5회 이상</td></tr>
+            <tr><td><i class="g">위생기본계획</i></td><td>💊 식중독 대책반</td><td><u class="p">운영점검</u></td><td>연 1회</td></tr>
+          </table>
+          <div class="ngrp">▾ <em class="g3">교육</em> 6</div>
+        </div>
+      </div>
+      <div class="ncap"><span>기존 노션 아카이브 (업무목록 보기)</span><button class="demo sm ghost" id="openNotion"><i>↗</i>노션 아카이브 열기</button></div>
+    </div>
+    <div class="ntr">
+      <div class="nrow" data-s="3"><div class="np"><b>사용자 진입장벽</b><span>노션 사용법(토글, 데이터베이스 보기)을 알아야 자료에 닿을 수 있었습니다.</span></div><i>→</i><div class="ns"><b>첫 화면에서 바로</b><span>운영·위생·교육 카드를 누르면 업무 목록으로 들어갑니다.</span></div></div>
+      <div class="nrow" data-s="4"><div class="np"><b>검색 불편</b><span>필요한 업무와 서식을 찾기가 번거로웠습니다.</span></div><i>→</i><div class="ns"><b>통합 검색</b><span>업무 이름·분류로 검색하고, 자주 찾는 업무를 버튼으로 둡니다.</span></div></div>
+      <div class="nrow" data-s="5"><div class="np"><b>자료 위치 파악 어려움</b><span>자료가 하위 페이지와 토글 속에 흩어져 있었습니다.</span></div><i>→</i><div class="ns"><b>한 화면에 같은 순서로</b><span>근거 → 점검 기준 → 절차 → 서식 순서로 펼쳐 보입니다.</span></div></div>
+      <div data-s="5" style="margin-top:22px"><button class="demo" data-demo="arc"><i>▶</i>지금 자료실 열기</button></div>
+    </div>
+  </div>
+</section>
+
 <!-- 3. 한눈에 -->
 <section class="slide" id="s3" data-title="사이트 한눈에">
   <p class="kick" data-s="1">OVERVIEW</p>
@@ -357,7 +417,7 @@ body.edit #editTip{display:block}
 
 <nav id="ctl" aria-label="발표 조작">
   <button id="prev" title="이전 (←)">‹ 이전</button>
-  <span class="pg" id="pg">1 / 7</span>
+  <span class="pg" id="pg">1 / 8</span>
   <button id="next" title="다음 (→, Space, Enter)">다음 ›</button>
   <button id="openDemo" title="바로 시연 창 열기 (D)">▶ 시연</button>
   <button id="edit" title="편집 모드 (E)">✎ 편집</button>
@@ -482,6 +542,7 @@ function waitFor(test,ms){return new Promise(function(res,rej){var t0=Date.now()
 function inner(w){try{var f=w.document.querySelector("#fullf");return f&&f.contentWindow}catch(e){return null}}
 var DEMOS=[
   {k:"home",t:"첫 화면",u:"index.html",img:"p-home",pre:function(){try{sessionStorage.removeItem("na-intro")}catch(e){}}},
+  {k:"notion",t:"예전 노션 아카이브 ↗",ext:"https://bush-lawyer-428.notion.site/2b5cb6542fd3802c8f25c0773ace68f3"},
   {k:"arc",t:"자료실",u:"archive-preview.html",img:"p-list"},
   {k:"op",t:"운영 · 설문조사",u:"archive-preview.html?category="+encodeURIComponent("운영"),img:"p-op",after:function(w){return waitFor(function(){return w.openDetail},8000).then(function(){w.openDetail("food-survey")})}},
   {k:"hy",t:"위생 · 위생관리지침",u:"archive-preview.html?category="+encodeURIComponent("위생"),img:"p-hy",after:function(w){return waitFor(function(){return w.openDetail},8000).then(function(){w.openDetail("hygiene-guidelines")})}},
@@ -498,7 +559,9 @@ $$("#dtop [data-dk]").forEach(function(b){b.addEventListener("click",function(){
 $("#dx").addEventListener("click",closeDemo);
 $("#dnext").addEventListener("click",function(){closeDemo();go(slides.length-1,maxStep(slides.length-1))});
 function openDemo(k){
-  var d=DEMOS.filter(function(x){return x.k===k})[0]||DEMOS[0];dk=d.k;
+  var d=DEMOS.filter(function(x){return x.k===k})[0]||DEMOS[0];
+  if(d.ext){var w=window.open(d.ext,"_blank");if(w){try{w.opener=null}catch(_){}}return;}
+  dk=d.k;
   $$("#dtop [data-dk]").forEach(function(b){b.classList.toggle("on",b.dataset.dk===dk)});
   dEl.classList.add("on");fb.classList.remove("on");ld.classList.remove("off");loaded=false;
   if(d.pre)d.pre();
@@ -515,6 +578,7 @@ function openDemo(k){
 }
 function closeDemo(){dEl.classList.remove("on");clearTimeout(dTimer);fr.onload=null;fr.src="about:blank";try{window.focus()}catch(e){}}
 $$("[data-demo]").forEach(function(b){b.addEventListener("click",function(e){e.stopPropagation();openDemo(b.dataset.demo)})});
+$("#openNotion").addEventListener("click",function(e){e.stopPropagation();var w=window.open("https://bush-lawyer-428.notion.site/2b5cb6542fd3802c8f25c0773ace68f3","_blank");if(w){try{w.opener=null}catch(_){}}});
 $("#openDemo").addEventListener("click",function(){openDemo("arc")});
 
 /* ── 편집 모드 ── */
@@ -542,11 +606,11 @@ document.addEventListener("keydown",function(e){
   if(k==="ArrowRight"||k==="PageDown"||k===" "||k==="Enter"){e.preventDefault();next()}
   else if(k==="ArrowLeft"||k==="PageUp"){e.preventDefault();prev()}
   else if(k==="Home")go(0,1);else if(k==="End")go(slides.length-1,maxStep(slides.length-1));
-  else if(/^[1-7]$/.test(k))go(+k-1,1);
+  else if(/^[1-9]$/.test(k)&&+k<=slides.length)go(+k-1,1);
   else if(k==="f"||k==="F")toggleFs();
   else if(k==="e"||k==="E")setEdit(true);
   else if(k==="d"||k==="D")openDemo("arc");
-  else if(cur===3&&(k==="ArrowUp"||k==="ArrowDown")){e.preventDefault();var o=["op","hy","ed"],i=o.indexOf(arcK)+(k==="ArrowDown"?1:-1);if(i>=0&&i<3)setArc(o[i])}
+  else if(slides[cur].id==="s4"&&(k==="ArrowUp"||k==="ArrowDown")){e.preventDefault();var o=["op","hy","ed"],i=o.indexOf(arcK)+(k==="ArrowDown"?1:-1);if(i>=0&&i<3)setArc(o[i])}
 });
 $("#viewport").addEventListener("click",function(e){
   if(editing)return;
