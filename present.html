@@ -151,7 +151,11 @@ h2.tt{font-size:68px;line-height:1.22;font-weight:900;letter-spacing:-.025em;mar
 #s2b .nt{margin-top:24px}#s2b .nview .npage{height:440px;padding:20px 32px}#s2b .ncall{font-size:13px;line-height:1.6;padding:9px 14px}#s2b .nh{font-size:28px;margin-bottom:10px}
 #s2b .ntb td,#s2b .ntb th{padding:4px 8px;font-size:13px}
 #s2b .ntr{gap:12px;padding-top:0}#s2b .np,#s2b .ns{padding:12px 16px;gap:4px}#s2b .np b,#s2b .ns b{font-size:21px}#s2b .np span,#s2b .ns span{font-size:16px}
-#s2b .credit{margin-top:6px}#s2b .credit div{font-size:18px;padding:10px 14px}
+#s4 .credit{margin-top:16px;gap:12px}#s4 .credit div{font-size:17px;padding:10px 14px;white-space:nowrap}#s4 .credit em{font-size:14px}
+#s2b .credit{margin-top:6px}
+.ach{display:grid;grid-template-columns:220px 1fr;align-items:center;gap:20px;border-radius:20px;padding:22px 26px;background:rgba(158,224,106,.07);box-shadow:inset 0 0 0 1px rgba(158,224,106,.3)}
+.ach>b{font-size:40px;white-space:nowrap;font-weight:900;color:var(--leaf);line-height:1.1}.ach em{display:block;font-style:normal;font-size:24px;font-weight:900;color:#fff;margin-bottom:6px}.ach span{font-size:18px;color:#c9ccd2;line-height:1.5}
+.achn{margin:10px 0 0;font-size:22px;font-weight:800;color:#ffb3a8}#s2b .credit div{font-size:18px;padding:10px 14px}
 #s5 .tt{font-size:56px;margin-bottom:16px}#s5 .lead{font-size:22px}#s5 .chk ol{margin:20px 0 22px;gap:10px}#s5 .chk li{padding:12px 18px}#s5 .chk li b{font-size:23px}#s5 .chk li small{font-size:17px}
 #s6 .lead{font-size:23px}#s6 .mons{margin:20px 0 16px}#s6 .mons button img{width:100px;height:100px}#s6 .big b{font-size:96px}#s6 .gylist li{padding:9px 16px;font-size:21px}
 
@@ -326,8 +330,8 @@ body.edit #editTip{display:block}
 <!-- 2-1. 노션 아카이브 → 사이트 -->
 <section class="slide" id="s2b" data-title="노션 아카이브에서 사이트로">
   <p class="kick" data-s="1">FROM NOTION</p>
-  <h2 class="tt" data-s="1" data-e="s2bv2-tt">2025 노션 아카이브를<br>현장에 맞게 다시 만들었습니다</h2>
-  <p class="lead" data-s="1" data-e="s2bv2-lead">노션 아카이브는 잘 정리된 메모장 같아 익숙해지면 편리하지만, 처음 쓰기에는 장벽이 높았습니다. 2026 미래학교급식 플랫폼에서 이를 리뉴얼해 다시 기획·제작·배포했습니다.</p>
+  <h2 class="tt" data-s="1" data-e="s2bv3-tt">2025 노션 아카이브,<br>흩어진 업무를 처음으로 한곳에 모았습니다</h2>
+  <p class="lead" data-s="1" data-e="s2bv3-lead">2025 노션 연구단이 영양교사 업무를 하나의 기준으로 정리했습니다.</p>
   <div class="nt">
     <div class="ntl" data-s="2">
       <div class="bframe nview"><div class="bar"><b></b><b></b><b></b><span>bush-lawyer-428.notion.site · 영양 아카이브</span></div>
@@ -351,11 +355,10 @@ body.edit #editTip{display:block}
       <div class="ncap"><span>기존 노션 아카이브 (업무목록 보기)</span><button class="demo sm ghost" id="openNotion"><i>↗</i>노션 아카이브 열기</button></div>
     </div>
     <div class="ntr">
-      <div class="nrow" data-s="3"><div class="np"><b>사용자 진입장벽</b><span>노션 사용법(토글, 데이터베이스 보기)을 알아야 자료에 닿을 수 있었습니다.</span></div><i>→</i><div class="ns"><b>첫 화면에서 바로</b><span>운영·위생·교육 카드를 누르면 업무 목록으로 들어갑니다.</span></div></div>
-      <div class="nrow" data-s="4"><div class="np"><b>검색 불편</b><span>필요한 업무와 서식을 찾기가 번거로웠습니다.</span></div><i>→</i><div class="ns"><b>통합 검색</b><span>업무 이름·분류로 검색하고, 자주 찾는 업무를 버튼으로 둡니다.</span></div></div>
-      <div class="nrow" data-s="5"><div class="np"><b>자료 위치 파악 어려움</b><span>자료가 하위 페이지와 토글 속에 흩어져 있었습니다.</span></div><i>→</i><div class="ns"><b>한 화면에 같은 순서로</b><span>근거 → 점검 기준 → 절차 → 서식 순서로 펼쳐 보입니다.</span></div></div>
-      <div data-s="5" class="credit"><div><em>기획·제작·디자인</em>김소리</div><div><em>자료 수집·선별</em>양지현 · 이수빈 · 임서영</div></div>
-      <div data-s="5" style="margin-top:14px"><button class="demo sm" data-demo="arc"><i>▶</i>지금 자료실 열기</button></div>
+      <div class="ach" data-s="3"><b data-e="s2bv3-a1">36건</b><div><em data-e="s2bv3-a1t">영양교사 업무 정리</em><span data-e="s2bv3-a1s">운영 20 · 위생 10 · 교육 6</span></div></div>
+      <div class="ach" data-s="4"><b data-e="s2bv3-a2">같은 틀</b><div><em data-e="s2bv3-a2t">업무마다 한 형식으로</em><span data-e="s2bv3-a2s">관련 근거 · 점검항목 · 참고자료 · 참고 사이트</span></div></div>
+      <div class="ach" data-s="5"><b data-e="s2bv3-a3">주기·분류</b><div><em data-e="s2bv3-a3t">언제, 어떤 점검에 필요한지</em><span data-e="s2bv3-a3s">반복주기와 점검분류를 업무마다 함께 정리</span></div></div>
+      <p class="achn" data-s="6" data-e="s2bv3-n">다만, 처음 쓰는 선생님께는 장벽이 높았습니다.</p>
     </div>
   </div>
 </section>
@@ -396,6 +399,7 @@ body.edit #editTip{display:block}
         <button data-k="hy"><img src="assets/chan.png" alt=""><span><b class="c-hy">위생 · 찬이</b><small>위생관리지침 및 자료</small></span></button>
         <button data-k="ed"><img src="assets/kkuk.png" alt=""><span><b class="c-ed">교육 · 꾹이</b><small>음식문화</small></span></button>
       </div>
+      <div data-s="2" class="credit"><div><em>기획·제작·디자인</em>김소리</div><div><em>자료 수집·선별</em>양지현 · 이수빈 · 임서영</div></div>
     </div>
     <div class="lever" data-s="2" aria-label="운영·위생·교육 고르기">
       <div class="track"></div>
