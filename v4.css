@@ -43,3 +43,4 @@ html.intro-lock,html.intro-lock body{overflow:hidden}
 @media (max-width:520px){.tcol .fchip{flex-wrap:wrap;overflow:visible;word-break:keep-all;overflow-wrap:anywhere}}
 /* 저작권 표기 */
 .fcopy{margin-top:10px}
+.fteam{line-height:1.8}
