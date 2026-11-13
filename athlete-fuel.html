@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>실기 당일 영양 수업</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* Layout: one slide at a time, like a stadium scoreboard — condensed numerals, running-track lane lines, fixed control bar */
+:root{
+  --bg:#10161d; --panel:#18212b; --line:#2a3644; --fg:#eef2f5; --muted:#93a2b2;
+  --track:#ff6b3d; --lane:#7cc4ff; --ok:#5fd39a; --warn:#ffc857;
+  --display:"Barlow Condensed","Noto Sans KR",system-ui,sans-serif;
+  --body:"Noto Sans KR",system-ui,-apple-system,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;overflow:hidden}
+.deck{position:relative;height:100%;display:flex;flex-direction:column}
+.progress{height:4px;background:var(--line);flex:none}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--track),var(--lane));width:0;transition:width .3s}
+.stage{flex:1;overflow-y:auto;overflow-x:hidden;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:clamp(20px,4vh,48px)}
+.slide{max-width:1180px;margin:0 auto;display:none;animation:in .35s ease}
+.slide.on{display:block}
+@keyframes in{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.slide{animation:none}.progress i{transition:none}}
+.eyebrow{font-family:var(--display);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--track);font-size:clamp(14px,1.4vw,18px);display:flex;gap:10px;align-items:center}
+.eyebrow b{color:var(--muted);font-weight:500}
+h1,h2{font-weight:900;line-height:1.22;text-wrap:balance;margin:.3em 0 .35em;letter-spacing:-.01em}
+h1{font-size:clamp(34px,5.4vw,72px)}
+h2{font-size:clamp(28px,3.8vw,52px)}
+.lead{color:var(--muted);font-size:clamp(16px,1.6vw,21px);max-width:62ch;margin:0 0 clamp(18px,3vh,32px)}
+.hl{color:var(--track)} .hl2{color:var(--lane)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:860px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:clamp(16px,2vw,24px);min-width:0}
+.card h3{margin:0 0 6px;font-size:clamp(18px,1.7vw,22px);font-weight:700}
+.card p,.card li{color:var(--muted);margin:0;font-size:clamp(15px,1.35vw,17px)}
+.card ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+.num{font-family:var(--display);font-weight:800;font-size:clamp(40px,5vw,68px);line-height:1;color:var(--fg);font-variant-numeric:tabular-nums}
+.num small{font-size:.42em;color:var(--muted);font-weight:500;margin-left:4px}
+.tag{display:inline-block;font-family:var(--display);font-weight:700;letter-spacing:.08em;font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid currentColor;margin-bottom:10px}
+.t-o{color:var(--track)} .t-b{color:var(--lane)} .t-g{color:var(--ok)} .t-y{color:var(--warn)}
+.note{margin-top:18px;padding:14px 18px;border-left:3px solid var(--warn);background:rgba(255,200,87,.07);border-radius:0 10px 10px 0;font-size:clamp(15px,1.4vw,18px)}
+.note.ok{border-color:var(--ok);background:rgba(95,211,154,.07)}
+/* cover: running-track lanes */
+.cover{position:relative;padding-block:clamp(10px,6vh,60px)}
+.lanes{display:grid;gap:10px;margin-top:clamp(24px,5vh,48px)}
+.lanes div{height:10px;border-radius:5px;background:repeating-linear-gradient(90deg,var(--track) 0 70%,transparent 70% 100%);opacity:.85;transform-origin:left;animation:run 1.2s ease both}
+.lanes div:nth-child(2){opacity:.6;animation-delay:.1s;width:86%}
+.lanes div:nth-child(3){opacity:.4;animation-delay:.2s;width:72%}
+@keyframes run{from{transform:scaleX(.2)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.lanes div{animation:none}}
+.meta{display:flex;flex-wrap:wrap;gap:10px 22px;color:var(--muted);font-size:15px;margin-top:22px}
+.meta span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--lane);margin-right:8px;vertical-align:middle}
+/* energy bars */
+.bar{height:12px;border-radius:6px;background:var(--line);overflow:hidden;margin:12px 0 8px}
+.bar i{display:block;height:100%;border-radius:6px}
+/* timeline */
+.tl{display:grid;gap:0;position:relative}
+.tl .row{display:grid;grid-template-columns:clamp(96px,14vw,150px) minmax(0,1fr);gap:18px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.tl .when{font-family:var(--display);font-weight:800;font-size:clamp(22px,2.4vw,32px);color:var(--lane);line-height:1.1}
+.tl .when small{display:block;font-size:14px;color:var(--muted);font-weight:500;letter-spacing:.04em}
+.tl .what b{font-size:clamp(17px,1.6vw,20px)}
+.tl .what p{margin:2px 0 0;color:var(--muted);font-size:clamp(15px,1.35vw,17px)}
+/* table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:420px;font-size:clamp(15px,1.4vw,18px)}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--display);letter-spacing:.08em;color:var(--muted);font-weight:700;font-size:14px;text-transform:uppercase}
+td.n{font-family:var(--display);font-weight:700;font-size:1.25em;font-variant-numeric:tabular-nums}
+/* calculator */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:16px}
+@media (max-width:760px){.calc{grid-template-columns:1fr}}
+label{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
+input[type=number],input[type=url]{width:100%;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:22px;font-family:var(--display);font-weight:700}
+input[type=url]{font-size:15px;font-family:var(--body);font-weight:400}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{flex:1 1 auto;background:var(--bg);color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px;cursor:pointer}
+.seg button[aria-pressed=true]{border-color:var(--track);color:var(--fg);background:rgba(255,107,61,.12)}
+:focus-visible{outline:2px solid var(--lane);outline-offset:2px}
+/* quiz */
+.q{cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
+.q .ans{display:none;margin-top:10px;color:var(--ok);font-weight:500}
+.q.open .ans{display:block}
+.q .hint{font-size:13px;color:var(--muted);margin-top:8px}
+.q.open .hint{display:none}
+/* qr */
+.qrwrap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:center}
+@media (max-width:640px){.qrwrap{grid-template-columns:1fr;justify-items:start}}
+#qr{background:#fff;padding:14px;border-radius:14px;width:max-content;max-width:100%}
+#qr img,#qr canvas{display:block;width:clamp(180px,22vw,260px)!important;height:auto!important}
+.urltext{font-family:var(--display);font-size:clamp(20px,2.2vw,28px);font-weight:700;color:var(--lane);word-break:break-all}
+.sheet{display:grid;gap:10px;margin-top:14px}
+.sheet div{display:flex;gap:10px;align-items:baseline;font-size:clamp(16px,1.5vw,19px)}
+.sheet div::after{content:"";flex:1;border-bottom:1px dashed var(--muted);opacity:.5}
+/* controls */
+.ctrl{flex:none;display:flex;justify-content:center;gap:6px;align-items:center;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));border-top:1px solid var(--line);background:var(--bg)}
+.ctrl button{background:transparent;border:1px solid transparent;color:var(--muted);font:inherit;font-size:15px;padding:8px 14px;border-radius:999px;cursor:pointer}
+.ctrl button:hover{color:var(--fg);border-color:var(--line)}
+.ctrl .pg{font-family:var(--display);font-weight:700;font-size:17px;color:var(--fg);min-width:60px;text-align:center;font-variant-numeric:tabular-nums}
+.ctrl .tm{font-family:var(--display);font-size:15px;color:var(--muted);margin-left:8px}
+.src{margin-top:16px;font-size:13px;color:var(--muted)}
+.opensite{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:12px 22px;border-radius:999px;background:var(--track);color:var(--bg);font-weight:700;font-size:clamp(16px,1.5vw,19px);text-decoration:none}
+.opensite:hover{filter:brightness(1.08)}
+.tnotes{flex:none;max-height:40vh;overflow-y:auto;border-top:2px solid var(--warn);background:#141c25;padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.tn-in{max-width:1180px;margin:0 auto}
+.tn-h{display:flex;justify-content:space-between;gap:12px;font-family:var(--display);font-weight:700;letter-spacing:.1em;color:var(--warn);font-size:14px;margin-bottom:8px}
+#tnBody{font-size:clamp(15px,1.3vw,17px);line-height:1.7}
+#tnBody p{margin:0 0 6px}
+#tnBody ul{margin:0 0 8px;padding-left:1.2em;display:grid;gap:3px}
+#tnBody b{color:var(--warn)}
+#tnBody .say{color:var(--lane)}
+.ctrl button[aria-pressed=true]{color:var(--warn);border-color:var(--warn)}
+</style>
+</head>
+<body>
+
+
+<div class="deck">
+  <div class="progress"><i id="bar"></i></div>
+  <main class="stage" id="stage">
+
+  <!-- 1 -->
+  <section class="slide" data-min="0">
+    <div class="cover">
+      <div class="eyebrow">체대입시 스포츠 영양 <b>· 30분 수업</b></div>
+      <h1>실기 당일,<br><span class="hl">무엇을 먹고</span> 들어가나요?</h1>
+      <p class="lead">같은 훈련을 해도 언제, 무엇을, 얼마나 먹느냐에 따라 기록이 달라집니다. 오늘은 내 몸무게로 내 숫자를 직접 계산해 봅니다.</p>
+      <div class="meta"><span>에너지 시스템</span><span>탄수화물 · 단백질</span><span>수분</span><span>D-Day 식단</span><span>보충제 팩트체크</span></div>
+      <div class="lanes"><div></div><div></div><div></div></div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" data-min="1">
+    <div class="eyebrow">도입 <b>· 3분</b></div>
+    <h2>실기 당일 아침, <span class="hl">너는 뭐 먹고 가?</span></h2>
+    <p class="lead">옆 친구와 30초 동안 이야기해 보세요. 그리고 아래 셋 중 내 모습과 가장 가까운 것을 골라 보세요.</p>
+    <div class="grid g3">
+      <div class="card"><span class="tag t-y">A</span><h3>긴장돼서 굶고 간다</h3><p>배가 비면 몸이 가벼울 것 같아서</p></div>
+      <div class="card"><span class="tag t-b">B</span><h3>편의점에서 대충</h3><p>에너지드링크나 빵 하나</p></div>
+      <div class="card"><span class="tag t-g">C</span><h3>평소 먹던 아침 그대로</h3><p>밥이나 빵, 달걀, 우유</p></div>
+    </div>
+    <div class="note ok">정답에 가장 가까운 건 C입니다. 오늘 수업이 끝나면 왜 그런지 설명할 수 있게 됩니다.</div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide" data-min="4">
+    <div class="eyebrow">01 · 에너지 시스템 <b>· 4분</b></div>
+    <h2>내 종목은 <span class="hl">어떤 연료</span>를 쓸까?</h2>
+    <p class="lead">운동 시간이 짧을수록 빠르고 폭발적인 에너지를, 길수록 오래 버티는 에너지를 씁니다. 실제로는 세 가지가 섞여서 쓰여요.</p>
+    <div class="grid g3">
+      <div class="card"><span class="tag t-o">~10초</span><h3>순간 폭발형</h3><div class="bar"><i style="width:92%;background:var(--track)"></i></div><p>100m, 제자리멀리뛰기, 배근력, 메디신볼 던지기</p></div>
+      <div class="card"><span class="tag t-y">10초~2분</span><h3>근지구력형</h3><div class="bar"><i style="width:65%;background:var(--warn)"></i></div><p>윗몸일으키기, 왕복달리기, 사이드스텝, 턱걸이 버티기</p></div>
+      <div class="card"><span class="tag t-b">2분 이상</span><h3>지구력형</h3><div class="bar"><i style="width:40%;background:var(--lane)"></i></div><p>오래달리기, 20m 셔틀런, 구기 게임, 수영</p></div>
+    </div>
+    <div class="note">세 종류 모두 공통 핵심 연료는 <b>탄수화물</b>입니다. 근육과 간에 글리코겐으로 저장해 두었다가 꺼내 씁니다.</div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide" data-min="8">
+    <div class="eyebrow">02 · 탄수화물 <b>· 4분</b></div>
+    <h2>비율 말고 <span class="hl">몸무게 1kg당 g</span>으로</h2>
+    <p class="lead">전문가들은 "탄수화물 60%"처럼 비율이 아니라, 내 몸무게와 훈련량에 맞춰 하루 몇 g을 먹을지로 계산합니다.</p>
+    <div class="grid g3">
+      <div class="card"><span class="tag t-b">가벼운 날</span><div class="num">3~5<small>g/kg</small></div><p style="margin-top:8px">휴식, 가벼운 보강 운동</p></div>
+      <div class="card"><span class="tag t-y">보통 훈련</span><div class="num">5~7<small>g/kg</small></div><p style="margin-top:8px">하루 1시간 정도 실기 연습</p></div>
+      <div class="card"><span class="tag t-o">고강도</span><div class="num">6~10<small>g/kg</small></div><p style="margin-top:8px">하루 1~3시간 실기반 훈련</p></div>
+    </div>
+    <div class="note ok">예시 · 몸무게 60kg, 실기반 2시간이면 하루 <b>360~420g</b>. 밥 한 공기(210g)에 탄수화물이 약 65g이니, 세 끼 밥에 간식(바나나, 고구마, 우유, 빵)을 더해 하루에 나눠 채웁니다.</div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide" data-min="12">
+    <div class="eyebrow">03 · 단백질 <b>· 4분</b></div>
+    <h2>한 번에 몰아 먹지 말고 <span class="hl2">나눠서</span></h2>
+    <div class="grid g2">
+      <div class="card">
+        <span class="tag t-b">하루 목표</span>
+        <div class="num">1.2~2.0<small>g/kg</small></div>
+        <p style="margin-top:10px">몸무게 60kg이면 하루 72~120g.<br>세 끼와 운동 후 간식에 20~25g씩 나눠 먹는 게 근육 회복에 더 유리합니다.</p>
+      </div>
+      <div class="card tbl">
+        <table>
+          <thead><tr><th>음식</th><th>단백질</th></tr></thead>
+          <tbody>
+            <tr><td>달걀 1개</td><td class="n">6g</td></tr>
+            <tr><td>우유 1팩 (200ml)</td><td class="n">6g</td></tr>
+            <tr><td>두부 1/2모 (150g)</td><td class="n">12g</td></tr>
+            <tr><td>돼지고기 100g</td><td class="n">20g</td></tr>
+            <tr><td>닭가슴살 100g</td><td class="n">23g</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="note">"운동 후 45분 안에 안 먹으면 근육이 안 붙는다"는 과장입니다. 운동 끝나고 1~2시간 안에 한 끼를 챙기면 충분해요. 하루 총량과 고르게 나누기가 더 중요합니다.</div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide" data-min="16">
+    <div class="eyebrow">04 · 수분 <b>· 3분</b></div>
+    <h2>훈련 전후 <span class="hl2">체중계</span>에 올라가 보세요</h2>
+    <p class="lead">땀으로 빠진 무게는 대부분 물입니다. 체중이 2% 넘게 줄면 집중력과 지구력이 눈에 띄게 떨어집니다.</p>
+    <div class="grid g3">
+      <div class="card"><span class="tag t-b">훈련 2~4시간 전</span><div class="num">5~7<small>ml/kg</small></div><p style="margin-top:8px">60kg이면 300~420ml, 물 한두 컵</p></div>
+      <div class="card"><span class="tag t-y">훈련 중</span><div class="num">조금씩<small>자주</small></div><p style="margin-top:8px">한 시간 넘게 땀을 많이 흘리면 스포츠음료도 괜찮아요</p></div>
+      <div class="card"><span class="tag t-o">훈련 후</span><div class="num">1.5<small>L / 줄어든 1kg</small></div><p style="margin-top:8px">줄어든 체중의 1.5배를 몇 시간에 걸쳐 나눠 마시기</p></div>
+    </div>
+    <div class="note ok">가장 쉬운 습관 · <b>목마르기 전에 마시기.</b> 갈증을 느낄 땐 이미 물이 부족한 상태예요. 500ml 물병을 들고 다니며 훈련 전에 한 병을 비워 두세요.</div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide" data-min="19">
+    <div class="eyebrow">05 · 실기 당일 <b>· 4분</b></div>
+    <h2>D-Day <span class="hl">식사 타임라인</span></h2>
+    <div class="tl">
+      <div class="row"><div class="when">3~4시간 전<small>아침 식사</small></div><div class="what"><b>평소 먹던 한 끼</b><p>밥이나 빵 + 달걀·두부처럼 소화 잘 되는 단백질 조금. 튀김, 기름진 고기, 매운 음식, 생채소 많이는 피하기.</p></div></div>
+      <div class="row"><div class="when">1시간 전<small>가벼운 간식</small></div><div class="what"><b>바나나, 카스텔라, 작은 주먹밥</b><p>빨리 소화되는 탄수화물로 배를 살짝만 채우기. 물도 한 컵.</p></div></div>
+      <div class="row"><div class="when">종목 사이<small>대기 시간</small></div><div class="what"><b>물 몇 모금, 바나나 반 개</b><p>대기가 길면 젤리나 스포츠음료 조금. 배부르게 먹지 않기.</p></div></div>
+      <div class="row"><div class="when">끝난 후<small>1~2시간 안</small></div><div class="what"><b>밥 + 단백질 반찬 한 끼</b><p>쓴 글리코겐을 채우고 근육을 회복시키는 식사.</p></div></div>
+    </div>
+    <div class="note">실기 당일 철칙 · <b>처음 먹어보는 음식, 처음 먹어보는 보충제는 금지.</b> 연습하는 날 미리 시험해 본 것만 먹습니다.</div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide" data-min="23">
+    <div class="eyebrow">06 · 팩트체크 <b>· 3분</b></div>
+    <h2>보충제, <span class="hl">나한테 필요할까?</span></h2>
+    <div class="grid g3">
+      <div class="card"><span class="tag t-o">비추천</span><h3>크레아틴</h3><p>성인 선수 연구는 있지만, 18세 미만에게는 소아청소년 전문가 단체들이 권하지 않습니다. 성장기에는 고기·생선·달걀 등 음식이 먼저.</p></div>
+      <div class="card"><span class="tag t-o">주의</span><h3>에너지드링크</h3><p>청소년 카페인 권장 상한은 하루 몸무게 1kg당 2.5mg(60kg → 150mg). 한 캔에 60~100mg이 들어 있어 커피까지 더하면 금방 넘어요. 손떨림, 두근거림, 수면 방해.</p></div>
+      <div class="card"><span class="tag t-y">대부분 불필요</span><h3>단백질 파우더</h3><p>식사로 하루 목표량을 채우면 필요 없습니다. 해외 직구 제품은 금지 성분이 섞여 있을 위험도 있어요.</p></div>
+    </div>
+    <div class="note">"먹기만 하면 기록 향상"이라는 광고는 일단 의심하기. 돈은 바나나, 우유, 달걀에 쓰는 게 가장 확실합니다.</div>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide" data-min="26">
+    <div class="eyebrow">07 · 체중 조절 <b>· 2분</b></div>
+    <h2>굶어서 빼면 <span class="hl">기록도 같이 빠진다</span></h2>
+    <div class="grid g2">
+      <div class="card"><span class="tag t-o">이런 방법은 금지</span><ul><li>끼니 거르기, 물 끊기</li><li>땀복 입고 뛰기, 사우나</li><li>실기 직전 며칠 사이 급하게 감량</li></ul></div>
+      <div class="card"><span class="tag t-y">이런 신호가 오면 상담</span><ul><li>훈련 중 어지럽고 쉽게 지친다</li><li>자주 다치거나 회복이 늦다</li><li>여학생은 생리가 불규칙해지거나 멈춘다</li></ul></div>
+    </div>
+    <div class="note">먹는 양보다 훈련량이 계속 많으면 남녀 모두 근력, 순발력, 뼈 건강이 떨어집니다. 체중이 고민되면 혼자 해결하지 말고 영양 선생님을 찾아오세요.</div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide" data-min="28">
+    <div class="eyebrow">08 · 실습 <b>· 함께 계산</b></div>
+    <h2>내 몸무게로 <span class="hl2">내 숫자</span> 구하기</h2>
+    <div class="calc">
+      <div class="card" style="display:grid;gap:16px;align-content:start">
+        <div><label for="w">몸무게 (kg)</label><input id="w" type="number" inputmode="decimal" min="30" max="150" value="60"></div>
+        <div><label>오늘 훈련</label>
+          <div class="seg" id="lv">
+            <button type="button" data-c="3,5" aria-pressed="false">가벼운 날</button>
+            <button type="button" data-c="5,7" aria-pressed="false">1시간</button>
+            <button type="button" data-c="6,10" aria-pressed="true">1~3시간</button>
+          </div>
+        </div>
+      </div>
+      <div class="grid g3">
+        <div class="card"><span class="tag t-o">탄수화물</span><div class="num" id="oc">—</div><p id="oc2" style="margin-top:8px"></p></div>
+        <div class="card"><span class="tag t-b">단백질</span><div class="num" id="op">—</div><p id="op2" style="margin-top:8px"></p></div>
+        <div class="card"><span class="tag t-g">훈련 전 물</span><div class="num" id="ow">—</div><p style="margin-top:8px">훈련 2~4시간 전</p></div>
+      </div>
+    </div>
+    <p class="src">기준: 미국스포츠의학회·영양사협회 공동 입장문(2016), 국제올림픽위원회 스포츠영양 합의문 범위를 학생용으로 단순화</p>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide" data-min="28">
+    <div class="eyebrow">QR · 수업자료 받기</div>
+    <h2>폰으로 찍고 <span class="hl">내 영양 플랜</span> 저장하기</h2>
+    <div class="qrwrap">
+      <div id="qr" role="img" aria-label="수업자료 QR 코드"></div>
+      <div style="min-width:0">
+        <div class="urltext" id="urltext"></div>
+        <a id="openSite" class="opensite" href="https://sori-ai.netlify.app/" target="_blank" rel="noopener">↗ 사이트 열기 · 함께 써 보기</a>
+        <p class="lead" style="margin-top:10px">앱에서 내 종목과 몸무게를 넣고, 아래 네 칸을 채워 보세요.</p>
+        <div class="sheet">
+          <div>내 몸무게</div><div>하루 탄수화물 목표</div><div>하루 단백질 목표</div><div>실기 당일 1시간 전 간식</div>
+        </div>
+        <details style="margin-top:18px;color:var(--muted)">
+          <summary style="cursor:pointer">QR 주소 바꾸기 (선생님용)</summary>
+          <div style="margin-top:10px"><label for="qurl">연결할 주소</label><input id="qurl" type="url" value="https://sori-ai.netlify.app/"></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 사용법 -->
+  <section class="slide" data-min="29">
+    <div class="eyebrow">사이트 사용법 <b>· 위에서 아래로 4단계</b></div>
+    <h2>애슬릿 퓨얼, <span class="hl2">이렇게 써요</span></h2>
+    <div class="grid g4">
+      <div class="card"><span class="tag t-b">1 · 프로필</span><h3>별명 + 아바타</h3><p>닉네임 입력, 아바타 5개 중 하나 선택. 실명 안 써도 되고 서버에 저장되지 않아요.</p></div>
+      <div class="card"><span class="tag t-o">2 · 계열 선택</span><h3>순발력 or 지구력</h3><p>100m·제멀·배근력은 순발력 트랙, 오래달리기·셔틀런·구기·수영은 지구력 트랙.</p></div>
+      <div class="card"><span class="tag t-y">3 · 계산기</span><h3>키·몸무게·훈련 강도</h3><p>보강 1시간 / 실기반 2~3시간 / 종일 4시간+ 중 선택. 나온 숫자를 활동지에 적기.</p></div>
+      <div class="card"><span class="tag t-g">4 · 퀴즈</span><h3>스테이지 1부터</h3><p>맨 아래 "퀴즈 스테이지 시작". 앞 단계를 풀어야 다음이 열려요. D-Day 식단 시뮬레이터도 해보기.</p></div>
+    </div>
+    <div class="note">오늘 배운 것과 다른 부분 · 크레아틴·BCAA 추천, "IOC 표준 60:20:20", "45분 골든타임", "피로도 70% 감소"는 과장이거나 성인 기준이에요. 탄수화물은 오늘 배운 g/kg로 직접 계산해서 적어요.</div>
+    <div class="note ok">집에서 · 사이트를 홈 화면에 추가하기 (크롬: ⋮ → 홈 화면에 추가 / 사파리: 공유 → 홈 화면에 추가)</div>
+  </section>
+
+  <!-- 13 -->
+  <section class="slide" data-min="30">
+    <div class="eyebrow">마무리 퀴즈 <b>· 카드를 눌러 정답 확인</b></div>
+    <h2>오늘 배운 것, <span class="hl">3문제</span></h2>
+    <div class="grid g3">
+      <button class="card q" type="button"><span class="tag t-o">Q1</span><h3>몸무게 50kg 학생의 하루 단백질 목표는?</h3><p class="hint">힌트: 1.2~2.0g/kg</p><p class="ans">60~100g. 세 끼와 간식에 나눠서!</p></button>
+      <button class="card q" type="button"><span class="tag t-b">Q2</span><h3>훈련 후 체중이 1kg 줄었다. 물은 얼마나?</h3><p class="hint">힌트: 줄어든 무게의 몇 배?</p><p class="ans">약 1.5L. 한 번에 말고 몇 시간에 걸쳐 나눠서.</p></button>
+      <button class="card q" type="button"><span class="tag t-y">Q3</span><h3>실기 당일 절대 하면 안 되는 것은?</h3><p class="hint">힌트: "처음"</p><p class="ans">처음 먹어보는 음식·보충제 먹기, 굶고 가기.</p></button>
+    </div>
+    <div class="note ok">오늘의 한 줄 · <b>실기 당일엔 평소 먹던 걸로, 굶지 말고, 물은 미리.</b></div>
+  </section>
+
+  </main>
+  <aside class="tnotes" id="tnotes" hidden>
+    <div class="tn-in"><div class="tn-h"><span>교사 노트</span><span id="tnTime"></span></div><div id="tnBody"></div></div>
+  </aside>
+  <nav class="ctrl" aria-label="슬라이드 이동">
+    <button type="button" id="prev">‹ 이전</button>
+    <span class="pg" id="pg">1 / 12</span>
+    <button type="button" id="next">다음 ›</button>
+    <button type="button" id="fs">⛶ 전체화면</button>
+    <button type="button" id="nt" aria-pressed="false">📝 교사 노트</button>
+    <span class="tm" id="tm"></span>
+  </nav>
+</div>
+
+<script>
+var NOTES=[
+['0~1분 · 표지',
+'<p><b>목표</b> ① 내 몸무게로 탄수화물·단백질·수분 목표 계산 ② 실기 당일 식사 계획 세우기 ③ 보충제·급격한 감량 위험 설명하기</p><p class="say">"오늘은 실기 기록을 올리는 방법을 훈련이 아니라 식사로 배워볼 거예요. 끝나면 각자 자기 숫자를 하나씩 가져갑니다."</p><ul><li>학생들 휴대폰 꺼내두게 하기 (뒤에서 QR 찍음)</li><li>활동지나 공책 준비</li></ul>'],
+['1~3분 · 도입',
+'<p class="say">"실기 당일 아침, 뭐 먹고 가? 옆 친구랑 30초 이야기해 봐."</p><ul><li>2~3명 대답 듣고 A / B / C 손들기</li><li>A(굶고 간다)가 많으면: "배가 비면 가벼울 것 같지만 연료가 없는 상태"라고 짧게만</li><li>정답 C의 이유는 수업 끝에 다시 확인한다고 예고</li></ul>'],
+['3~7분 · 에너지 시스템',
+'<p class="say">"자기 실기 종목이 어느 칸인지 손들어 볼까요?"</p><ul><li>10초 안쪽은 순간 폭발형, 2분 넘으면 지구력형. 실제로는 세 가지가 섞여 쓰임</li><li>핵심: <b>세 종류 모두 주 연료는 탄수화물</b> (근육·간의 글리코겐)</li><li>"굶고 가면 이 연료통이 비어 있는 상태"로 도입 질문과 연결</li></ul>'],
+['7~11분 · 탄수화물',
+'<ul><li>"탄수화물 60%" 같은 비율보다 <b>몸무게 1kg당 g</b>이 전문가 기준 (미국스포츠의학회·IOC)</li><li>칠판에 함께 계산: 60kg × 6~7g = <b>360~420g</b></li><li>밥 한 공기(210g) ≈ 탄수화물 65g → "밥만으로는 6공기라 힘들죠? 그래서 간식이 필요해요"</li><li>간식 예: 바나나, 고구마, 우유, 빵, 떡</li></ul><p><b>바로잡기</b> 사이트 계산기의 "탄60:단20:지20 (IOC 표준)"은 정확한 표현이 아님</p>'],
+['11~15분 · 단백질',
+'<p class="say">"몸무게 50kg이면 하루 단백질 얼마?" → 60~100g</p><ul><li>한 번에 몰아 먹지 말고 끼니마다 20~25g씩 4번</li><li>표 보면서 "달걀 몇 개면 20g?" → 3~4개. 고기 100g 한 번이면 해결</li></ul><p><b>바로잡기</b> 사이트의 "45분 골든타임", "피로도 70% 감소"는 과장. 운동 후 1~2시간 안 한 끼면 충분, 하루 총량이 더 중요</p>'],
+['15~18분 · 수분',
+'<ul><li>땀으로 빠진 무게 = 대부분 물. 체중 2% 넘게 빠지면 집중력·지구력 저하</li><li>60kg 기준: 훈련 전 300~420ml / 훈련 후 줄어든 1kg당 1.5L</li><li>목마를 때는 이미 부족한 상태 → 500ml 물병 들고 다니기</li></ul><p class="say">"다음 실기 연습 때 훈련 전후 체중 재보고 몇 kg 줄었는지 확인해 와요." (과제)</p>'],
+['18~22분 · D-Day 타임라인',
+'<ul><li>순서대로 읽기: 3~4시간 전 평소 한 끼 → 1시간 전 가벼운 간식 → 종목 사이 물·바나나 반 → 끝난 후 1~2시간 안 식사</li><li>피할 것: 튀김, 기름진 고기, 매운 음식, 생채소 많이</li><li>질문: "실기 시작이 오전 10시면 아침은 몇 시?" → 6~7시</li></ul><p><b>철칙</b> 처음 먹어보는 음식·보충제는 실기 당일 금지. 연습 날 미리 시험해 본 것만</p><p class="say">도입 질문 정답 C 이유 여기서 회수: "평소 먹던 아침 = 몸이 익숙한 연료"</p>'],
+['22~25분 · 보충제 팩트체크',
+'<ul><li><b>크레아틴</b>: 성인 연구는 있으나 18세 미만은 소아청소년 전문가 단체가 권하지 않음. 사이트 순발력 트랙의 "크레아틴+BCAA"는 성인 기준이라고 짚어주기</li><li><b>에너지드링크</b>: 청소년 카페인 상한 2.5mg/kg (식약처). 60kg → 150mg. 한 캔 60~100mg + 커피면 초과</li><li><b>단백질 파우더</b>: 식사로 채우면 불필요. 해외 직구는 금지 성분 혼입 위험</li></ul><p class="say">"먹기만 하면 기록 향상? 일단 의심. 돈은 바나나·우유·달걀에."</p>'],
+['25~27분 · 체중 조절',
+'<ul><li>끼니 거르기, 물 끊기, 땀복, 사우나, 직전 급감량 → 근력·순발력 같이 떨어짐</li><li>남녀 모두 해당. 먹는 양보다 훈련량이 계속 많으면 뼈 건강·회복력 저하</li><li>여학생 생리 불규칙·중단은 몸이 보내는 경고 신호 (담담하게, 짧게)</li></ul><p class="say">"체중 고민 있으면 혼자 해결하지 말고 영양 선생님 찾아와요."</p><p>시간 부족하면 이 장은 1분으로 줄이기</p>'],
+['27~28분 · 계산기 실습',
+'<ul><li>지원자 1명 몸무게 입력 (본인이 괜찮다고 할 때만) 또는 선생님이 예시 숫자로</li><li>훈련 버튼 바꿔가며 숫자가 어떻게 달라지는지 보여주기</li><li>"이제 각자 폰으로 해볼게요" → 다음 장 QR로</li></ul>'],
+['28~29분 · QR',
+'<ul><li>QR 찍게 하고, <b>↗ 사이트 열기</b> 버튼으로 같은 화면을 띄워 함께 따라하기</li><li>활동지 네 칸 채우기: 몸무게 / 탄수화물 목표 / 단백질 목표 / 실기 1시간 전 간식</li><li>QR 안 찍히는 학생: 주소 sori-ai.netlify.app 직접 입력</li></ul>'],
+['사이트 사용법 · 시연용',
+'<p><b>1 프로필</b> 닉네임 입력 (최대 12자, 실명 X), 아바타 5개 중 선택. 서버 미저장이라 개인정보 걱정 없음</p><p><b>2 계열 선택</b> 순발력 트랙(100m·제멀·배근력·배구 스파이크) / 지구력 트랙(오래달리기·셔틀런·구기·수영). 카드 아래 버튼 클릭</p><p><b>3 계산기</b> 키·몸무게 입력, 강도 3단계(보강 1h / 실기반 2~3h / 종일 4h+) 선택 → 권장 칼로리·단백질·수분이 바로 바뀜. 탄수화물은 오늘 배운 g/kg로 직접 계산해 적게</p><p><b>4 파워 푸드</b> 바나나(전) → 전해질 음료(중) → 달걀·우유(후) 흐름만 읽기</p><p><b>퀴즈</b> 맨 아래 "퀴즈 스테이지 시작" → 스테이지 1 에너지원의 비밀부터. 앞 단계 풀어야 다음 열림 (수분과 전해질 → 미량 영양소 → 보충제 팩트체크 → 경기력 식사 전략). 퀴즈 화면 위쪽 "D-Day 식단 시뮬레이터"도 있음</p><p>상단 "3일 연속 달성", XP는 신경 쓰지 말라고 한마디</p>'],
+['29~30분 · 마무리',
+'<ul><li>카드 하나씩 학생에게 답 말하게 한 뒤 눌러서 확인</li><li>Q1 50kg → 60~100g / Q2 1kg 줄면 약 1.5L / Q3 처음 먹는 음식·보충제, 굶고 가기</li><li>마지막 한 줄 다 같이 읽기: <b>"평소 먹던 걸로, 굶지 말고, 물은 미리"</b></li><li>과제: 사이트 홈 화면에 추가, 다음 연습 때 훈련 전후 체중 재보기</li></ul><p>시간 남으면 사이트 퀴즈 스테이지 1을 같이 풀기</p>']
+];
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var N=slides.length, cur=0;
+  var pg=document.getElementById('pg'), bar=document.getElementById('bar'), tm=document.getElementById('tm'), stage=document.getElementById('stage');
+  function show(i){
+    cur=Math.max(0,Math.min(N-1,i));
+    slides.forEach(function(s,k){s.classList.toggle('on',k===cur)});
+    pg.textContent=(cur+1)+' / '+N;
+    bar.style.width=((cur+1)/N*100)+'%';
+    var m=slides[cur].getAttribute('data-min');
+    tm.textContent= m>0 ? m+'분 지점' : '';
+    stage.scrollTop=0;
+    var n=NOTES[cur]||['',''];
+    document.getElementById('tnTime').textContent=n[0];
+    document.getElementById('tnBody').innerHTML=n[1];
+    document.getElementById('tnotes').scrollTop=0;
+    if(location.hash!=='#'+(cur+1)){ try{history.replaceState(null,'','#'+(cur+1))}catch(e){location.hash=String(cur+1)} }
+  }
+  function fromHash(){var n=parseInt((location.hash||'').slice(1),10);show(isNaN(n)?0:n-1)}
+  document.getElementById('prev').onclick=function(){show(cur-1)};
+  document.getElementById('next').onclick=function(){show(cur+1)};
+  document.getElementById('fs').onclick=function(){
+    try{ if(document.fullscreenElement){document.exitFullscreen()} else {document.documentElement.requestFullscreen().catch(function(){})} }catch(e){}
+  };
+  var nt=document.getElementById('nt'), tn=document.getElementById('tnotes');
+  function setNotes(on){tn.hidden=!on;nt.setAttribute('aria-pressed',on?'true':'false');try{localStorage.setItem('tnotes',on?'1':'0')}catch(e){}}
+  nt.onclick=function(){setNotes(tn.hidden)};
+  try{ if(localStorage.getItem('tnotes')==='1') setNotes(true) }catch(e){}
+  document.addEventListener('keydown',function(e){
+    var t=e.target.tagName; if(t==='INPUT'||t==='TEXTAREA')return;
+    if(e.key==='n'||e.key==='N'||e.key==='ㅜ'){setNotes(tn.hidden);return}
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();show(cur+1)}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(cur-1)}
+    if(e.key==='Home')show(0); if(e.key==='End')show(N-1);
+  });
+  var sx=null;
+  stage.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
+  stage.addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60)show(cur+(dx<0?1:-1));sx=null});
+  window.addEventListener('hashchange',fromHash);
+
+  // calculator
+  var w=document.getElementById('w'), lv=document.getElementById('lv'), c=[6,10];
+  function r(x){return Math.round(x)}
+  function calc(){
+    var kg=parseFloat(w.value); if(!(kg>=30&&kg<=150)){['oc','op','ow'].forEach(function(id){document.getElementById(id).textContent='—'});return}
+    document.getElementById('oc').innerHTML=r(kg*c[0])+'~'+r(kg*c[1])+'<small>g</small>';
+    document.getElementById('oc2').textContent='밥 한 공기 기준 약 '+(kg*c[0]/65).toFixed(0)+'~'+(kg*c[1]/65).toFixed(0)+'공기 분량';
+    document.getElementById('op').innerHTML=r(kg*1.2)+'~'+r(kg*2)+'<small>g</small>';
+    document.getElementById('op2').textContent='한 끼에 약 '+r(kg*0.3)+'g씩 4번';
+    document.getElementById('ow').innerHTML=r(kg*5)+'~'+r(kg*7)+'<small>ml</small>';
+  }
+  w.addEventListener('input',calc);
+  lv.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+    [].forEach.call(lv.children,function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+    c=b.getAttribute('data-c').split(',').map(Number);calc()});
+  calc();
+
+  // quiz
+  [].forEach.call(document.querySelectorAll('.q'),function(q){q.onclick=function(){q.classList.toggle('open')}});
+
+  // QR
+  var qbox=document.getElementById('qr'), qurl=document.getElementById('qurl'), ut=document.getElementById('urltext');
+  function drawQR(){
+    var u=qurl.value.trim()||'https://sori-ai.netlify.app/';
+    ut.textContent=u.replace(/^https?:\/\//,'').replace(/\/$/,'');
+    document.getElementById('openSite').href=u;
+    qbox.innerHTML='';
+    try{ new QRCode(qbox,{text:u,width:256,height:256,colorDark:'#10161d',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M}); }
+    catch(e){ qbox.textContent='QR을 불러오지 못했어요. 위 주소를 칠판에 적어주세요.'; qbox.style.color='#10161d'; }
+  }
+  qurl.addEventListener('change',drawQR);
+  drawQR();
+
+  fromHash();
+})();
+</script>
+
+</body>
+</html>
